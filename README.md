@@ -42,20 +42,86 @@ AI Dev Knowledge Assistant
 | 安全治理 | 环境变量管理密钥，限制危险操作 | README 说明权限边界和数据脱敏策略 |
 | 展示文档 | 项目 README、架构图、运行方式、复盘 | 其他人能按说明跑起来 |
 
-### 推荐技术栈
+### 开发语言与框架定稿
 
-可以根据自己的语言栈选择，建议优先选熟悉的。
+本计划统一采用 Java 技术栈，避免在学习过程中被多语言、多框架分散注意力。
+
+最终结论：
+
+- **开发语言**：Java 21
+- **主框架**：Spring Boot 3.x
+- **AI 集成主线**：Spring AI 2.x
+- **AI 框架补充**：LangChain4j，只用于对比学习和扩展视野
+- **向量数据库主线**：Qdrant
+- **向量数据库备选**：PGVector，如果希望减少组件数量
+- **最终交付形态**：Spring Boot Web API + 可选 CLI + 本地 Docker Compose
 
 | 方向 | 推荐 |
 | --- | --- |
-| 语言 | Python 或 TypeScript |
-| 后端 | FastAPI / Flask / Express / Next.js API |
-| 前端 | 简单 Web 页面或命令行 CLI |
-| 模型 | OpenAI / Claude / Gemini / Qwen 任一 |
-| 向量库 | Chroma / Qdrant / Milvus / pgvector / FAISS |
-| 文档解析 | Python pathlib、markdown parser、tree-sitter 可选 |
-| Agent 框架 | 先手写轻量流程，进阶再看 LangChain / LlamaIndex / AutoGen |
-| 部署 | 本地运行即可，进阶可部署到 Vercel / Render / 云服务器 |
+| 主开发语言 | Java 21 |
+| 构建工具 | Maven |
+| 后端框架 | Spring Boot 3.x |
+| AI 主框架 | Spring AI 2.x |
+| AI 备选/对照框架 | LangChain4j |
+| Web API | Spring MVC，必要时使用 WebFlux 做流式输出 |
+| CLI | Spring Shell 或普通 Spring Boot CommandLineRunner |
+| 数据库 | PostgreSQL |
+| 向量库 | Qdrant，备选 PGVector |
+| ORM / 数据访问 | Spring Data JDBC 或 Spring Data JPA |
+| 文档解析 | Java NIO、commonmark-java、Apache Tika 可选 |
+| 代码解析 | 先用文件和正则级解析，进阶再引入 JavaParser 或 tree-sitter |
+| 日志 | SLF4J + Logback |
+| 测试 | JUnit 5、AssertJ、Testcontainers |
+| 配置和密钥 | Spring Boot Configuration Properties + 环境变量 |
+| 部署 | 本地 Docker Compose，进阶部署到云服务器 |
+
+### 框架选择理由
+
+| 选择 | 理由 |
+| --- | --- |
+| Java 21 | 当前 Java 主流长期支持版本，适合后端工程和企业项目 |
+| Spring Boot 3.x | Java 后端岗位常见基础能力，适合快速做 REST API、配置、测试和部署 |
+| Spring AI 2.x | 与 Spring Boot 集成自然，覆盖 Chat、Embedding、Vector Store、Tool Calling、RAG、Observability、Evaluation |
+| LangChain4j | Java 生态中常见的 LLM 应用框架，适合作为 Spring AI 之外的对照学习 |
+| Qdrant | 独立向量数据库，便于理解向量索引、相似度检索和服务化部署 |
+| PGVector | 如果希望减少组件数量，可以把业务数据和向量数据放在 PostgreSQL 中 |
+
+### 最终项目模块划分
+
+建议最终项目采用下面的包结构：
+
+```text
+com.example.aidevassistant
+├── AiDevAssistantApplication.java
+├── config          # 模型、向量库、密钥、应用配置
+├── document        # 文件扫描、文档解析、chunk 切片
+├── embedding       # embedding 生成和索引写入
+├── retrieval       # 向量检索、关键词检索、rerank 预留
+├── rag             # RAG Prompt、回答生成、来源引用
+├── tool            # listFiles、readFile、searchDocs 等工具
+├── agent           # 简单任务规划、执行、状态和日志
+├── eval            # 评测集、评测执行、结果统计
+├── observability   # 请求日志、token、耗时、trace
+├── security        # 只读权限、路径限制、脱敏、人工确认
+└── web             # REST API 或简单页面接口
+```
+
+### 学习期间依赖选择
+
+| 阶段 | 依赖建议 |
+| --- | --- |
+| 第 5 周 | Spring Boot Web starter、Spring AI 对应模型 starter，版本以官方 BOM/文档为准 |
+| 第 6 周 | Spring AI `DocumentReader`、`TokenTextSplitter`、`VectorStore`，Qdrant 或 PGVector |
+| 第 7 周 | Spring AI Tool Calling，使用 `@Tool` 暴露只读工具 |
+| 第 8 周 | 先手写轻量 Agent，不急着引入复杂 Agent 框架 |
+| 第 10 周 | JUnit 5 + 自定义 Eval Runner，记录 JSON/CSV 结果 |
+| 第 11-12 周 | Docker Compose 启动 Qdrant/PostgreSQL，完善 API、日志和 README |
+
+依赖版本原则：
+
+- Spring Boot、Spring AI 使用官方 BOM 管理版本。
+- 不在学习计划里硬编码依赖版本，真正建项目时再根据当时官方文档锁定。
+- 引入新依赖前执行依赖审计，尤其是 Web、文档解析、向量数据库客户端和 AI SDK。
 
 ### 简历描述模板
 
@@ -185,36 +251,36 @@ AI 犯了什么错：
 
 ### 第 5 周：大模型 API
 
-本周目标：完成一个最小可用的 AI 问答工具。
+本周目标：用 Java + Spring Boot + Spring AI 完成一个最小可用的 AI 问答工具。
 
 | 日期 | 章节 | 具体任务 | 验收 |
 | --- | --- | --- | --- |
-| 周一 | API 结构 | 理解 system/user/assistant messages | 画出一次请求流程 |
-| 周二 | 密钥配置 | 用环境变量配置 API Key | 不把密钥写进代码 |
-| 周三 | CLI 问答 | 写一个命令行问答脚本 | 输入问题能得到回答 |
-| 周四 | 角色约束 | 加 system prompt 固定助手角色 | 回答风格稳定 |
-| 周五 | 流式输出 | 实现 streaming | 能边生成边显示 |
-| 周六 | 错误处理 | 处理超时、限流、空响应 | 有重试或友好错误 |
-| 周日 | 成本记录 | 记录 token、耗时、模型名 | 输出 API 调用模板 |
+| 周一 | Spring Boot 初始化 | 用 Spring Initializr 创建 Java 21 + Maven 项目 | 项目能启动，健康检查可访问 |
+| 周二 | Spring AI 接入 | 引入 Spring AI 模型 starter，配置 API Key | 不把密钥写进代码 |
+| 周三 | Chat API | 写 `ChatController` 或 CLI 问答入口 | 输入问题能得到回答 |
+| 周四 | System Prompt | 用 system prompt 固定助手角色和回答规则 | 回答风格稳定 |
+| 周五 | 流式输出 | 用 Spring MVC/WebFlux 返回 streaming response | 能边生成边显示 |
+| 周六 | 错误处理 | 处理超时、限流、空响应和模型错误 | 有友好错误和日志 |
+| 周日 | 成本记录 | 记录模型名、耗时、token 或近似 token | 输出 Java API 调用模板 |
 
 本周交付物：
 
-- 命令行 AI 问答工具
-- API 调用模板
+- Java/Spring Boot AI 问答工具
+- Spring AI API 调用模板
 - 密钥和错误处理说明
 
 ### 第 6 周：RAG 最小闭环
 
-本周目标：完成一个本地文档问答 Demo。
+本周目标：用 Spring AI 完成一个本地文档问答 Demo。
 
 | 日期 | 章节 | 具体任务 | 验收 |
 | --- | --- | --- | --- |
 | 周一 | RAG 流程 | 理解解析、切片、索引、检索、生成 | 画出 RAG 流程图 |
-| 周二 | 文档准备 | 准备 5-10 个 Markdown 或文本文件 | 有稳定测试资料 |
-| 周三 | 文档切片 | 实现 chunk 生成 | chunk 带文件路径和序号 |
-| 周四 | Embedding | 生成 embedding 并保存 | 能重复加载向量数据 |
-| 周五 | 检索 | 根据问题召回 topK 片段 | 打印召回片段和分数 |
-| 周六 | RAG 回答 | 把召回内容交给模型生成回答 | 回答带来源引用 |
+| 周二 | 文档准备 | 准备 5-10 个 Markdown 或文本文件 | 放入 `data/docs` |
+| 周三 | 文档切片 | 用 Java NIO + Spring AI splitter 生成 chunk | chunk 带文件路径和序号 |
+| 周四 | Embedding | 用 Spring AI EmbeddingModel 生成向量 | 写入 Qdrant 或 PGVector |
+| 周五 | 检索 | 用 Spring AI VectorStore 召回 topK 片段 | 打印召回片段和分数 |
+| 周六 | RAG 回答 | 用 ChatClient 组合检索上下文生成回答 | 回答带来源引用 |
 | 周日 | 检索评估 | 准备 5 条问题检查召回效果 | 记录命中/未命中 |
 
 本周交付物：
@@ -231,16 +297,16 @@ AI 犯了什么错：
 
 ### 第 7 周：工具调用
 
-本周目标：完成一个带工具调用的 AI 助手。
+本周目标：用 Spring AI Tool Calling 完成一个带工具调用的 AI 助手。
 
 | 日期 | 章节 | 具体任务 | 验收 |
 | --- | --- | --- | --- |
 | 周一 | Tool Calling 概念 | 理解模型选择工具、传参、接收结果 | 画出工具调用流程 |
-| 周二 | 工具 schema | 定义 `list_files` 或 `search_docs` 工具 | schema 字段清晰 |
-| 周三 | 工具执行 | 模型根据问题决定是否调用工具 | 至少成功调用 1 个工具 |
-| 周四 | 参数校验 | 处理缺参、错参、异常结果 | 有错误提示 |
-| 周五 | 权限边界 | 限制只读操作，危险操作需确认 | 无法直接删除/覆盖文件 |
-| 周六 | 业务工具 | 增加一个查询类工具，如查配置、查文档 | 支持自然语言查询 |
+| 周二 | 工具定义 | 用 Java 方法和 Spring AI `@Tool` 定义 `listFiles` | 工具描述清晰 |
+| 周三 | 工具执行 | 让模型根据问题调用 Java 工具 | 至少成功调用 1 个工具 |
+| 周四 | 参数校验 | 使用 DTO、校验和异常处理保护工具参数 | 有错误提示 |
+| 周五 | 权限边界 | 限制工具只能访问项目白名单目录 | 无法读取目录外文件 |
+| 周六 | 业务工具 | 增加 `readFile`、`searchDocs` 或 `searchSymbol` | 支持自然语言查询 |
 | 周日 | 安全复盘 | 记录工具风险和防护策略 | 输出权限设计说明 |
 
 本周交付物：
@@ -251,15 +317,15 @@ AI 犯了什么错：
 
 ### 第 8 周：简单 Agent
 
-本周目标：实现一个能规划、执行、记录日志的小 Agent。
+本周目标：用 Java 手写一个能规划、执行、记录日志的小 Agent。
 
 | 日期 | 章节 | 具体任务 | 验收 |
 | --- | --- | --- | --- |
 | 周一 | Agent 流程 | 理解 plan-act-observe | 输出流程图 |
-| 周二 | 任务规划 | 让模型把任务拆成步骤 | 计划可执行 |
-| 周三 | 状态管理 | 记录当前步骤、结果、失败原因 | 有 task state |
-| 周四 | 工具编排 | 让 Agent 调用 2 个工具完成任务 | 能完成小任务 |
-| 周五 | 日志记录 | 记录每一步输入、输出、工具结果 | 可复盘 |
+| 周二 | 任务规划 | 用 ChatClient 让模型把任务拆成步骤 | 计划可执行 |
+| 周三 | 状态管理 | 设计 `AgentTask`、`AgentStep`、`AgentRunLog` | 有 task state |
+| 周四 | 工具编排 | Agent 调用 `listFiles` 和 `readFile` 完成任务 | 能完成小任务 |
+| 周五 | 日志记录 | 用 SLF4J 和结构化对象记录每一步 | 可复盘 |
 | 周六 | 失败控制 | 加最大步数、超时、重试、人工中断 | 不会无限循环 |
 | 周日 | 小项目 | 做一个“自动整理 README 草稿”的 Agent | 输出草稿和执行日志 |
 
@@ -327,11 +393,11 @@ AI 犯了什么错：
 
 | 日期 | 章节 | 具体任务 | 验收 |
 | --- | --- | --- | --- |
-| 周一 | 项目初始化 | 建立项目目录、README 草稿、配置文件 | 项目可运行 |
-| 周二 | 文件扫描 | 实现目录扫描和文件过滤 | 输出文件清单 |
-| 周三 | 切片索引 | 实现 chunk、embedding、索引构建 | 能构建索引 |
-| 周四 | 检索接口 | 实现向量检索，补充关键词检索 | 返回 topK 来源 |
-| 周五 | RAG 问答 | 接入模型回答问题 | 回答带来源引用 |
+| 周一 | 项目初始化 | 建立 Spring Boot 多包结构、README 草稿、配置文件 | 项目可运行 |
+| 周二 | 文件扫描 | 实现 `DocumentScanService` 和文件过滤 | 输出文件清单 |
+| 周三 | 切片索引 | 实现 `DocumentChunker`、embedding、索引构建命令 | 能构建索引 |
+| 周四 | 检索接口 | 实现 `RetrievalService`，支持向量检索和关键词检索 | 返回 topK 来源 |
+| 周五 | RAG 问答 | 实现 `RagService` 和 `/api/chat` | 回答带来源引用 |
 | 周六 | 拒答机制 | 无来源时拒答或提示资料不足 | 不胡编 |
 | 周日 | 基础验收 | 用 10 条问题手工测试 | 记录问题和改进点 |
 
@@ -348,10 +414,10 @@ AI 犯了什么错：
 
 | 日期 | 章节 | 具体任务 | 验收 |
 | --- | --- | --- | --- |
-| 周一 | 工具调用 | 加入 `list_files`、`read_file` 或 `search_symbol` 工具 | 模型能调用工具辅助回答 |
-| 周二 | 日志追踪 | 记录检索、回答、耗时、token | 可以复盘一次回答 |
-| 周三 | Eval 跑通 | 用 20 条问题跑评测 | 输出结果表 |
-| 周四 | 安全治理 | 补充密钥管理、只读权限、脱敏说明 | README 有安全章节 |
+| 周一 | 工具调用 | 加入 `listFiles`、`readFile` 或 `searchSymbol` Java 工具 | 模型能调用工具辅助回答 |
+| 周二 | 日志追踪 | 记录检索、回答、耗时、token、traceId | 可以复盘一次回答 |
+| 周三 | Eval 跑通 | 用 JUnit 或自定义 Eval Runner 跑 20 条问题 | 输出结果表 |
+| 周四 | 安全治理 | 补充密钥管理、只读权限、路径白名单、脱敏说明 | README 有安全章节 |
 | 周五 | 质量优化 | 优化 Prompt、检索参数、拒答规则 | 指标比 baseline 更好 |
 | 周六 | 文档完善 | 写 README、架构图、运行方式、技术取舍 | 新人能跑起来 |
 | 周日 | 最终复盘 | 写项目复盘和简历描述 | 项目完成 |
@@ -382,7 +448,7 @@ AI 犯了什么错：
 用流程图说明：输入问题 -> 检索 -> 工具调用 -> 生成回答 -> 日志 -> 评测。
 
 ## 技术栈
-语言、模型、向量库、框架、部署方式。
+Java 21、Spring Boot 3.x、Spring AI 2.x、Maven、Qdrant 或 PGVector、JUnit 5、Docker Compose。
 
 ## RAG 流程
 文档解析、切片策略、embedding、索引、检索、重排、生成。
@@ -411,10 +477,10 @@ API Key、只读权限、数据脱敏、危险操作确认、提示词注入风�
 | 第 2 周 | AI 代码审查清单、个人 AI 工作流、一次小闭环 |
 | 第 3 周 | AI 修 bug 记录、diff 审查、测试用例 |
 | 第 4 周 | 测试场景表、调用链文档、AI 编程工作流 |
-| 第 5 周 | 命令行 AI 问答工具、API 模板、错误处理说明 |
-| 第 6 周 | 本地文档问答 Demo、RAG 流程图、检索质量记录 |
-| 第 7 周 | 工具调用助手、工具 schema、权限边界说明 |
-| 第 8 周 | 简单 Agent、执行日志、失败控制机制 |
+| 第 5 周 | Java/Spring Boot AI 问答工具、Spring AI API 模板、错误处理说明 |
+| 第 6 周 | Spring AI RAG Demo、RAG 流程图、检索质量记录 |
+| 第 7 周 | Spring AI Tool Calling 助手、工具 schema、权限边界说明 |
+| 第 8 周 | Java 简单 Agent、执行日志、失败控制机制 |
 | 第 9 周 | Coding Agent 实战报告、code review 记录 |
 | 第 10 周 | 20 条 Eval 数据、baseline、优化对比报告 |
 | 第 11 周 | 最终项目基础版、10 条手工测试记录 |
@@ -440,6 +506,10 @@ API Key、只读权限、数据脱敏、危险操作确认、提示词注入风�
 ## 简历展示关键词
 
 - LLM application development
+- Java 21
+- Spring Boot
+- Spring AI
+- LangChain4j
 - Prompt engineering
 - RAG
 - Embedding
@@ -462,6 +532,8 @@ API Key、只读权限、数据脱敏、危险操作确认、提示词注入风�
 
 ## 参考信号
 
+- [Spring AI Reference](https://docs.spring.io/spring-ai/reference/) 显示，Spring AI 已覆盖 Chat、Embedding、Vector Store、Tool Calling、RAG、Observability、Evaluation 和 Spring Boot starters，适合作为 Java AI 应用主线框架。
+- [LangChain4j Documentation](https://docs.langchain4j.dev/) 说明它面向 Java 应用，提供 LLM、Vector Store、Tools、Agents、RAG 以及 Spring Boot 集成，适合作为 Java AI 框架补充。
 - [Stack Overflow 2025 Developer Survey](https://survey.stackoverflow.co/2025/ai) 显示，84% 的开发者已经使用或计划使用 AI 工具，但对 AI 输出准确性的信任仍然不足，说明“会审查和验证 AI 输出”是关键能力。
 - [GitHub Octoverse 2024](https://github.blog/news-insights/octoverse/octoverse-2024/) 显示，生成式 AI 项目数量和贡献量快速增长，Python、Jupyter、AI 项目成为开发者生态的重要增量。
 - [Business Insider 关于 Forward Deployed Engineer 的报道](https://www.businessinsider.com/forward-deployed-engineer-jobs-in-demand-2026-5) 和 [Financial Times 相关报道](https://www.ft.com/content/91002071-7874-4cb7-9245-08ca0571c408) 显示，AI 公司和云厂商正在招聘能把 AI 带进客户业务流程的工程角色。
