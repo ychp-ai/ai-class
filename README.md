@@ -33,6 +33,29 @@ AI 犯了什么错：
 明天要继续：
 ```
 
+## 招聘导向技能地图
+
+根据公开招聘信息、开发者调查和 AI 岗位研究，当前市场更看重“能把 AI 落进业务系统”的工程能力，而不是单纯会使用聊天工具。尤其是 AI 应用工程师、LLM 工程师、AI 产品工程、Forward Deployed Engineer、AI Solutions Engineer 这类岗位，常见要求可以归纳为以下能力。
+
+| 招聘关键词 | 要证明的能力 | 本计划对应训练 |
+| --- | --- | --- |
+| LLM API / 多模型接入 | 能接入 OpenAI、Claude、Gemini、Qwen 等模型，并处理流式输出、错误重试、成本控制 | 第 5 周 |
+| Prompt Engineering | 能把业务需求转成稳定、可复用、可评估的 Prompt | 第 1-2 周、第 10 周 |
+| RAG / 企业知识库 | 能处理私有文档、向量检索、混合检索、引用来源和权限边界 | 第 6 周、第 11-12 周 |
+| Vector Database | 理解 embedding、向量库、索引、召回、重排和检索质量评估 | 第 6 周、第 10 周 |
+| Agent / Tool Calling | 能让模型调用外部 API、数据库、文件系统或业务工具，并控制执行边界 | 第 7-8 周 |
+| AI Coding Agent | 能使用 Codex、Claude Code、Cursor、Copilot 等提升开发效率，并能审查结果 | 第 3-4 周、第 9 周 |
+| Eval / Observability | 能构造测试集，跟踪准确率、幻觉、延迟、成本、trace 和回归 | 第 10 周 |
+| Security / Governance | 能处理数据脱敏、权限控制、提示词注入、人工确认和审计日志 | 第 7-8 周、第 12 周 |
+| Cloud / Deployment | 能把 AI 应用部署成可访问服务，了解环境变量、密钥、日志和监控 | 第 12 周 |
+| Business Communication | 能理解业务场景，拆需求，做演示，写文档，解释技术取舍 | 每周交付物和最终项目 |
+
+求职时建议把最终项目描述成：
+
+```text
+构建了一个面向代码库/企业文档的 AI 知识助手，支持文档解析、向量检索、混合检索、RAG 问答、来源引用、工具调用、评测集、日志追踪和基础权限控制。
+```
+
 ## 第 1-2 周：AI 工具入门
 
 目标：让 AI 成为日常开发助手。
@@ -122,12 +145,12 @@ AI 犯了什么错：
 | 周一 | Embedding 和向量检索 | 理解文本如何变成向量 |
 | 周二 | 准备文档 | 准备 Markdown / PDF / 文本资料 |
 | 周三 | 文档切片 | 实现 chunk 逻辑 |
-| 周四 | 生成 Embedding | 为切片生成向量 |
-| 周五 | 相似度检索 | 根据问题召回相关片段 |
-| 周六 | 检索增强回答 | 把检索结果交给模型回答 |
-| 周日 | 来源引用 | 回答时附带来源片段 |
+| 周四 | 生成 Embedding | 为切片生成向量并写入向量库 |
+| 周五 | 检索与重排 | 实现向量检索，了解 keyword / hybrid search 和 rerank |
+| 周六 | 检索增强回答 | 把检索结果交给模型回答，并避免无依据回答 |
+| 周日 | 来源引用与质量检查 | 回答时附带来源片段，记录召回是否命中 |
 
-交付物：本地文档问答 Demo。
+交付物：本地文档问答 Demo，包含来源引用和 5 条检索质量记录。
 
 ### 第 7 周：工具调用
 
@@ -138,10 +161,10 @@ AI 犯了什么错：
 | 周三 | 模型决策 | 让模型判断是否需要调用工具 |
 | 周四 | 参数错误处理 | 处理缺参、错参、失败响应 |
 | 周五 | 人工确认 | 对危险操作加入确认步骤 |
-| 周六 | 自然语言查数据 | 做一个自然语言查询 Demo |
-| 周日 | 流程复盘 | 总结工具调用流程 |
+| 周六 | 自然语言查数据 | 做一个自然语言查询 Demo，并限制只读权限 |
+| 周日 | 安全复盘 | 总结工具调用流程、权限边界和失败兜底 |
 
-交付物：带工具调用的 AI 助手。
+交付物：带工具调用的 AI 助手，包含工具 schema、只读权限和人工确认。
 
 ## 第 8-10 周：Agent 与工程化
 
@@ -156,10 +179,10 @@ AI 犯了什么错：
 | 周三 | 执行计划 | 让 Agent 生成执行计划 |
 | 周四 | 工具执行 | 让 Agent 调用工具完成任务 |
 | 周五 | 状态记录 | 保存任务状态 |
-| 周六 | 失败重试 | 加入失败重试逻辑 |
-| 周日 | 小 Agent | 做一个自动整理 README 的 Agent |
+| 周六 | 失败重试与边界 | 加入失败重试、最大步数、超时和人工中断 |
+| 周日 | 小 Agent | 做一个自动整理 README 的 Agent，并输出执行日志 |
 
-交付物：简单 Agent。
+交付物：简单 Agent，包含执行计划、工具调用记录、失败重试和日志。
 
 ### 第 9 周：AI Coding Agent
 
@@ -184,10 +207,10 @@ AI 犯了什么错：
 | 周三 | 标准答案 | 记录期望答案 |
 | 周四 | 跑一次回答 | 收集模型回答 |
 | 周五 | 人工标注 | 标注正确、错误、部分正确 |
-| 周六 | Prompt 优化 | 优化 Prompt 后再跑一次 |
-| 周日 | 结果对比 | 对比两次结果并总结 |
+| 周六 | Prompt / 检索优化 | 优化 Prompt、chunk、topK 或 rerank 后再跑一次 |
+| 周日 | 指标对比 | 对比准确率、引用命中、幻觉、延迟和成本 |
 
-交付物：10 条 Eval 数据。
+交付物：10 条 Eval 数据、一次优化前后对比报告。
 
 ## 第 11-12 周：综合项目
 
@@ -200,6 +223,16 @@ AI 犯了什么错：
 - 这个功能的调用链是什么？
 - 修改这里可能影响哪些模块？
 
+招聘导向加分项：
+
+- 支持多文件类型解析
+- 支持向量检索和关键词检索组合
+- 回答必须附带来源引用
+- 支持“无法基于资料回答”的拒答
+- 有 10-20 条评测集
+- 有请求日志、检索日志、模型输出日志
+- 有基础数据脱敏和密钥管理说明
+
 ### 第 11 周：基础版开发
 
 | 日期 | 学习内容 | 练习任务 |
@@ -207,7 +240,7 @@ AI 犯了什么错：
 | 周一 | 项目范围 | 确定支持的文件类型和目录范围 |
 | 周二 | 读取项目文件 | 遍历并读取代码文件 |
 | 周三 | 代码切片 | 对文件内容做切片 |
-| 周四 | 检索能力 | 建立检索逻辑 |
+| 周四 | 检索能力 | 建立向量检索和关键词检索 |
 | 周五 | 模型回答 | 接入模型生成答案 |
 | 周六 | 来源引用 | 回答中附带文件路径和片段 |
 | 周日 | 基础版完成 | 完成最小可用版本 |
@@ -220,13 +253,25 @@ AI 犯了什么错：
 | --- | --- | --- |
 | 周一 | 交互方式 | 增加简单 Web 页面或命令行交互 |
 | 周二 | 错误处理 | 处理空结果、超长文件、请求失败 |
-| 周三 | 日志记录 | 记录问题、检索片段、模型回答 |
+| 周三 | 日志记录 | 记录问题、检索片段、模型回答、耗时和 token |
 | 周四 | 评测问题 | 准备 10 条项目问答 |
 | 周五 | 质量优化 | 优化 Prompt 和检索策略 |
-| 周六 | README | 编写项目说明 |
+| 周六 | README | 编写项目说明、架构图和技术取舍 |
 | 周日 | 总结复盘 | 写一篇学习复盘 |
 
 交付物：完整项目 README 和学习复盘。
+
+最终项目 README 至少包含：
+
+- 项目背景和解决的问题
+- 架构图或流程图
+- 技术栈：模型、向量库、后端、前端或 CLI
+- RAG 流程：解析、切片、索引、检索、重排、生成
+- Agent / Tool Calling 设计
+- Eval 结果表
+- 安全设计：密钥、权限、脱敏、人工确认
+- 本地运行方式
+- 已知限制和下一步计划
 
 ## 每周交付物总览
 
@@ -238,10 +283,10 @@ AI 犯了什么错：
 | 第 4 周 | 个人 AI 编程工作流 |
 | 第 5 周 | 命令行 AI 问答工具 |
 | 第 6 周 | 本地文档问答 Demo |
-| 第 7 周 | 带工具调用的 AI 助手 |
-| 第 8 周 | 简单 Agent |
+| 第 7 周 | 带工具调用和权限边界的 AI 助手 |
+| 第 8 周 | 带日志和重试机制的简单 Agent |
 | 第 9 周 | 一次 Coding Agent 实战记录 |
-| 第 10 周 | 10 条 Eval 数据 |
+| 第 10 周 | 10 条 Eval 数据和优化前后对比报告 |
 | 第 11 周 | 代码库问答助手基础版 |
 | 第 12 周 | 完整项目 README 和复盘 |
 
@@ -258,6 +303,39 @@ AI 犯了什么错：
 9. Agent 工作流
 10. AI 评估 Eval
 
+## 简历展示关键词
+
+完成计划后，可以在简历或面试中重点呈现这些关键词：
+
+- LLM application development
+- Prompt engineering
+- RAG
+- Embedding
+- Vector database
+- Hybrid search
+- Reranking
+- Function calling / Tool calling
+- AI Agent
+- AI coding agent
+- Eval / LLM evaluation
+- Observability / tracing
+- Prompt injection defense
+- Human-in-the-loop
+- Data privacy / permission control
+- Streaming response
+- Token cost optimization
+- API integration
+- Cloud deployment
+- Technical documentation
+
+## 参考信号
+
+- [Stack Overflow 2025 Developer Survey](https://survey.stackoverflow.co/2025/ai) 显示，84% 的开发者已经使用或计划使用 AI 工具，但对 AI 输出准确性的信任仍然不足，说明“会审查和验证 AI 输出”是关键能力。
+- [GitHub Octoverse 2024](https://github.blog/news-insights/octoverse/octoverse-2024/) 显示，生成式 AI 项目数量和贡献量快速增长，Python、Jupyter、AI 项目成为开发者生态的重要增量。
+- [Business Insider 关于 Forward Deployed Engineer 的报道](https://www.businessinsider.com/forward-deployed-engineer-jobs-in-demand-2026-5) 和 [Financial Times 相关报道](https://www.ft.com/content/91002071-7874-4cb7-9245-08ca0571c408) 显示，AI 公司和云厂商正在招聘能把 AI 带进客户业务流程的工程角色。
+- [Prompt Engineer 岗位研究](https://arxiv.org/abs/2506.00058) 分析了 LinkedIn 上的 AI 岗位，发现单独的 Prompt Engineer 岗位并不多，但 AI 知识、Prompt 设计、沟通和创造性解决问题能力正在扩散到更多软件岗位中。
+- [RAG 介绍](https://en.wikipedia.org/wiki/Retrieval-augmented_generation) 和 [AI Agent 介绍](https://en.wikipedia.org/wiki/AI_agent) 可作为概念补充阅读，帮助理解招聘描述中常见的 RAG、Agent、tool use、memory、evaluation 等关键词。
+
 ## 学习原则
 
 - 每天都要有一个小产出
@@ -265,3 +343,4 @@ AI 犯了什么错：
 - 不盲信 AI 代码，必须看 diff、跑测试、查边界
 - 把好用的 Prompt 和踩坑记录沉淀下来
 - 学习重点放在工程实践，而不是一开始钻进模型训练细节
+- 每个项目都要能回答三个问题：解决什么业务问题、怎么验证效果、如何控制风险
