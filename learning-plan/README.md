@@ -137,4 +137,4 @@ PostgreSQL / Vector Store / Object Storage / Sandbox
 
 相关官方资料：[LangGraph Persistence](https://docs.langchain.com/oss/python/langgraph/persistence)、[Spring AI Observability](https://docs.spring.io/spring-ai/reference/observability/index.html)、[MCP Authorization](https://modelcontextprotocol.io/specification/2025-06-18/basic/authorization)、[Claude Agent SDK](https://code.claude.com/docs/en/agent-sdk/overview)。
 
-每天执行方式见[学习方法与建议](00-learning-method.md)，每周提交前检查[成果与提交标准](06-deliverable-standards.md)。
+每天执行方式见[学习方法与建议](00-learning-method.md)，讲师监督和掌握度判定见[讲师监督与掌握度评估](07-instructor-supervision.md)，每周提交前检查[成果与提交标准](06-deliverable-standards.md)。

@@ -16,3 +16,16 @@
 - 未审批无写入证据：待填写。
 - 最低标准：失败不返回成功；Java 与 Python 日志可关联。
 - 建议 Commit：`feat: connect java api to approved agent execution workflow`
+
+## 讲师验收
+
+- 结论：未评审
+- 当前掌握等级：未评审
+- 原理理解：未评分
+- 独立实现：未评分
+- 排错诊断：未评分
+- 迁移与取舍：未评分
+- Teach-back：未完成
+- 变体任务：未完成
+- 学习债务：无记录
+- 下次复习时间：未安排

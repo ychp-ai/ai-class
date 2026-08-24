@@ -13,6 +13,8 @@
 | --- | --- |
 | [完整路线总览](learning-plan/README.md) | 32 周路线、能力模型、架构边界和里程碑 |
 | [学习方法与建议](learning-plan/00-learning-method.md) | 每天 1 小时的学习、实践与复盘方式 |
+| [讲师监督与掌握度评估](learning-plan/07-instructor-supervision.md) | 每日监督、提示阶梯、评分、阶段考试和动态调整 |
+| [Hermes 进度识别入口](prompts/progress-detection.md) | 确定性扫描器与 FAST、REVIEW、FULL 低 Token 路由 |
 | [阶段一：AI 原理、工具与工程协作](learning-plan/stages/01-ai-tools-and-engineering.md) | 第 1–4 周：LLM 原理、原生 API、Prompt 和 AI 编程协作 |
 | [阶段二：Java LLM、RAG 与 Agent](learning-plan/stages/02-java-llm-rag-agent.md) | 第 5–8 周：Spring AI、RAG、Tool Calling 和 Agent 循环 |
 | [阶段三：LangChain 与 LangGraph](learning-plan/stages/03-langchain-langgraph.md) | 第 9–11 周：结构化 Agent、状态和可恢复工作流 |
@@ -23,7 +25,7 @@
 | [阶段八：业务场景与流程设计](learning-plan/stages/08-business-scenario-process.md) | 第 25–28 周：调研、AS-IS/TO-BE、价值评估和接入设计 |
 | [阶段九：试点上线与最终交付](learning-plan/stages/09-pilot-production-capstone.md) | 第 29–32 周：系统接入、试点、生产硬化和效果复盘 |
 | [成果与提交标准](learning-plan/06-deliverable-standards.md) | 每周提交、阶段出口、平台和业务验收标准 |
-| [Agent 协作规范](AGENTS.md) | 仓库目录、工程质量、安全和业务落地约束 |
+| [Agent 协作规范](AGENTS.md) | 仓库目录、讲师监督、工程质量、安全和业务落地约束 |
 
 ## 成果目录导航
 
@@ -39,6 +41,7 @@
 | [python-agent](python-agent/README.md) | Agent 运行时、LangGraph 和 Claude Agent Worker |
 | [platform-console](platform-console/README.md) | 最小管理控制台和交互原型 |
 | [infra](infra/README.md) | 本地环境、部署、监控和运行手册 |
+| [scripts](scripts/README.md) | 确定性进度扫描和低 Token 自动化辅助工具 |
 | [sandbox-workspaces](sandbox-workspaces/README.md) | Agent 隔离执行工作区 |
 
 ## 目标平台边界
