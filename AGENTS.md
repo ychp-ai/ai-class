@@ -1,0 +1,242 @@
+# AGENTS.md
+
+## 适用范围
+
+本文件适用于整个仓库。除非子目录存在更具体的 `AGENTS.md`，否则所有自动化 Agent、Coding Agent 和协作者都必须遵守本文要求。
+
+## 仓库目标
+
+本仓库是一套 32 周、每天约 1 小时的 AI 平台工程与业务落地学习仓库，面向具有后端开发基础的学习者。
+
+最终需要同时完成：
+
+1. 独立建设一个技术型 AI 平台 MVP，具备基础 Agent 管理、模型网关、Tool/MCP、知识库、工作流编排、运行中心、权限审批、评测、可观测性和运维能力。
+2. 独立完成一个真实或高保真业务场景的调研、AS-IS/TO-BE 流程设计、系统接入、UAT、试点、上线准备和效果复盘。
+
+最终成果不是框架示例集合，也不是万能聊天 Demo，而是可运行、可测试、可评测、可审计、可回滚且能说明业务价值的 `AI Agent Platform + Business Case`。
+
+## 必修技术路线
+
+以下能力均为必修，不得因平台重构而删除或降级为只读文档：
+
+```text
+LLM 原理与原生 API
+→ Java 21 / Spring Boot / Spring AI
+→ RAG 与 Tool Calling
+→ LangChain
+→ LangGraph
+→ Claude Agent SDK
+→ AI 平台控制面与执行面
+→ 工作流、治理、Eval 与运维
+→ 业务场景、流程优化、接入与试点
+```
+
+技术职责默认如下：
+
+- Spring AI：Java 模型接入、RAG、业务工具、模型网关和平台控制面集成。
+- LangChain：模型、Retriever、Tool 和结构化 Agent 抽象。
+- LangGraph：状态工作流、Checkpoint、持久执行、人工审批和恢复。
+- Claude Agent SDK：隔离环境内的文件、代码、Shell、测试和开放式执行任务。
+
+不得让某一框架承担业务权限系统、租户隔离、Secret 管理或完整生产安全边界。
+
+## 开始任务前必读
+
+根据任务类型阅读最少必要文档：
+
+- 仓库方向与导航：`README.md`
+- 32 周路线与平台边界：`learning-plan/README.md`
+- 学习方法：`learning-plan/00-learning-method.md`
+- 当前阶段：`learning-plan/stages/` 下对应文档
+- 成果门禁：`learning-plan/06-deliverable-standards.md`
+- 当周状态：`deliverables/week-XX/README.md`
+- 业务任务：目标案例目录下的 Scene Brief、AS-IS/TO-BE 和接入设计
+
+不要在未确认当前周目标、平台边界和业务上下文时增加框架、基础设施或大范围功能。
+
+## 目录职责
+
+| 目录 | 职责 | 不应存放 |
+| --- | --- | --- |
+| `learning-plan/` | 总路线、每日计划、学习建议和验收规范 | 源码和运行日志 |
+| `deliverables/` | 第 1–32 周成果链接、状态和证据 | 重复源码和大体积产物 |
+| `notes/` | 周复盘、实验和排错过程 | 正式架构和业务方案 |
+| `prompts/` | 带版本、经过评测的 Prompt | 临时聊天、密钥和敏感上下文 |
+| `docs/` | 平台架构、协议、工作流、Eval、安全和运维设计 | 业务访谈流水账 |
+| `business-cases/` | 场景调研、流程、接入、试点和效果复盘 | 平台源码和生产敏感数据 |
+| `data/docs/` | 可安全提交的 RAG 资料 | 未授权内部资料和索引文件 |
+| `data/eval/` | 固定数据集、评分规则和脱敏结果 | 为提高分数而临时删改的样例 |
+| `java-service/` | Java 控制面、平台 API、模型/RAG 和业务接入层 | Python Agent Runtime |
+| `python-agent/` | LangChain、LangGraph、Claude Agent SDK 执行面 | Java 控制面实现 |
+| `platform-console/` | Agent、Workflow、Run 和 Eval 的最小管理界面 | 服务端权限判断和长期凭证 |
+| `infra/` | 本地部署、观测、压测、Runbook 和恢复资料 | 业务源码、真实 Secret 和生产数据 |
+| `sandbox-workspaces/` | 无敏感信息的 Agent 隔离练习项目 | 真实工作仓库、主目录和生产资料 |
+| `sandbox-workspaces/runtime/` | 可丢弃的运行副本和临时产物 | 长期成果和唯一数据副本 |
+
+新增目录必须提供 README，说明用途、预期内容、禁止内容、输入输出和与其他目录的边界。
+
+## 学习计划维护规则
+
+- 根 README 只保留目标、导航、平台边界和最终交付简介。
+- 每个阶段文档必须包含每日计划、每天学习建议、每天验收、周提交和阶段出口。
+- 每日表格保持四列：`日期`、`学习任务`、`当天学习建议`、`当天验收`。
+- 调整周次时同步修改总览、阶段索引、成果标准和对应 `deliverables/week-XX/`。
+- Spring AI、LangChain、LangGraph 和 Claude Agent SDK 必须各自保留独立学习成果与平台集成成果。
+- 技术/API 说明修改前核对当前官方文档，记录重要版本差异。
+- 不以赶进度为由跳过失败案例、测试、安全或阶段出口条件。
+
+## 原理与框架学习规则
+
+- 引入高层框架前，至少完成一次原生模型调用、流式事件解析、结构化输出和手写 Tool Loop。
+- 学习框架时必须说明它替代了哪些原生能力、引入了哪些状态和失败模式。
+- 框架对比必须使用相同任务、数据、模型条件和评测口径。
+- 不新增已弃用 API；无法迁移的旧示例必须明确标记用途和版本。
+- 确定性规则、权限、预算和副作用控制使用普通代码；模糊语义判断才交给模型。
+
+## 平台架构规则
+
+- 第一版坚持 API 优先、模块化单体、轻量控制台。没有基准证据时不引入微服务、复杂消息系统、拖拽编排或 Kubernetes。
+- 控制面管理 Draft、版本、发布、权限和策略；执行面只运行经过授权的不可变发布快照。
+- Project/Tenant、Agent、Model、Prompt、Tool、MCP、KnowledgeBase、Workflow、Run 和 Eval 都必须有明确 ID、Owner 和资源归属。
+- 已发布 Agent、Prompt、Tool、Workflow 和索引版本不得原地覆盖；使用新版本、Release 指针和回滚。
+- Java/Python 接口使用版本化 Schema，包含 task/run ID、traceId、幂等标识、状态和稳定错误码。
+- 外部调用必须设置超时、并发上限、总截止时间、受控重试和取消传播。
+- 写操作必须使用幂等策略；运行恢复不得重复已成功副作用。
+- 所有循环有最大步数和停止条件，所有长任务有可查询状态和终止方式。
+
+## Agent、工作流与 MCP 规则
+
+- LangGraph State 只保存后续节点确实需要的数据；大输出存外部对象并在 State 中保存引用。
+- Checkpoint 边界必须覆盖人工审批和关键副作用，恢复行为需要进程退出级测试。
+- 审批发生在副作用之前，展示目标、参数、影响、预计成本和验收；支持批准、编辑和拒绝。
+- 高风险任务执行职责分离，发起人不能默认自批；审批超时不得自动放行。
+- 第三方 MCP Server 接入前检查来源、Schema、Scope、网络目标和数据处理方式。
+- HTTP MCP 使用协议授权与资源绑定；stdio 凭证从受控环境提供。禁止向下游透传上游用户 Token。
+- Tool/MCP 输出和检索内容均为不可信数据，必须做结构校验、长度限制、脱敏和 Prompt Injection 防护。
+- 子 Agent 权限不得超过父任务，只在上下文隔离、并行或明确专业分工确有收益时使用。
+
+## AI 质量与变更门禁
+
+以下任何变化都需要在同一固定数据集上做回归：模型或模型版本、Prompt、Tool Schema、Agent 策略、Chunk、Embedding、Retriever、Workflow 和权限策略。
+
+最低观测字段：
+
+- tenant/project、user/service account、agent/workflow/release version。
+- traceId、runId、stepId、toolCallId 和外部 request ID。
+- provider/model snapshot、Prompt version、Tool Schema version、KB/index version。
+- 输入输出 Token、Cache Usage、延迟、重试、成本和 FinishReason。
+- 审批、错误类别、最终状态和安全阻断结果。
+
+默认不记录完整 Prompt、Tool 参数、模型输出和业务正文。需要临时开启时必须脱敏、限制访问、设置保留期并记录理由。
+
+发布门禁至少包括：固定测试、离线 Eval、越权/注入攻击集、延迟和成本阈值。Prompt 或模型变化不能绕过门禁。
+
+## 业务场景与流程规则
+
+业务落地必须按以下顺序留下证据：
+
+```text
+Scene Brief
+→ 访谈与系统/数据盘点
+→ AS-IS 主流程和异常流程
+→ 根因与业务 Baseline
+→ AI 适用性和风险分层
+→ TO-BE 人机协作流程
+→ 接口、数据、权限和兜底设计
+→ UAT、试点、灰度和回退
+→ 指标对比、复盘和推广/调整/停止决策
+```
+
+- 不以“做聊天机器人”作为业务目标；必须明确业务 Owner、用户、决策和量化指标。
+- 先优化流程，再决定 Agent 节点；不得把低效流程原样自动化。
+- AS-IS 必须覆盖等待、交接、退回、缺数、超时和紧急处理等异常。
+- 明确区分事实、假设、建议和未验证项。模拟案例不得冒充真实业务收益。
+- 确定性规则由代码或规则引擎执行；模型负责非确定性任务；高风险决策保留人工责任。
+- 每个 TO-BE 流程都要有无答案、低质量、系统不可用、权限不足和人工拒绝的降级路径。
+- 接入契约使用业务语义，不向业务系统泄露内部 Prompt、模型供应商和自由文本异常。
+- 试点必须定义范围、版本、人群、指标、人工值守、停止条件和回退方案。
+- 最终报告同时呈现收益、成本、失败、风险和适用边界，允许作出 No-Go 或停止决策。
+
+## Java 代码约定
+
+- 使用 Java 21、Maven、Spring Boot 3.x 和当前官方 Spring AI BOM。
+- 包结构按业务能力划分，Controller 不承载模型、检索、工作流和权限核心逻辑。
+- API DTO、领域对象、持久化对象和外部 Provider DTO 分离；输入必须校验。
+- Tool 可脱离 LLM 独立测试；权限校验位于执行路径而非只在 Controller。
+- 并发更新使用版本号或 ETag；数据库变更使用可追踪迁移。
+- 测试优先 JUnit 5、AssertJ；真实基础设施再使用 Testcontainers。
+- 异常响应稳定、脱敏，不暴露堆栈、绝对路径和凭证。
+
+## Python 代码约定
+
+- 使用 Python 3.11+；新代码使用类型标注，结构化输入输出优先 Pydantic。
+- LangChain 使用当前官方接口；LangGraph 节点、路由和状态转换可独立测试。
+- 异步、流式和工具调用不得以阻塞等待伪装异步控制。
+- Claude Agent SDK 默认最小工具集，不使用全权限模式掩盖权限设计。
+- 执行面不得自行提升权限或修改发布快照。
+- 测试使用 pytest；核心测试使用 Fake/Stub，真实模型测试单独标记。
+
+## 管理控制台规则
+
+- 控制台只调用服务端 API，不复制权限和状态机真相。
+- 至少覆盖 Agent、Workflow、Run、审批、Eval 和发布状态；不优先开发拖拽画布。
+- 高风险操作显示资源、版本、影响和确认信息；失败状态不可显示为成功。
+- 浏览器不存储长期模型凭证或业务系统 Token。
+
+## 数据、密钥与安全
+
+- API Key、Cookie、Token、密码、私钥、客户数据和生产导出不得写入仓库。
+- Secret 仅通过环境变量、未跟踪 `.env` 或 Secret Manager 引用提供。
+- RAG 和 Eval 数据必须自建、公开授权或脱敏；数据集发布后不得为提分删除困难样例。
+- 用户输入、检索文档、网页内容、模型输出和 Tool/MCP 返回均视为不可信数据。
+- 默认只读；Edit、Shell、网络和外部系统写操作必须有授权、代码校验和审计。
+- Claude Agent 只能在 `sandbox-workspaces/` 或明确隔离副本运行，不接触主目录和真实工作仓库。
+- 日志只提交脱敏摘要和必要失败样例，大体积原始日志放入忽略目录并设置保留期。
+
+## 验证与 CI 门禁
+
+文档和目录修改至少运行：
+
+```bash
+git diff --check
+rg --files
+git status --short
+```
+
+Java 模块存在后按模块 README 执行测试、格式/静态检查和依赖安全检查；常见测试入口：
+
+```bash
+./mvnw test
+```
+
+Python 模块存在后按 README 执行：
+
+```bash
+pytest
+ruff check .
+mypy src
+```
+
+管理端存在后执行其 README 中的 lint、类型检查、单元测试和构建命令。平台稳定后将上述检查、Eval、安全攻击集和契约测试接入 CI。
+
+不要声称测试、评测、压测、恢复或业务收益已经验证，除非实际运行并保存证据。外部服务不可用时使用 Stub/Fake，并明确未验证范围。
+
+## Git 与文档规范
+
+- 使用 Conventional Commits，一个 Commit 表达一个主要意图。
+- 不擅自提交、推送、创建分支或改写历史，除非用户明确要求。
+- 不修改或删除与当前任务无关的用户变更。
+- 正式文档使用简体中文，标识符和 API 名保留英文。
+- 架构图、流程图、状态图和接口示例必须与当前实现一致。
+- 不在多个文件复制大段内容；选择权威文档，其他位置使用相对链接。
+
+## 完成定义
+
+任务完成时必须说明：
+
+- 修改了哪些文件和职责边界。
+- 产生了什么代码、文档、数据或业务证据。
+- 实际运行了哪些测试、Eval、检查或人工验收。
+- 哪些内容尚未验证、有哪些限制和下一步。
+
+平台能力完成不能仅以接口存在为标准，还必须有版本、权限、失败、观测和恢复证据。业务落地完成不能仅以上线或演示为标准，还必须有 AS-IS/TO-BE、Baseline、试点数据和最终决策。

@@ -1,0 +1,131 @@
+# 成果与提交标准
+
+本文件定义第 1–32 周通用成果标准。阶段文档决定“本周做什么”，本文件决定“什么证据才算完成”。
+
+## 每周完成定义
+
+每周成果必须同时满足：
+
+- 有可运行代码、可检查文档、固定数据或可复现实验。
+- `deliverables/week-XX/README.md` 链接真实成果，不复制源码。
+- 记录实际运行或人工验收命令、日期和结果摘要。
+- 至少保留一个失败、边界、安全或降级案例。
+- 说明已经实现、尚未实现和已知限制。
+- 不包含真实密钥、生产数据、客户身份信息和未脱敏日志。
+
+只阅读文档、只保存截图、只让模型生成代码但未运行，均不算完成。
+
+## 每周成果 README 必填项
+
+```markdown
+# Week XX 成果
+
+- 状态：未开始 / 进行中 / 已完成 / 阻塞
+- 本周目标：
+- 关联阶段：
+
+## 成果链接
+
+## 验证记录
+
+## 失败、边界或安全案例
+
+## 关键取舍
+
+## 未完成和风险
+
+## 下周输入
+```
+
+状态改为“已完成”前，成果链接和验证记录不得为空。
+
+## 四类成果门禁
+
+### 原理与框架成果
+
+- 必须包含一个原生或最小实现，说明框架隐藏的行为。
+- Spring AI、LangChain、LangGraph、Claude Agent SDK 均必须有独立可运行成果。
+- 框架对比基于同一数据、任务和指标，不基于产品宣传。
+- 版本、模型、Prompt 和参数有记录。
+
+### 平台能力成果
+
+- 有 API/Schema、状态模型、权限模型、代码、测试和运行证据。
+- 配置、Agent、Workflow、Tool、Prompt、KB 索引必须版本化。
+- 控制面和执行面职责清晰，运行绑定不可变发布快照。
+- 至少覆盖成功、校验失败、越权、依赖失败和恢复/回滚。
+- 有 Trace、延迟、Token、成本和错误分类。
+
+### 业务落地成果
+
+- 目标、Owner、用户和业务指标明确。
+- 同时包含 AS-IS 主流程、异常流程、根因和 TO-BE 流程。
+- 结论区分事实、假设和建议；关键假设有验证计划。
+- 包含数据、接口、权限、人工兜底、试点、回退和运维设计。
+- 最终结论基于 Baseline 与试点数据，允许得出停止或调整结论。
+
+### 生产交付成果
+
+- 干净环境可以按文档启动。
+- 固定测试集、Eval、安全攻击集和压测可以重复执行。
+- 关键告警有 Runbook；备份、恢复和版本回滚实际演练。
+- 发布门禁覆盖功能、质量、安全、成本和业务指标。
+- 已知限制、适用边界和残余风险公开记录。
+
+## 32 周成果索引
+
+| 周次 | 主题 | 核心成果 |
+| --- | --- | --- |
+| 1 | LLM 工程基础 | Token/Embedding/采样/幻觉实验与心智模型 |
+| 2 | 原生模型 API | 流式调用、结构化输出、手写 Tool Loop 和故障测试 |
+| 3 | Prompt 与 AI 编程 | Prompt 版本、回归集和测试驱动代码改动 |
+| 4 | 测试与架构表达 | Fake Model、错误契约、架构图和可复现服务 |
+| 5 | Spring AI Chat | Java Chat API、流式输出、配置和测试 |
+| 6 | Spring AI RAG | 文档摄取、检索、引用、拒答和基础评测 |
+| 7 | Spring AI Tool | 三个工具、参数验证、权限和审计 |
+| 8 | 手写 Java Agent | 规划—工具—观察循环、停止条件和失败处理 |
+| 9 | LangChain Agent | 类型化工具、结构化输出、异步和测试 |
+| 10 | LangChain RAG | RAG Agent 与 Spring AI 同数据对比 |
+| 11 | LangGraph Workflow | 状态、Checkpoint、审批、拒绝与恢复 |
+| 12 | Claude Agent SDK | 隔离目录中的代码分析、修改和测试闭环 |
+| 13 | Claude 安全能力 | 权限、Hooks、MCP、子 Agent 和沙箱设计 |
+| 14 | Java/Python 组合 | 版本化协议、风险路由和端到端调用 |
+| 15 | Eval 与 Trace | 固定数据集、Baseline、失败分析和跨服务观测 |
+| 16 | 首个 AI 应用 | 可复现的知识与研发助手发布包 |
+| 17 | 平台架构 | 用例、领域模型、控制面/执行面、ADR 和骨架 |
+| 18 | Agent Registry | Draft、Version、Publish、Rollback 和项目隔离 |
+| 19 | Model Gateway | Provider、本地模型、路由、配额、Fallback 和成本基准 |
+| 20 | Tool/MCP/KB | 工具、MCP、上下文预算、进阶检索、索引版本和 ACL |
+| 21 | Workflow Definition | DSL、静态校验、版本和 LangGraph 编译 |
+| 22 | Durable Runtime | Run 状态机、Checkpoint、幂等、取消和故障注入 |
+| 23 | Governance & Security | RBAC、审批、审计和攻击测试 |
+| 24 | Eval & Operations | 发布门禁、SLO、压测、告警和恢复演练 |
+| 25 | 场景发现 | 场景评分、访谈、系统数据盘点和业务 Baseline |
+| 26 | AS-IS | 主/异常流程、根因、决策和约束矩阵 |
+| 27 | TO-BE | 人机流程、风险分层、指标树和 ROI/TCO |
+| 28 | 接入设计 | 契约、数据权限、测试、试点和回退计划 |
+| 29 | 系统集成 | Connector、身份传播、幂等和端到端联调 |
+| 30 | UAT 与试点 | UAT、试点指标、用户反馈和流程效果对比 |
+| 31 | 生产硬化 | 压测、安全、恢复、Runbook 和发布评审 |
+| 32 | 最终发布 | 平台发布包、业务案例、运营复盘和能力答辩 |
+
+## 阶段出口规则
+
+阶段出口只能使用“通过”或“未通过”。任何核心验收缺少运行证据时均为未通过。若外部 API、真实业务系统或生产环境不可用：
+
+1. 使用 Fake、Stub 或沙箱完成本地闭环。
+2. 明确哪些接口或指标尚未在真实环境验证。
+3. 不以模拟结果冒充真实业务收益或生产验证。
+
+## Commit 建议
+
+使用 Conventional Commits，例如：
+
+```text
+feat: add versioned agent registry
+test: add workflow recovery scenarios
+docs: document as-is and to-be business process
+chore: add production readiness checklist
+```
+
+一个 Commit 只表达一个主要意图。每周可以有多个小 Commit，周末成果 README 负责汇总，不要求为了形式强行压成一个提交。
