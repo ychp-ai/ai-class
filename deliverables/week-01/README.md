@@ -4,6 +4,8 @@
 
 ## 应链接的成果
 
+- [ ] AI、机器学习、深度学习、生成式 AI 与 LLM 概念关系图。
+- [ ] 训练、推理、逐 Token 生成和最小 Transformer/Attention 直觉说明。
 - [ ] Tokenizer 中英文与代码对比实验。
 - [ ] Embedding、采样参数和上下文污染实验。
 - [ ] 延迟、Token 与成本的原始记录。
@@ -14,7 +16,7 @@
 - 复现方式：待填写。
 - 模型与参数版本：待填写。
 - 失败案例：待填写。
-- 最低标准：实验可重复，能解释 Token、Embedding、采样和上下文的工程影响。
+- 最低标准：实验可重复；能从 AI 基本分类解释到 LLM 推理，并说明 Token、Embedding、采样和上下文的工程影响。
 - 建议 Commit：`docs: add reproducible llm engineering experiments`
 
 ## 讲师验收

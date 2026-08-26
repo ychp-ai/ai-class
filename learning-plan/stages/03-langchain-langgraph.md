@@ -4,6 +4,26 @@
 
 目标：使用 LangChain 构建结构化 Agent，并使用 LangGraph 实现状态、路由、审批和恢复。
 
+## 开始前应会什么
+
+- 能解释手写 Java Agent 的计划、动作、观察、停止和失败状态。
+- 能阅读函数、集合、异常和单元测试；不要求已有 Python、Pydantic 或异步经验。
+- 能说明确定性路由、权限和副作用控制必须由代码负责。
+
+## 零基础桥接
+
+先用 15–30 分钟完成 `venv → Python 类型标注 → Pydantic 模型校验 → async for` 最小脚本。随后用第 8 周手写 Java Agent 对照 LangChain 的模型、消息、Tool 和 Agent 抽象，再用第 8 周显式状态机对照 LangGraph 的 State、Node、Edge 和 Checkpoint。
+
+## 本阶段不要求什么
+
+- 不要求系统学习全部 Python 语法、LangChain 历史 API 或第三方集成目录。
+- 不要求把所有条件判断交给模型，也不要求用 LangGraph 替代业务数据库。
+- 不要求在本阶段解决操作系统沙箱、多租户平台和生产级消息队列。
+
+## 前测失败处理
+
+若 Python 脚本、虚拟环境或异常处理不能独立运行，先完成一个类型化纯函数及 pytest 练习；若手写 Agent 状态不清楚，先画出三状态循环并为非法转换写测试，再学习 LangChain/LangGraph。
+
 ## 第 9 周：Python 与 LangChain 基础
 
 | 日期 | 学习任务 | 当天学习建议 | 当天验收 |
