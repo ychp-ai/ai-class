@@ -4,6 +4,26 @@
 
 目标：使用 Java 21、Spring Boot 和 Spring AI 完成从模型调用到可控 Agent 的最小闭环。
 
+## 开始前应会什么
+
+- 能解释第 2 周原生模型请求、流式事件、结构化输出和 Tool Loop 的输入输出。
+- 能阅读 Java 方法、DTO 和异常，使用 Maven 运行测试；不要求熟悉完整 Spring 生态。
+- 能说明环境变量、HTTP API 和确定性参数校验为什么不能交给模型。
+
+## 零基础桥接
+
+用 15–30 分钟建立一个只含健康检查和单元测试的 Java 21/Spring Boot 项目，再把原生模型客户端的“请求构造、调用、响应解析、错误处理”逐项映射到 Spring AI 的 ChatClient、结构化输出和 Tool Calling。每引入一个 Spring AI 抽象，都要指出它替代了第 2–4 周的哪段代码。
+
+## 本阶段不要求什么
+
+- 不要求先学完整 Spring Cloud、响应式编程体系或所有 Spring AI Provider。
+- 不要求训练模型、优化向量数据库规模或构建通用 Agent 平台。
+- 不要求记忆 Starter 和 API 历史版本，只使用当前官方接口完成最小闭环。
+
+## 前测失败处理
+
+若 Java/Maven/Spring Boot 基础不足，先完成“健康检查 + DTO 校验 + 一个失败单测”桥接；若无法解释原生 Tool Loop，则回到第 2 周用纸面时序复盘后再引入 `@Tool`。
+
 ## 第 5 周：Spring Boot 与大模型 API
 
 | 日期 | 学习任务 | 当天学习建议 | 当天验收 |

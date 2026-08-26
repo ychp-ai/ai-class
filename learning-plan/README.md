@@ -2,7 +2,7 @@
 
 ## 计划定位
 
-本计划面向具有后端开发经验、希望独立建设 AI 平台并推动业务落地的程序员。每天投入约 1 小时，32 周总计约 224 小时。
+本计划面向具备基础开发能力、但没有 AI、机器学习、LLM、RAG 和 Agent 知识，希望独立建设 AI 平台并推动业务落地的开发者。每天投入约 1 小时，32 周总计约 224 小时。
 
 224 小时可以完成一个可运行、可演示、具备基础生产约束的平台 MVP 和一个业务试点闭环，但不等同于大型企业平台的全部能力。完成后仍需要通过真实流量、多个业务场景和持续运维提升熟练度。
 
@@ -11,12 +11,30 @@
 | 周期 | 32 周 |
 | 日均投入 | 约 1 小时 |
 | 总投入 | 约 224 小时 |
-| 学习比例 | 20% 原理和资料、65% 实践、15% 评测与复盘 |
+| 第 1–4 周学习比例 | 35% 原理和心智模型、50% 实践、15% 评测与复盘 |
+| 第 5–32 周学习比例 | 20% 原理和资料、65% 实践、15% 评测与复盘 |
 | 主技术栈 | Java 21、Spring Boot、Spring AI、PostgreSQL |
 | Agent 运行时 | Python 3.11+、LangChain、LangGraph、Claude Agent SDK |
 | 数据与检索 | PostgreSQL/PGVector 或 Qdrant、对象/文件存储 |
 | 管理端 | API 优先；React/TypeScript 最小控制台可按现有前端基础实现 |
 | 运行与观测 | Docker Compose、OpenTelemetry/Micrometer、结构化日志 |
+
+## 学习者起点
+
+默认已经具备：
+
+- 至少一种主流编程语言的开发和单元测试能力。
+- Git、命令行、IDE、HTTP、JSON、数据库和环境变量基础。
+- 阅读错误日志、缩小问题范围和按 README 运行项目的经验。
+
+不要求预先具备：
+
+- AI、机器学习、深度学习、概率统计或线性代数知识。
+- Token、Embedding、Prompt、RAG、Tool Calling、Agent 或 Eval 心智模型。
+- Spring AI、LangChain、LangGraph、Claude Agent SDK 或 MCP 使用经验。
+- Java 21、Spring Boot 或 Python 异步编程的完整熟练度。
+
+课程对 Java、Spring Boot 和 Python 采用“完成当周任务所需的最小桥接”，不会把通用语言教程塞入 AI 主线。如果 Git、HTTP、测试或基础编程也不熟练，需要在课程外补齐，并相应增加实际投入时间。
 
 ## 最终能力模型
 
@@ -137,4 +155,4 @@ PostgreSQL / Vector Store / Object Storage / Sandbox
 
 相关官方资料：[LangGraph Persistence](https://docs.langchain.com/oss/python/langgraph/persistence)、[Spring AI Observability](https://docs.spring.io/spring-ai/reference/observability/index.html)、[MCP Authorization](https://modelcontextprotocol.io/specification/2025-06-18/basic/authorization)、[Claude Agent SDK](https://code.claude.com/docs/en/agent-sdk/overview)。
 
-每天执行方式见[学习方法与建议](00-learning-method.md)，讲师监督和掌握度判定见[讲师监督与掌握度评估](07-instructor-supervision.md)，每周提交前检查[成果与提交标准](06-deliverable-standards.md)。
+每天执行方式见[学习方法与建议](00-learning-method.md)，讲师监督和掌握度判定见[讲师监督与掌握度评估](07-instructor-supervision.md)，每周提交前检查[成果与提交标准](06-deliverable-standards.md)。本次学习者起点调整的边界和迁移依据见[AI 零基础开发者课程改造设计](08-ai-zero-foundation-curriculum-design.md)。
