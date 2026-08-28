@@ -28,13 +28,13 @@
 
 | 日期 | 学习任务 | 当天学习建议 | 当天验收 |
 | --- | --- | --- | --- |
-| 周一 | 定义 Java/Python API 协议 | 先写 JSON 示例和错误状态，再生成两端模型；协议包含版本、任务 ID 和幂等标识 | 字段、错误码和状态一致 |
-| 周二 | LangChain 分类任务与风险 | 优先使用规则识别明确危险操作，模型只辅助模糊任务；保存分类理由 | 返回结构化风险级别 |
-| 周三 | LangGraph 增加只读、写入、拒绝路径 | 每条路径独立测试，拒绝原因需要可解释且不能被后续节点覆盖 | 三条路径可测试 |
-| 周四 | 执行节点调用 Claude Agent SDK | 首次只开放 Read、Glob、Grep；将 Claude 输出转换为受控 `ExecutionResult` | 完成只读代码分析 |
-| 周五 | 加入写操作审批 | 审批对象应包含文件、计划命令和验收标准；审批前后比较工作区 Hash 或 Git Diff | 未批准不能修改文件 |
-| 周六 | 接通 Java API 和 Python Worker | 只打通一个最小同步请求；传播 `traceId`，暂不引入消息队列等额外复杂度 | 一次端到端请求成功 |
-| 周日 | 处理超时、取消和部分失败 | 分别终止 Java、Python 和模型调用，验证状态与错误映射不出现假成功 | 完成本周提交 |
+| 周一 | 定义 Java/Python API 协议 | 先写 JSON 示例和错误状态，再生成两端模型；协议包含版本、任务 ID 和幂等标识<br>相关资料：[OpenAPI Specification](https://spec.openapis.org/oas/latest.html) | 字段、错误码和状态一致 |
+| 周二 | LangChain 分类任务与风险 | 优先使用规则识别明确危险操作，模型只辅助模糊任务；保存分类理由<br>相关资料：[LangChain Structured Output](https://docs.langchain.com/oss/python/langchain/structured-output) | 返回结构化风险级别 |
+| 周三 | LangGraph 增加只读、写入、拒绝路径 | 每条路径独立测试，拒绝原因需要可解释且不能被后续节点覆盖<br>相关资料：[LangGraph Workflows and Agents](https://docs.langchain.com/oss/python/langgraph/workflows-agents) | 三条路径可测试 |
+| 周四 | 执行节点调用 Claude Agent SDK | 首次只开放 Read、Glob、Grep；将 Claude 输出转换为受控 `ExecutionResult`<br>相关资料：[Claude Agent SDK Overview](https://code.claude.com/docs/en/agent-sdk/overview) | 完成只读代码分析 |
+| 周五 | 加入写操作审批 | 审批对象应包含文件、计划命令和验收标准；审批前后比较工作区 Hash 或 Git Diff<br>相关资料：[LangGraph Interrupts](https://docs.langchain.com/oss/python/langgraph/interrupts) | 未批准不能修改文件 |
+| 周六 | 接通 Java API 和 Python Worker | 只打通一个最小同步请求；传播 `traceId`，暂不引入消息队列等额外复杂度<br>相关资料：[W3C Trace Context](https://www.w3.org/TR/trace-context/) | 一次端到端请求成功 |
+| 周日 | 处理超时、取消和部分失败 | 分别终止 Java、Python 和模型调用，验证状态与错误映射不出现假成功<br>相关资料：[LangGraph Durable Execution](https://docs.langchain.com/oss/python/langgraph/durable-execution) | 完成本周提交 |
 
 建议协议：
 
@@ -73,13 +73,13 @@ class ExecutionResult(BaseModel):
 
 | 日期 | 学习任务 | 当天学习建议 | 当天验收 |
 | --- | --- | --- | --- |
-| 周一 | 定义 RAG 和 Agent 指标 | 每个指标写清计算公式、数据来源和好坏方向，避免“整体感觉不错” | 指标有明确判断方法 |
-| 周二 | 准备 20 条 RAG 问题 | 在看系统结果前先写预期答案与来源；加入无答案和相似干扰问题 | 覆盖事实、路径、总结和拒答 |
-| 周三 | 准备 10 条 Agent 任务 | 每个任务提供初始工作区、允许副作用和机器可执行的验收命令 | 覆盖只读、修改、失败和拒绝 |
-| 周四 | 统一 Trace、日志和成本字段 | 使用同一任务 ID 贯穿服务；日志字段稳定，敏感内容脱敏且大输出截断 | Java/Python 关联同一任务 |
-| 周五 | 跑第一轮 Baseline | 冻结模型、Prompt、数据和参数；保存全部原始结果，包括超时和失败 | 保存完整原始结果 |
-| 周六 | 只调整一个主要变量并复测 | 选择最可能影响失败的变量，记录假设；不要为了提升分数删除困难用例 | 有可解释对照 |
-| 周日 | 分析失败并形成报告 | 按检索、生成、工具、流程、环境分类失败，并给出下一步验证而非空泛结论 | 完成本周提交 |
+| 周一 | 定义 RAG 和 Agent 指标 | 每个指标写清计算公式、数据来源和好坏方向，避免“整体感觉不错”<br>相关资料：[OpenAI Eval 最佳实践](https://platform.openai.com/docs/guides/evaluation-best-practices) | 指标有明确判断方法 |
+| 周二 | 准备 20 条 RAG 问题 | 在看系统结果前先写预期答案与来源；加入无答案和相似干扰问题<br>相关资料：[NIST AI Resource Center](https://airc.nist.gov/) | 覆盖事实、路径、总结和拒答 |
+| 周三 | 准备 10 条 Agent 任务 | 每个任务提供初始工作区、允许副作用和机器可执行的验收命令<br>相关资料：[OpenAI Evals 指南](https://platform.openai.com/docs/guides/evals) | 覆盖只读、修改、失败和拒绝 |
+| 周四 | 统一 Trace、日志和成本字段 | 使用同一任务 ID 贯穿服务；日志字段稳定，敏感内容脱敏且大输出截断<br>相关资料：[OpenTelemetry Semantic Conventions](https://opentelemetry.io/docs/specs/semconv/) | Java/Python 关联同一任务 |
+| 周五 | 跑第一轮 Baseline | 冻结模型、Prompt、数据和参数；保存全部原始结果，包括超时和失败<br>相关资料：[OpenAI Evals 指南](https://platform.openai.com/docs/guides/evals) | 保存完整原始结果 |
+| 周六 | 只调整一个主要变量并复测 | 选择最可能影响失败的变量，记录假设；不要为了提升分数删除困难用例<br>相关资料：[OpenAI Eval 最佳实践](https://platform.openai.com/docs/guides/evaluation-best-practices) | 有可解释对照 |
+| 周日 | 分析失败并形成报告 | 按检索、生成、工具、流程、环境分类失败，并给出下一步验证而非空泛结论<br>相关资料：[NIST 生成式 AI 风险框架](https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.600-1.pdf) | 完成本周提交 |
 
 建议指标：
 
@@ -105,13 +105,13 @@ class ExecutionResult(BaseModel):
 
 | 日期 | 学习任务 | 当天学习建议 | 当天验收 |
 | --- | --- | --- | --- |
-| 周一 | 整理模块、依赖和配置 | 删除废弃实验和重复入口，统一配置命名；检查 Git 历史和当前 Diff 中的敏感信息 | 仓库结构清晰、密钥未入库 |
-| 周二 | Docker Compose 和启动方式 | 从干净环境按文档启动；设置健康检查、持久化说明和明确的停止方式 | 可以启动依赖与服务 |
-| 周三 | 补关键路径自动测试 | 优先覆盖用户主流程、权限拒绝和曾经失败的案例，不追求无意义覆盖率 | 主要场景有回归保护 |
-| 周四 | 完成安全章节和威胁模型 | 按资产、信任边界、攻击路径、防护和残余风险组织，并确保与真实实现一致 | 权限边界与残余风险明确 |
-| 周五 | 完成 README、架构图和示例 | 邀请不了解项目的人按文档尝试，记录所有隐式步骤和过期图示 | 新人可按文档运行 |
-| 周六 | 准备 10 分钟演示 | 预先固定数据和命令，依次展示成功、拒答、审批和危险操作阻断 | 能展示成功、失败和阻断场景 |
-| 周日 | 应用复盘和平台化输入 | 用量化证据描述贡献，明确哪些能力应沉淀为平台、哪些仍属于场景实现 | 完成本周提交 |
+| 周一 | 整理模块、依赖和配置 | 删除废弃实验和重复入口，统一配置命名；检查 Git 历史和当前 Diff 中的敏感信息<br>相关资料：[The Twelve-Factor App：Config](https://12factor.net/config) | 仓库结构清晰、密钥未入库 |
+| 周二 | Docker Compose 和启动方式 | 从干净环境按文档启动；设置健康检查、持久化说明和明确的停止方式<br>相关资料：[Docker Compose](https://docs.docker.com/compose/) | 可以启动依赖与服务 |
+| 周三 | 补关键路径自动测试 | 优先覆盖用户主流程、权限拒绝和曾经失败的案例，不追求无意义覆盖率<br>相关资料：[Martin Fowler：Test Pyramid](https://martinfowler.com/articles/practical-test-pyramid.html) | 主要场景有回归保护 |
+| 周四 | 完成安全章节和威胁模型 | 按资产、信任边界、攻击路径、防护和残余风险组织，并确保与真实实现一致<br>相关资料：[OWASP Threat Modeling](https://owasp.org/www-community/Threat_Modeling) | 权限边界与残余风险明确 |
+| 周五 | 完成 README、架构图和示例 | 邀请不了解项目的人按文档尝试，记录所有隐式步骤和过期图示<br>相关资料：[Diátaxis 文档框架](https://diataxis.fr/) | 新人可按文档运行 |
+| 周六 | 准备 10 分钟演示 | 预先固定数据和命令，依次展示成功、拒答、审批和危险操作阻断<br>相关资料：[Google SRE：Testing for Reliability](https://sre.google/sre-book/testing-reliability/) | 能展示成功、失败和阻断场景 |
+| 周日 | 应用复盘和平台化输入 | 用量化证据描述贡献，明确哪些能力应沉淀为平台、哪些仍属于场景实现<br>相关资料：[成果与提交标准](../06-deliverable-standards.md) | 完成本周提交 |
 
 ### 本周提交
 

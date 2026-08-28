@@ -28,13 +28,13 @@
 
 | 日期 | 学习任务 | 当天学习建议 | 当天验收 |
 | --- | --- | --- | --- |
-| 周一 | 学习虚拟环境、类型标注、异步和环境变量 | 只补本计划需要的 Python；亲手实现一次 `async for`，理解流式 Agent 消息如何消费 | 独立运行异步 Python 脚本 |
-| 周二 | LangChain 模型与消息接口 | 先用最简单模型调用，打印消息对象而不只打印文本；确认当前版本 API | 调用 Claude 或 OpenAI 模型 |
-| 周三 | Pydantic 结构化输出 | 先定义字段约束和错误样例，再让模型生成；测试枚举、空列表和缺失字段 | 返回可校验的 `TaskPlan` |
-| 周四 | 使用 `@tool` 定义工具 | 函数签名和 Docstring 要表达约束；先写纯函数测试，再注册为工具 | 工具可脱离模型单测 |
-| 周五 | 使用 `create_agent` | 准备“必须调用、不得调用、工具失败”三类问题，观察 Agent 停止条件 | Agent 自主决定是否调用工具 |
-| 周六 | 动态 Context、超时和错误处理 | Context 只传依赖和身份信息，不塞进 Prompt；分别模拟模型与工具超时 | 非法输入不会导致进程崩溃 |
-| 周日 | 完成个人任务助手 | 在干净虚拟环境重装并运行，补充一条与手写 Java Agent 的实测差异 | 完成本周提交 |
+| 周一 | 学习虚拟环境、类型标注、异步和环境变量 | 只补本计划需要的 Python；亲手实现一次 `async for`，理解流式 Agent 消息如何消费<br>相关资料：[Python asyncio](https://docs.python.org/3/library/asyncio.html) | 独立运行异步 Python 脚本 |
+| 周二 | LangChain 模型与消息接口 | 先用最简单模型调用，打印消息对象而不只打印文本；确认当前版本 API<br>相关资料：[LangChain Models](https://docs.langchain.com/oss/python/langchain/models) | 调用 Claude 或 OpenAI 模型 |
+| 周三 | Pydantic 结构化输出 | 先定义字段约束和错误样例，再让模型生成；测试枚举、空列表和缺失字段<br>相关资料：[Pydantic Models](https://docs.pydantic.dev/latest/concepts/models/) | 返回可校验的 `TaskPlan` |
+| 周四 | 使用 `@tool` 定义工具 | 函数签名和 Docstring 要表达约束；先写纯函数测试，再注册为工具<br>相关资料：[LangChain Tools](https://docs.langchain.com/oss/python/langchain/tools) | 工具可脱离模型单测 |
+| 周五 | 使用 `create_agent` | 准备“必须调用、不得调用、工具失败”三类问题，观察 Agent 停止条件<br>相关资料：[LangChain Agents](https://docs.langchain.com/oss/python/langchain/agents) | Agent 自主决定是否调用工具 |
+| 周六 | 动态 Context、超时和错误处理 | Context 只传依赖和身份信息，不塞进 Prompt；分别模拟模型与工具超时<br>相关资料：[LangChain Context Engineering](https://docs.langchain.com/oss/python/langchain/context-engineering) | 非法输入不会导致进程崩溃 |
+| 周日 | 完成个人任务助手 | 在干净虚拟环境重装并运行，补充一条与手写 Java Agent 的实测差异<br>相关资料：[成果与提交标准](../06-deliverable-standards.md) | 完成本周提交 |
 
 ### 本周提交
 
@@ -54,13 +54,13 @@
 
 | 日期 | 学习任务 | 当天学习建议 | 当天验收 |
 | --- | --- | --- | --- |
-| 周一 | 加载和切分文档 | 尽量复用第 6 周资料与切片规则；打印元数据确认两个框架语义一致 | Chunk 元数据完整 |
-| 周二 | 复用 Qdrant 或建立实验索引 | 为实验使用独立 Collection 或命名空间，避免覆盖 Spring AI Baseline | 完成语义检索 |
-| 周三 | 将 Retriever 暴露为工具 | 工具返回受控长度的片段与来源；准备无需检索的问题检查误调用 | Agent 自主判断是否检索 |
-| 周四 | 增加受限文件工具 | 复用第 7 周安全用例，不因换成 Python 就降低路径校验标准 | 保持只读和路径限制 |
-| 周五 | 返回结构化引用 | 用 Pydantic 约束答案与引用；程序验证引用是否属于实际召回集合 | 回答关联来源 |
-| 周六 | 对比 Spring AI 与 LangChain | 用同一数据、问题、模型和指标；区分开发体验与回答质量 | 完成职责和 API 对比 |
-| 周日 | 使用相同问题集验证 | 保存完整成功与失败结果，不根据结果临时替换问题；总结选择建议 | 完成本周提交 |
+| 周一 | 加载和切分文档 | 尽量复用第 6 周资料与切片规则；打印元数据确认两个框架语义一致<br>相关资料：[LangChain Text Splitters](https://docs.langchain.com/oss/python/integrations/splitters) | Chunk 元数据完整 |
+| 周二 | 复用 Qdrant 或建立实验索引 | 为实验使用独立 Collection 或命名空间，避免覆盖 Spring AI Baseline<br>相关资料：[Qdrant Collections](https://qdrant.tech/documentation/concepts/collections/) | 完成语义检索 |
+| 周三 | 将 Retriever 暴露为工具 | 工具返回受控长度的片段与来源；准备无需检索的问题检查误调用<br>相关资料：[LangChain Retrieval](https://docs.langchain.com/oss/python/langchain/retrieval) | Agent 自主判断是否检索 |
+| 周四 | 增加受限文件工具 | 复用第 7 周安全用例，不因换成 Python 就降低路径校验标准<br>相关资料：[OWASP Path Traversal](https://owasp.org/www-community/attacks/Path_Traversal) | 保持只读和路径限制 |
+| 周五 | 返回结构化引用 | 用 Pydantic 约束答案与引用；程序验证引用是否属于实际召回集合<br>相关资料：[LangChain Structured Output](https://docs.langchain.com/oss/python/langchain/structured-output) | 回答关联来源 |
+| 周六 | 对比 Spring AI 与 LangChain | 用同一数据、问题、模型和指标；区分开发体验与回答质量<br>相关资料：[LangChain Retrieval](https://docs.langchain.com/oss/python/langchain/retrieval) | 完成职责和 API 对比 |
+| 周日 | 使用相同问题集验证 | 保存完整成功与失败结果，不根据结果临时替换问题；总结选择建议<br>相关资料：[OpenAI Evals 指南](https://platform.openai.com/docs/guides/evals) | 完成本周提交 |
 
 ### 本周提交
 
@@ -79,13 +79,13 @@
 
 | 日期 | 学习任务 | 当天学习建议 | 当天验收 |
 | --- | --- | --- | --- |
-| 周一 | State、Node、Edge | 先用不调用 LLM 的普通函数搭图，理解 State 更新和节点边界后再接模型 | 完成三节点顺序图 |
-| 周二 | 条件边与任务分类 | 明确规则能判断的情况用代码路由，只把模糊语义分类交给模型 | 不同任务进入不同分支 |
-| 周三 | 循环、最大步骤和失败分支 | 在 State 保存显式计数和错误类型，人为构造循环验证停止逻辑 | 异常不会无限循环 |
-| 周四 | Checkpoint 和会话状态 | 使用稳定 thread/session ID；在进程退出后恢复，不能只在同一内存运行中测试 | 中断后可以恢复 |
-| 周五 | Human-in-the-loop | 在副作用前中断；审批信息应展示计划、目标文件、命令和风险 | 写操作前暂停等待审批 |
-| 周六 | 将 LangChain Agent 作为节点 | Agent 节点只负责开放式判断，鉴权、路由和状态转换仍由普通节点控制 | 确定性步骤与 Agent 共存 |
-| 周日 | 完成任务路由工作流 | 运行批准、拒绝、超时、恢复四种情形，并对照状态图检查实际路径 | 完成阶段提交 |
+| 周一 | State、Node、Edge | 先用不调用 LLM 的普通函数搭图，理解 State 更新和节点边界后再接模型<br>相关资料：[LangGraph Graph API](https://docs.langchain.com/oss/python/langgraph/graph-api) | 完成三节点顺序图 |
+| 周二 | 条件边与任务分类 | 明确规则能判断的情况用代码路由，只把模糊语义分类交给模型<br>相关资料：[LangGraph Workflows and Agents](https://docs.langchain.com/oss/python/langgraph/workflows-agents) | 不同任务进入不同分支 |
+| 周三 | 循环、最大步骤和失败分支 | 在 State 保存显式计数和错误类型，人为构造循环验证停止逻辑<br>相关资料：[LangGraph Graph API](https://docs.langchain.com/oss/python/langgraph/graph-api) | 异常不会无限循环 |
+| 周四 | Checkpoint 和会话状态 | 使用稳定 thread/session ID；在进程退出后恢复，不能只在同一内存运行中测试<br>相关资料：[LangGraph Persistence](https://docs.langchain.com/oss/python/langgraph/persistence) | 中断后可以恢复 |
+| 周五 | Human-in-the-loop | 在副作用前中断；审批信息应展示计划、目标文件、命令和风险<br>相关资料：[LangGraph Interrupts](https://docs.langchain.com/oss/python/langgraph/interrupts) | 写操作前暂停等待审批 |
+| 周六 | 将 LangChain Agent 作为节点 | Agent 节点只负责开放式判断，鉴权、路由和状态转换仍由普通节点控制<br>相关资料：[LangGraph Workflows and Agents](https://docs.langchain.com/oss/python/langgraph/workflows-agents) | 确定性步骤与 Agent 共存 |
+| 周日 | 完成任务路由工作流 | 运行批准、拒绝、超时、恢复四种情形，并对照状态图检查实际路径<br>相关资料：[成果与提交标准](../06-deliverable-standards.md) | 完成阶段提交 |
 
 ### 本周提交
 

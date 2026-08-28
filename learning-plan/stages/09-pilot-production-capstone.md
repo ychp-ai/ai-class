@@ -28,13 +28,13 @@
 
 | 日期 | 学习任务 | 当天学习建议 | 当天验收 |
 | --- | --- | --- | --- |
-| 周一 | 建业务 Connector/Adapter | 将业务 DTO 与平台契约隔离；先实现 Stub 和契约测试，再连接真实测试环境 | Connector 契约测试通过 |
-| 周二 | 身份、权限与租户上下文 | 用户、Project、Scope 和审计主体端到端传播；缺失上下文默认拒绝 | 越权和缺失身份测试 |
-| 周三 | 数据读写与幂等 | 读工具和写工具分离；写入前后保存业务 ID、幂等键和结果状态 | 重试不重复创建业务数据 |
-| 周四 | 场景 Agent 与 Workflow 发布 | 从平台发布不可变版本，绑定模型、Prompt、Tool、KB 和 Workflow 版本 | 发布清单可追溯 |
-| 周五 | 正常主流程 E2E | 从业务入口触发到结果回写，全链路传播 traceId；不靠手工改库 | 主流程自动化通过 |
-| 周六 | 异常、超时和人工路径 E2E | 覆盖资料不足、权限不足、工具失败、审批拒绝和取消 | 五类异常不假成功 |
-| 周日 | 联调问题复盘 | 区分契约、数据、权限、模型、流程和环境问题，记录根因和回归用例 | 完成本周提交 |
+| 周一 | 建业务 Connector/Adapter | 将业务 DTO 与平台契约隔离；先实现 Stub 和契约测试，再连接真实测试环境<br>相关资料：[Microsoft Anti-corruption Layer](https://learn.microsoft.com/azure/architecture/patterns/anti-corruption-layer) | Connector 契约测试通过 |
+| 周二 | 身份、权限与租户上下文 | 用户、Project、Scope 和审计主体端到端传播；缺失上下文默认拒绝<br>相关资料：[OAuth 2.0 Security Best Current Practice](https://www.rfc-editor.org/rfc/rfc9700.html) | 越权和缺失身份测试 |
+| 周三 | 数据读写与幂等 | 读工具和写工具分离；写入前后保存业务 ID、幂等键和结果状态<br>相关资料：[RFC 9110：幂等方法](https://www.rfc-editor.org/rfc/rfc9110.html#name-idempotent-methods) | 重试不重复创建业务数据 |
+| 周四 | 场景 Agent 与 Workflow 发布 | 从平台发布不可变版本，绑定模型、Prompt、Tool、KB 和 Workflow 版本<br>相关资料：[Semantic Versioning](https://semver.org/) | 发布清单可追溯 |
+| 周五 | 正常主流程 E2E | 从业务入口触发到结果回写，全链路传播 traceId；不靠手工改库<br>相关资料：[W3C Trace Context](https://www.w3.org/TR/trace-context/) | 主流程自动化通过 |
+| 周六 | 异常、超时和人工路径 E2E | 覆盖资料不足、权限不足、工具失败、审批拒绝和取消<br>相关资料：[Google SRE：Testing for Reliability](https://sre.google/sre-book/testing-reliability/) | 五类异常不假成功 |
+| 周日 | 联调问题复盘 | 区分契约、数据、权限、模型、流程和环境问题，记录根因和回归用例<br>相关资料：[Google SRE：Effective Troubleshooting](https://sre.google/sre-book/effective-troubleshooting/) | 完成本周提交 |
 
 ### 本周提交
 
@@ -48,13 +48,13 @@
 
 | 日期 | 学习任务 | 当天学习建议 | 当天验收 |
 | --- | --- | --- | --- |
-| 周一 | 准备 UAT 数据和脚本 | 从 AS-IS 的真实分布抽取正常、边界和失败案例；脱敏后固定版本 | UAT 数据集和操作脚本 |
-| 周二 | 执行内部 UAT | 观察用户操作路径、理解成本和错误恢复，不只问“好不好用” | 问题按严重度分类 |
-| 周三 | 修复 P0/P1 并回归 | 每个修复先增加回归用例；不要在试点前大范围更换模型或架构 | 关键问题关闭有证据 |
-| 周四 | 小流量或影子试点 | 首选建议模式或影子模式验证准确性；高风险动作继续人工审批 | 试点流量和版本可追踪 |
-| 周五 | 监控业务与 AI 指标 | 同时观察处理时间、返工、采纳率、完成率、越权、延迟和成本 | 日报可从数据生成 |
-| 周六 | 用户反馈与失败分析 | 将反馈映射到流程、知识、模型、工具、界面或培训，不把所有问题归因于 Prompt | 失败分类和优先级 |
-| 周日 | TO-BE 流程验证 | 对比 Baseline，检查流程是否真的减少等待和交接；收益不足则调整或停止 | 完成本周提交 |
+| 周一 | 准备 UAT 数据和脚本 | 从 AS-IS 的真实分布抽取正常、边界和失败案例；脱敏后固定版本<br>相关资料：[GOV.UK Moderated Usability Testing](https://www.gov.uk/service-manual/user-research/using-moderated-usability-testing) | UAT 数据集和操作脚本 |
+| 周二 | 执行内部 UAT | 观察用户操作路径、理解成本和错误恢复，不只问“好不好用”<br>相关资料：[GOV.UK Moderated Usability Testing](https://www.gov.uk/service-manual/user-research/using-moderated-usability-testing) | 问题按严重度分类 |
+| 周三 | 修复 P0/P1 并回归 | 每个修复先增加回归用例；不要在试点前大范围更换模型或架构<br>相关资料：[Google SRE：Testing for Reliability](https://sre.google/sre-book/testing-reliability/) | 关键问题关闭有证据 |
+| 周四 | 小流量或影子试点 | 首选建议模式或影子模式验证准确性；高风险动作继续人工审批<br>相关资料：[GOV.UK Beta Phase](https://www.gov.uk/service-manual/agile-delivery/how-the-beta-phase-works) | 试点流量和版本可追踪 |
+| 周五 | 监控业务与 AI 指标 | 同时观察处理时间、返工、采纳率、完成率、越权、延迟和成本<br>相关资料：[GOV.UK Measuring Success](https://www.gov.uk/service-manual/measuring-success) | 日报可从数据生成 |
+| 周六 | 用户反馈与失败分析 | 将反馈映射到流程、知识、模型、工具、界面或培训，不把所有问题归因于 Prompt<br>相关资料：[GOV.UK Discovery 用户研究](https://www.gov.uk/service-manual/user-research/user-research-in-discovery) | 失败分类和优先级 |
+| 周日 | TO-BE 流程验证 | 对比 Baseline，检查流程是否真的减少等待和交接；收益不足则调整或停止<br>相关资料：[GOV.UK Measuring Success](https://www.gov.uk/service-manual/measuring-success) | 完成本周提交 |
 
 ### 本周提交
 
@@ -68,13 +68,13 @@
 
 | 日期 | 学习任务 | 当天学习建议 | 当天验收 |
 | --- | --- | --- | --- |
-| 周一 | 配置、Secret 与环境隔离 | 开发、测试、生产配置分离；Secret 只用引用；检查日志、Trace 和错误响应泄露 | 密钥扫描和配置审查通过 |
-| 周二 | 容量、限流与降级演练 | 按试点峰值倍数压测；触发模型限流和外部系统慢响应，验证队列和用户提示 | 有容量边界和降级证据 |
-| 周三 | 安全攻击回归 | 运行 Prompt Injection、越权、工具投毒、路径和命令攻击集；新版本不得降低阻断率 | 安全回归报告 |
-| 周四 | 备份、恢复和回滚 | 恢复元数据、Checkpoint 与关键配置；演练 Agent/Workflow 回滚和业务开关 | RTO/RPO 或实测恢复时间 |
-| 周五 | 告警、Runbook 与值守 | 每条告警关联影响、确认方式、止损、恢复和升级联系人；删除无法行动的告警 | 至少三份 Runbook |
-| 周六 | 发布和变更流程 | 建立 Eval、安全、审批、灰度、观察和回滚门禁；Prompt 变更也按版本发布 | 发布 Checklist 可执行 |
-| 周日 | 生产就绪评审 | 逐项审查功能、质量、安全、容量、恢复和业务 Owner；未通过项不得粉饰 | 完成本周提交 |
+| 周一 | 配置、Secret 与环境隔离 | 开发、测试、生产配置分离；Secret 只用引用；检查日志、Trace 和错误响应泄露<br>相关资料：[OWASP Secrets Management](https://cheatsheetseries.owasp.org/cheatsheets/Secrets_Management_Cheat_Sheet.html) | 密钥扫描和配置审查通过 |
+| 周二 | 容量、限流与降级演练 | 按试点峰值倍数压测；触发模型限流和外部系统慢响应，验证队列和用户提示<br>相关资料：[Grafana k6 Documentation](https://grafana.com/docs/k6/latest/) | 有容量边界和降级证据 |
+| 周三 | 安全攻击回归 | 运行 Prompt Injection、越权、工具投毒、路径和命令攻击集；新版本不得降低阻断率<br>相关资料：[OWASP Agentic AI Top 10](https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/) | 安全回归报告 |
+| 周四 | 备份、恢复和回滚 | 恢复元数据、Checkpoint 与关键配置；演练 Agent/Workflow 回滚和业务开关<br>相关资料：[PostgreSQL Backup and Restore](https://www.postgresql.org/docs/current/backup.html) | RTO/RPO 或实测恢复时间 |
+| 周五 | 告警、Runbook 与值守 | 每条告警关联影响、确认方式、止损、恢复和升级联系人；删除无法行动的告警<br>相关资料：[Google SRE：Practical Alerting](https://sre.google/sre-book/practical-alerting/) | 至少三份 Runbook |
+| 周六 | 发布和变更流程 | 建立 Eval、安全、审批、灰度、观察和回滚门禁；Prompt 变更也按版本发布<br>相关资料：[Google SRE：Release Engineering](https://sre.google/sre-book/release-engineering/) | 发布 Checklist 可执行 |
+| 周日 | 生产就绪评审 | 逐项审查功能、质量、安全、容量、恢复和业务 Owner；未通过项不得粉饰<br>相关资料：[Google SRE：Reliable Product Launches](https://sre.google/sre-book/reliable-product-launches/) | 完成本周提交 |
 
 ### 本周提交
 
@@ -88,13 +88,13 @@
 
 | 日期 | 学习任务 | 当天学习建议 | 当天验收 |
 | --- | --- | --- | --- |
-| 周一 | 复核运行和业务数据 | 固定统计区间、样本和口径；区分相关性与因果，不把试点波动都归功于 AI | 最终指标数据包 |
-| 周二 | 计算收益、成本和风险 | 汇总节省时间、返工变化、调用成本、复核成本和事故风险，报告区间而非假精确值 | ROI/TCO 复盘 |
-| 周三 | 决定推广、调整或停止 | 依据预设阈值作决策；推广必须说明适用边界和新增容量/治理需求 | 决策记录和后续路线 |
-| 周四 | 整理平台发布包 | 从干净环境安装、迁移、启动、创建 Agent、发布工作流和运行案例 | 发布包可复现 |
-| 周五 | 完成架构和业务案例文档 | 图和字段必须与当前实现一致；分别写平台设计与业务过程，避免只列框架 | 文档审查无过期描述 |
-| 周六 | 准备最终演示与故障场景 | 依次展示管理、发布、业务触发、审批、恢复、评测、攻击阻断和回滚 | 20 分钟内稳定演示 |
-| 周日 | 能力答辩与学习复盘 | 按原理、实现、取舍、证据、失败、优化和限制回答；列出下一阶段真实流量目标 | 完成最终提交 |
+| 周一 | 复核运行和业务数据 | 固定统计区间、样本和口径；区分相关性与因果，不把试点波动都归功于 AI<br>相关资料：[GOV.UK Measuring Success](https://www.gov.uk/service-manual/measuring-success) | 最终指标数据包 |
+| 周二 | 计算收益、成本和风险 | 汇总节省时间、返工变化、调用成本、复核成本和事故风险，报告区间而非假精确值<br>相关资料：[AWS Well-Architected Cost Optimization](https://docs.aws.amazon.com/wellarchitected/latest/cost-optimization-pillar/welcome.html) | ROI/TCO 复盘 |
+| 周三 | 决定推广、调整或停止 | 依据预设阈值作决策；推广必须说明适用边界和新增容量/治理需求<br>相关资料：[NIST AI Resource Center](https://airc.nist.gov/) | 决策记录和后续路线 |
+| 周四 | 整理平台发布包 | 从干净环境安装、迁移、启动、创建 Agent、发布工作流和运行案例<br>相关资料：[Reproducible Builds](https://reproducible-builds.org/docs/) | 发布包可复现 |
+| 周五 | 完成架构和业务案例文档 | 图和字段必须与当前实现一致；分别写平台设计与业务过程，避免只列框架<br>相关资料：[C4 Model](https://c4model.com/) | 文档审查无过期描述 |
+| 周六 | 准备最终演示与故障场景 | 依次展示管理、发布、业务触发、审批、恢复、评测、攻击阻断和回滚<br>相关资料：[Google SRE：Testing for Reliability](https://sre.google/sre-book/testing-reliability/) | 20 分钟内稳定演示 |
+| 周日 | 能力答辩与学习复盘 | 按原理、实现、取舍、证据、失败、优化和限制回答；列出下一阶段真实流量目标<br>相关资料：[讲师监督与掌握度评估](../07-instructor-supervision.md) | 完成最终提交 |
 
 ### 最终提交
 

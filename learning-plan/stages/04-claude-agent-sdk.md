@@ -28,13 +28,13 @@
 
 | 日期 | 学习任务 | 当天学习建议 | 当天验收 |
 | --- | --- | --- | --- |
-| 周一 | 区分 Agent SDK、Anthropic Client SDK 和 Claude Code | 分别从调用者、Agent 循环、内置工具和部署方式比较，不要只记产品名称 | 写出定位与使用场景 |
-| 周二 | 使用 `query()` 和流式消息 | 打印消息类型、工具事件和最终状态；不要把所有消息直接当最终文本处理 | 打印工具调用和最终结果 |
-| 周三 | 使用 Read、Glob、Grep | 只开放只读工具，要求每个分析结论给出文件路径；观察 Agent 的搜索策略 | 输出有文件证据的代码分析 |
-| 周四 | 在练习目录中使用 Edit | 使用专用 Demo 和版本控制；修改前记录基线 Diff，限制允许文件范围 | 只修改指定文件 |
-| 周五 | 使用 Bash 运行单元测试 | 只允许明确的测试命令；记录工作目录、命令、退出码和截断后的输出 | 保存命令、退出码和结果 |
-| 周六 | Session 恢复和分叉 | 设计两个不同后续方向，验证恢复继续原状态、分叉不污染原会话 | 能继续旧任务并创建分支 |
-| 周日 | 完成自动修复 Agent | 使用“修复前失败、最小修改、修复后通过”闭环，人工审查所有文件变化 | 完成本周提交 |
+| 周一 | 区分 Agent SDK、Anthropic Client SDK 和 Claude Code | 分别从调用者、Agent 循环、内置工具和部署方式比较，不要只记产品名称<br>相关资料：[Claude Agent SDK Overview](https://code.claude.com/docs/en/agent-sdk/overview) | 写出定位与使用场景 |
+| 周二 | 使用 `query()` 和流式消息 | 打印消息类型、工具事件和最终状态；不要把所有消息直接当最终文本处理<br>相关资料：[Claude Agent SDK Streaming](https://code.claude.com/docs/en/agent-sdk/streaming-output) | 打印工具调用和最终结果 |
+| 周三 | 使用 Read、Glob、Grep | 只开放只读工具，要求每个分析结论给出文件路径；观察 Agent 的搜索策略<br>相关资料：[Claude Tools Reference](https://code.claude.com/docs/en/tools-reference) | 输出有文件证据的代码分析 |
+| 周四 | 在练习目录中使用 Edit | 使用专用 Demo 和版本控制；修改前记录基线 Diff，限制允许文件范围<br>相关资料：[Claude Tools Reference](https://code.claude.com/docs/en/tools-reference) | 只修改指定文件 |
+| 周五 | 使用 Bash 运行单元测试 | 只允许明确的测试命令；记录工作目录、命令、退出码和截断后的输出<br>相关资料：[Claude Tools Reference](https://code.claude.com/docs/en/tools-reference) | 保存命令、退出码和结果 |
+| 周六 | Session 恢复和分叉 | 设计两个不同后续方向，验证恢复继续原状态、分叉不污染原会话<br>相关资料：[Claude Agent SDK Sessions](https://code.claude.com/docs/en/agent-sdk/sessions) | 能继续旧任务并创建分支 |
+| 周日 | 完成自动修复 Agent | 使用“修复前失败、最小修改、修复后通过”闭环，人工审查所有文件变化<br>相关资料：[成果与提交标准](../06-deliverable-standards.md) | 完成本周提交 |
 
 ### 本周提交
 
@@ -54,13 +54,13 @@
 
 | 日期 | 学习任务 | 当天学习建议 | 当天验收 |
 | --- | --- | --- | --- |
-| 周一 | `allowed_tools`、`disallowed_tools` 和权限模式 | 从默认只读开始逐项增加权限；对每项权限写出任务理由和风险 | 实现只读 Plan 模式 |
-| 周二 | `canUseTool` 动态审批 | 审批界面展示工具、完整目标、影响范围和原因；分别测试批准与拒绝 | Edit 或 Bash 前可人工决定 |
-| 周三 | PreToolUse Hook | 采用显式规则匹配命令和规范化路径；用危险输入测试，不只测试正常命令 | 拦截危险命令和敏感路径 |
-| 周四 | PostToolUse Hook | 记录关联 ID、工具名、状态、耗时和摘要；对参数与输出做脱敏和长度限制 | 记录工具、参数、结果和耗时 |
-| 周五 | 接入自定义工具或 MCP | 选择天气、文档查询等只读工具；先独立调用验证 Schema，再开放给 Agent | 使用一个外部只读能力 |
-| 周六 | 使用 Subagent 处理测试或审查 | 选择可独立验收的子任务，限制上下文和权限；比较单 Agent 的成本与效果 | 主 Agent 汇总子任务结果 |
-| 周日 | 设计沙箱、网络和凭证隔离 | 画清宿主、容器、工作区、代理和凭证边界，运行至少一个真实阻断测试 | 完成阶段提交 |
+| 周一 | `allowed_tools`、`disallowed_tools` 和权限模式 | 从默认只读开始逐项增加权限；对每项权限写出任务理由和风险<br>相关资料：[Claude Agent SDK Permissions](https://code.claude.com/docs/en/agent-sdk/permissions) | 实现只读 Plan 模式 |
+| 周二 | `canUseTool` 动态审批 | 审批界面展示工具、完整目标、影响范围和原因；分别测试批准与拒绝<br>相关资料：[Claude Agent SDK Permissions](https://code.claude.com/docs/en/agent-sdk/permissions) | Edit 或 Bash 前可人工决定 |
+| 周三 | PreToolUse Hook | 采用显式规则匹配命令和规范化路径；用危险输入测试，不只测试正常命令<br>相关资料：[Claude Agent SDK Hooks](https://code.claude.com/docs/en/agent-sdk/hooks) | 拦截危险命令和敏感路径 |
+| 周四 | PostToolUse Hook | 记录关联 ID、工具名、状态、耗时和摘要；对参数与输出做脱敏和长度限制<br>相关资料：[Claude Agent SDK Hooks](https://code.claude.com/docs/en/agent-sdk/hooks) | 记录工具、参数、结果和耗时 |
+| 周五 | 接入自定义工具或 MCP | 选择天气、文档查询等只读工具；先独立调用验证 Schema，再开放给 Agent<br>相关资料：[Claude Agent SDK MCP](https://code.claude.com/docs/en/agent-sdk/mcp) | 使用一个外部只读能力 |
+| 周六 | 使用 Subagent 处理测试或审查 | 选择可独立验收的子任务，限制上下文和权限；比较单 Agent 的成本与效果<br>相关资料：[Claude Subagents](https://code.claude.com/docs/en/subagents) | 主 Agent 汇总子任务结果 |
+| 周日 | 设计沙箱、网络和凭证隔离 | 画清宿主、容器、工作区、代理和凭证边界，运行至少一个真实阻断测试<br>相关资料：[Claude Agent SDK Secure Deployment](https://code.claude.com/docs/en/agent-sdk/secure-deployment) | 完成阶段提交 |
 
 ### 本周提交
 

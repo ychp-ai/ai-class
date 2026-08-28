@@ -28,13 +28,13 @@
 
 | 日期 | 学习任务 | 当天学习建议 | 当天验收 |
 | --- | --- | --- | --- |
-| 周一 | 初始化 Java 21 + Maven + Spring Boot | 只引入 Web 和基础测试依赖，先保证空项目与健康检查稳定，再增加 AI 依赖 | 健康检查可访问 |
-| 周二 | 引入 Spring AI 模型 Starter | 使用官方 BOM 和当前文档；先配置 `.env.example`，再设置本地环境变量 | API Key 仅来自环境变量 |
-| 周三 | 实现 Chat API 或 CLI | 保持 Controller/CLI 薄，模型调用放在 Service；记录一次原始请求和响应结构 | 完成一次真实模型调用 |
-| 周四 | System Prompt 与结构化输出 | 先定义 Java DTO 和校验规则，再写 Prompt；主动测试字段缺失和类型错误 | 返回值能被 Java 对象解析 |
-| 周五 | 实现流式响应 | 用命令行客户端观察分块，关注断连、首 Token 延迟和流结束信号 | 客户端逐步接收内容 |
-| 周六 | 处理超时、限流、空响应和模型错误 | 使用 Stub 或错误配置稳定复现失败，不要等待真实服务偶然报错 | 有统一异常和日志 |
-| 周日 | 记录耗时、模型和 Token | 把运行、测试、配置和一次失败结果补进周成果，提交前检查密钥 | 完成本周提交 |
+| 周一 | 初始化 Java 21 + Maven + Spring Boot | 只引入 Web 和基础测试依赖，先保证空项目与健康检查稳定，再增加 AI 依赖<br>相关资料：[Spring Boot Reference](https://docs.spring.io/spring-boot/reference/) | 健康检查可访问 |
+| 周二 | 引入 Spring AI 模型 Starter | 使用官方 BOM 和当前文档；先配置 `.env.example`，再设置本地环境变量<br>相关资料：[Spring AI Getting Started](https://docs.spring.io/spring-ai/reference/getting-started.html) | API Key 仅来自环境变量 |
+| 周三 | 实现 Chat API 或 CLI | 保持 Controller/CLI 薄，模型调用放在 Service；记录一次原始请求和响应结构<br>相关资料：[Spring AI ChatClient](https://docs.spring.io/spring-ai/reference/api/chatclient.html) | 完成一次真实模型调用 |
+| 周四 | System Prompt 与结构化输出 | 先定义 Java DTO 和校验规则，再写 Prompt；主动测试字段缺失和类型错误<br>相关资料：[Spring AI Structured Output](https://docs.spring.io/spring-ai/reference/api/structured-output.html) | 返回值能被 Java 对象解析 |
+| 周五 | 实现流式响应 | 用命令行客户端观察分块，关注断连、首 Token 延迟和流结束信号<br>相关资料：[Spring AI ChatClient](https://docs.spring.io/spring-ai/reference/api/chatclient.html) | 客户端逐步接收内容 |
+| 周六 | 处理超时、限流、空响应和模型错误 | 使用 Stub 或错误配置稳定复现失败，不要等待真实服务偶然报错<br>相关资料：[Resilience4j Guide](https://resilience4j.readme.io/docs/getting-started) | 有统一异常和日志 |
+| 周日 | 记录耗时、模型和 Token | 把运行、测试、配置和一次失败结果补进周成果，提交前检查密钥<br>相关资料：[Spring AI Observability](https://docs.spring.io/spring-ai/reference/observability/index.html) | 完成本周提交 |
 
 ### 本周提交
 
@@ -54,13 +54,13 @@
 
 | 日期 | 学习任务 | 当天学习建议 | 当天验收 |
 | --- | --- | --- | --- |
-| 周一 | 理解解析、切片、索引、检索和生成 | 为每一步写清输入输出和可能失败点，区分检索质量与生成质量 | 绘制 RAG 流程图 |
-| 周二 | 准备 5–10 个文档或代码文件 | 选自己能判断答案的资料，提前写 5 个问题和预期来源，避免事后挑题 | 放入 `data/docs` |
-| 周三 | 文档解析与切片 | 先打印 Chunk 人工检查，不要只看数量；保留标题、路径和位置元数据 | Chunk 带路径、位置和序号 |
-| 周四 | 生成 Embedding 并写入 Qdrant | 使用稳定文档 ID，先考虑重建策略；重复执行前后比较记录数 | 能重复构建索引 |
-| 周五 | 实现 TopK 检索 | 暂时不生成答案，只观察召回片段和分数，记录漏召回与干扰项 | 输出片段、来源和分数 |
-| 周六 | 生成带引用回答并加入拒答 | Prompt 明确只能使用上下文；引用由程序关联元数据，不让模型随意编文件名 | 资料不足时不编造 |
-| 周日 | 使用 5 条问题检查召回 | 固定问题、TopK 和模型配置后再测试，失败项完整保存 | 完成本周提交 |
+| 周一 | 理解解析、切片、索引、检索和生成 | 为每一步写清输入输出和可能失败点，区分检索质量与生成质量<br>相关资料：[Spring AI RAG](https://docs.spring.io/spring-ai/reference/api/retrieval-augmented-generation.html) | 绘制 RAG 流程图 |
+| 周二 | 准备 5–10 个文档或代码文件 | 选自己能判断答案的资料，提前写 5 个问题和预期来源，避免事后挑题<br>相关资料：[RAG 资料目录](../../data/docs/README.md) | 放入 `data/docs` |
+| 周三 | 文档解析与切片 | 先打印 Chunk 人工检查，不要只看数量；保留标题、路径和位置元数据<br>相关资料：[Spring AI ETL Pipeline](https://docs.spring.io/spring-ai/reference/api/etl-pipeline.html) | Chunk 带路径、位置和序号 |
+| 周四 | 生成 Embedding 并写入 Qdrant | 使用稳定文档 ID，先考虑重建策略；重复执行前后比较记录数<br>相关资料：[Qdrant Points](https://qdrant.tech/documentation/concepts/points/) | 能重复构建索引 |
+| 周五 | 实现 TopK 检索 | 暂时不生成答案，只观察召回片段和分数，记录漏召回与干扰项<br>相关资料：[Spring AI Vector Databases](https://docs.spring.io/spring-ai/reference/api/vectordbs.html) | 输出片段、来源和分数 |
+| 周六 | 生成带引用回答并加入拒答 | Prompt 明确只能使用上下文；引用由程序关联元数据，不让模型随意编文件名<br>相关资料：[Spring AI RAG](https://docs.spring.io/spring-ai/reference/api/retrieval-augmented-generation.html) | 资料不足时不编造 |
+| 周日 | 使用 5 条问题检查召回 | 固定问题、TopK 和模型配置后再测试，失败项完整保存<br>相关资料：[Stanford IR Book：检索评测](https://nlp.stanford.edu/IR-book/html/htmledition/evaluation-of-ranked-retrieval-results-1.html) | 完成本周提交 |
 
 ### 本周提交
 
@@ -80,13 +80,13 @@
 
 | 日期 | 学习任务 | 当天学习建议 | 当天验收 |
 | --- | --- | --- | --- |
-| 周一 | 理解工具选择、参数生成和结果回传 | 画出模型与应用的责任边界，明确模型只能请求工具，真正执行由代码负责 | 绘制 Tool Calling 流程 |
-| 周二 | 使用 `@Tool` 定义 `listFiles` | 描述工具何时使用和不适用；直接调用 Java 方法完成单元测试后再接模型 | 工具描述和 Schema 清晰 |
-| 周三 | 增加 `readFile` 与 `searchDocs` | 设计问题分别触发三个工具，也准备一个完全不应调用工具的问题 | 模型能选择正确工具 |
-| 周四 | DTO、参数校验和错误处理 | 在工具入口校验，不依赖模型自觉；错误信息要可操作但不暴露内部路径 | 非法输入得到稳定错误 |
-| 周五 | 路径规范化和目录白名单 | 测试 `../`、绝对路径、符号链接和编码变体，比较规范化前后路径 | 无法越界读取 |
-| 周六 | 完成一次多工具任务 | 限制最大工具调用次数，保存每次参数、结果状态和耗时 | 工具顺序和结果可追踪 |
-| 周日 | 威胁建模和安全复盘 | 从资产、入口、攻击方式和防护四方面整理，不把 Prompt 当安全边界 | 完成本周提交 |
+| 周一 | 理解工具选择、参数生成和结果回传 | 画出模型与应用的责任边界，明确模型只能请求工具，真正执行由代码负责<br>相关资料：[Spring AI Tool Calling](https://docs.spring.io/spring-ai/reference/api/tools.html) | 绘制 Tool Calling 流程 |
+| 周二 | 使用 `@Tool` 定义 `listFiles` | 描述工具何时使用和不适用；直接调用 Java 方法完成单元测试后再接模型<br>相关资料：[Spring AI Tool Calling](https://docs.spring.io/spring-ai/reference/api/tools.html) | 工具描述和 Schema 清晰 |
+| 周三 | 增加 `readFile` 与 `searchDocs` | 设计问题分别触发三个工具，也准备一个完全不应调用工具的问题<br>相关资料：[Spring AI Tool Calling](https://docs.spring.io/spring-ai/reference/api/tools.html) | 模型能选择正确工具 |
+| 周四 | DTO、参数校验和错误处理 | 在工具入口校验，不依赖模型自觉；错误信息要可操作但不暴露内部路径<br>相关资料：[Spring AI Schema Validation](https://docs.spring.io/spring-ai/reference/api/structured-output/validation.html) | 非法输入得到稳定错误 |
+| 周五 | 路径规范化和目录白名单 | 测试 `../`、绝对路径、符号链接和编码变体，比较规范化前后路径<br>相关资料：[OWASP Path Traversal](https://owasp.org/www-community/attacks/Path_Traversal) | 无法越界读取 |
+| 周六 | 完成一次多工具任务 | 限制最大工具调用次数，保存每次参数、结果状态和耗时<br>相关资料：[Spring AI Tool Calling](https://docs.spring.io/spring-ai/reference/api/tools.html) | 工具顺序和结果可追踪 |
+| 周日 | 威胁建模和安全复盘 | 从资产、入口、攻击方式和防护四方面整理，不把 Prompt 当安全边界<br>相关资料：[OWASP Threat Modeling](https://owasp.org/www-community/Threat_Modeling) | 完成本周提交 |
 
 ### 本周提交
 
@@ -105,13 +105,13 @@
 
 | 日期 | 学习任务 | 当天学习建议 | 当天验收 |
 | --- | --- | --- | --- |
-| 周一 | 学习 Plan–Act–Observe | 用纸面模拟两轮循环，明确完成、失败和继续三个判断，不急着写代码 | 画出 Agent 循环 |
-| 周二 | 生成结构化任务计划 | 步骤必须包含动作和验收条件；限制步骤数量并测试无法解析的计划 | 计划可被 Java 对象解析 |
-| 周三 | 设计任务、步骤和运行日志对象 | 先定义状态机，避免用多个布尔值组合出矛盾状态；为状态转换写测试 | 状态转换明确 |
-| 周四 | 调用文件与检索工具完成任务 | 只做只读任务，把 Agent 与工具本身的错误分开记录 | 完成只读分析任务 |
-| 周五 | 记录模型、工具、观察和结果 | 日志保存必要摘要和关联 ID，不记录密钥或无限增长的完整上下文 | 可复盘每一步 |
-| 周六 | 最大步数、超时、重试和人工中断 | 人为制造循环与工具失败，验证限制真正生效；重试只针对可恢复错误 | Agent 不会无限循环 |
-| 周日 | 完成 README 整理 Agent | 演示一次成功、一次失败和一次超限，按阶段出口条件自检 | 完成阶段提交 |
+| 周一 | 学习 Plan–Act–Observe | 用纸面模拟两轮循环，明确完成、失败和继续三个判断，不急着写代码<br>相关资料：[ReAct 论文](https://arxiv.org/abs/2210.03629) | 画出 Agent 循环 |
+| 周二 | 生成结构化任务计划 | 步骤必须包含动作和验收条件；限制步骤数量并测试无法解析的计划<br>相关资料：[Spring AI Structured Output](https://docs.spring.io/spring-ai/reference/api/structured-output.html) | 计划可被 Java 对象解析 |
+| 周三 | 设计任务、步骤和运行日志对象 | 先定义状态机，避免用多个布尔值组合出矛盾状态；为状态转换写测试<br>相关资料：[W3C SCXML 状态机规范](https://www.w3.org/TR/scxml/) | 状态转换明确 |
+| 周四 | 调用文件与检索工具完成任务 | 只做只读任务，把 Agent 与工具本身的错误分开记录<br>相关资料：[Spring AI Tool Calling](https://docs.spring.io/spring-ai/reference/api/tools.html) | 完成只读分析任务 |
+| 周五 | 记录模型、工具、观察和结果 | 日志保存必要摘要和关联 ID，不记录密钥或无限增长的完整上下文<br>相关资料：[OpenTelemetry Logs](https://opentelemetry.io/docs/specs/otel/logs/) | 可复盘每一步 |
+| 周六 | 最大步数、超时、重试和人工中断 | 人为制造循环与工具失败，验证限制真正生效；重试只针对可恢复错误<br>相关资料：[Resilience4j Guide](https://resilience4j.readme.io/docs/getting-started) | Agent 不会无限循环 |
+| 周日 | 完成 README 整理 Agent | 演示一次成功、一次失败和一次超限，按阶段出口条件自检<br>相关资料：[成果与提交标准](../06-deliverable-standards.md) | 完成阶段提交 |
 
 ### 本周提交
 

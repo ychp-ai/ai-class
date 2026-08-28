@@ -28,13 +28,13 @@
 
 | 日期 | 学习任务 | 当天学习建议 | 当天验收 |
 | --- | --- | --- | --- |
-| 周一 | 定义 Workflow DSL/Schema | 第一版支持 Agent、Tool、Condition、HumanApproval、End；明确不支持项，不直接做拖拽画布 | Workflow Schema 和示例 |
-| 周二 | 节点输入输出与变量引用 | 每个节点声明 Schema，变量引用在保存时校验；避免依赖自由文本约定 | 错误引用不能发布 |
-| 周三 | 条件、循环和汇聚 | 确定性条件使用表达式或代码；循环必须有计数和截止条件 | 分支与循环测试通过 |
-| 周四 | 工作流版本与发布快照 | 发布时锁定节点配置及其 Agent/Tool 版本；运行中不可被 Draft 影响 | 旧运行不受新版本影响 |
-| 周五 | 静态校验 | 检查不可达节点、无结束路径、非法环、缺失权限和 Schema 不匹配 | 无效图返回具体错误 |
-| 周六 | 映射到 LangGraph | 平台 DSL 与 LangGraph State/Node/Edge 分层；不要把平台表结构直接当运行 State | 一个工作流可编译运行 |
-| 周日 | 管理 API 与最小编辑入口 | 完成创建、校验、版本、发布、回滚和可视化只读图 | 完成本周提交 |
+| 周一 | 定义 Workflow DSL/Schema | 第一版支持 Agent、Tool、Condition、HumanApproval、End；明确不支持项，不直接做拖拽画布<br>相关资料：[JSON Schema 入门](https://json-schema.org/learn/getting-started-step-by-step) | Workflow Schema 和示例 |
+| 周二 | 节点输入输出与变量引用 | 每个节点声明 Schema，变量引用在保存时校验；避免依赖自由文本约定<br>相关资料：[JSON Schema 入门](https://json-schema.org/learn/getting-started-step-by-step) | 错误引用不能发布 |
+| 周三 | 条件、循环和汇聚 | 确定性条件使用表达式或代码；循环必须有计数和截止条件<br>相关资料：[W3C SCXML 状态机规范](https://www.w3.org/TR/scxml/) | 分支与循环测试通过 |
+| 周四 | 工作流版本与发布快照 | 发布时锁定节点配置及其 Agent/Tool 版本；运行中不可被 Draft 影响<br>相关资料：[Semantic Versioning](https://semver.org/) | 旧运行不受新版本影响 |
+| 周五 | 静态校验 | 检查不可达节点、无结束路径、非法环、缺失权限和 Schema 不匹配<br>相关资料：[W3C SCXML 状态机规范](https://www.w3.org/TR/scxml/) | 无效图返回具体错误 |
+| 周六 | 映射到 LangGraph | 平台 DSL 与 LangGraph State/Node/Edge 分层；不要把平台表结构直接当运行 State<br>相关资料：[LangGraph Graph API](https://docs.langchain.com/oss/python/langgraph/graph-api) | 一个工作流可编译运行 |
+| 周日 | 管理 API 与最小编辑入口 | 完成创建、校验、版本、发布、回滚和可视化只读图<br>相关资料：[OpenAPI Specification](https://spec.openapis.org/oas/latest.html) | 完成本周提交 |
 
 ### 本周提交
 
@@ -48,13 +48,13 @@
 
 | 日期 | 学习任务 | 当天学习建议 | 当天验收 |
 | --- | --- | --- | --- |
-| 周一 | Run/Step/Event 状态机 | 明确 Pending、Running、Waiting、Succeeded、Failed、Cancelled；非法状态迁移必须拒绝 | 状态迁移单测 |
-| 周二 | Checkpoint 和恢复 | 每个有副作用节点前后保存边界；模拟进程退出后从上次成功点恢复 | 重启后不重复已完成步骤 |
-| 周三 | 幂等和副作用凭证 | 写工具使用 idempotency key；把请求、结果引用和副作用摘要绑定到 Step | 重复投递不产生重复写入 |
-| 周四 | 异步任务、轮询与事件 | 先实现清晰的异步协议和状态查询；消息队列只有在可靠性要求明确时引入 | 提交、查询、事件链路可用 |
-| 周五 | Retry、Timeout 与补偿 | 节点级和全局截止时间分开；补偿不是简单重试，先列可逆和不可逆动作 | 故障矩阵与自动测试 |
-| 周六 | 取消、暂停和恢复 | 取消需传播到模型和工具；无法取消的外部动作要标为未知并人工核对 | 四种状态行为可复现 |
-| 周日 | 故障注入演练 | 注入模型超时、工具 500、进程退出、重复事件和数据库短暂失败 | 完成本周提交 |
+| 周一 | Run/Step/Event 状态机 | 明确 Pending、Running、Waiting、Succeeded、Failed、Cancelled；非法状态迁移必须拒绝<br>相关资料：[W3C SCXML 状态机规范](https://www.w3.org/TR/scxml/) | 状态迁移单测 |
+| 周二 | Checkpoint 和恢复 | 每个有副作用节点前后保存边界；模拟进程退出后从上次成功点恢复<br>相关资料：[LangGraph Persistence](https://docs.langchain.com/oss/python/langgraph/persistence) | 重启后不重复已完成步骤 |
+| 周三 | 幂等和副作用凭证 | 写工具使用 idempotency key；把请求、结果引用和副作用摘要绑定到 Step<br>相关资料：[RFC 9110：幂等方法](https://www.rfc-editor.org/rfc/rfc9110.html#name-idempotent-methods) | 重复投递不产生重复写入 |
+| 周四 | 异步任务、轮询与事件 | 先实现清晰的异步协议和状态查询；消息队列只有在可靠性要求明确时引入<br>相关资料：[RFC 7240：respond-async](https://www.rfc-editor.org/rfc/rfc7240.html) | 提交、查询、事件链路可用 |
+| 周五 | Retry、Timeout 与补偿 | 节点级和全局截止时间分开；补偿不是简单重试，先列可逆和不可逆动作<br>相关资料：[Resilience4j Guide](https://resilience4j.readme.io/docs/getting-started) | 故障矩阵与自动测试 |
+| 周六 | 取消、暂停和恢复 | 取消需传播到模型和工具；无法取消的外部动作要标为未知并人工核对<br>相关资料：[LangGraph Interrupts](https://docs.langchain.com/oss/python/langgraph/interrupts) | 四种状态行为可复现 |
+| 周日 | 故障注入演练 | 注入模型超时、工具 500、进程退出、重复事件和数据库短暂失败<br>相关资料：[Google SRE：Testing for Reliability](https://sre.google/sre-book/testing-reliability/) | 完成本周提交 |
 
 ### 本周提交
 
@@ -68,13 +68,13 @@
 
 | 日期 | 学习任务 | 当天学习建议 | 当天验收 |
 | --- | --- | --- | --- |
-| 周一 | RBAC 与资源权限 | 权限至少覆盖查看、编辑、发布、运行、审批和审计；默认拒绝且查询带资源归属 | 角色权限矩阵和测试 |
-| 周二 | 审批策略与任务内容 | 审批卡片展示目标、参数、影响、成本和验收；批准、编辑、拒绝都留记录 | 三种决策可恢复工作流 |
-| 周三 | 审批超时与职责分离 | 高风险操作不能由发起人自批；超时应转人工或失败，不默认通过 | 自批和超时被阻止 |
-| 周四 | 审计日志与证据链 | 记录谁在何时用哪个版本执行什么，敏感参数使用摘要或 Hash | 版本发布到工具调用可追溯 |
-| 周五 | Prompt Injection 攻击实验 | 把网页、RAG 文档和工具输出视为不可信数据；测试指令覆盖和数据外泄 | 直接/间接注入阻断记录 |
-| 周六 | MCP/Tool 投毒与输出校验 | 测试伪造工具描述、过宽 Scope、恶意输出和 Token 透传；执行前验证结构和权限 | 至少四类攻击测试 |
-| 周日 | 威胁模型与残余风险 | 按资产、主体、信任边界、攻击路径、防护和残余风险整理 | 完成本周提交 |
+| 周一 | RBAC 与资源权限 | 权限至少覆盖查看、编辑、发布、运行、审批和审计；默认拒绝且查询带资源归属<br>相关资料：[NIST RBAC Model](https://csrc.nist.gov/projects/role-based-access-control) | 角色权限矩阵和测试 |
+| 周二 | 审批策略与任务内容 | 审批卡片展示目标、参数、影响、成本和验收；批准、编辑、拒绝都留记录<br>相关资料：[LangGraph Interrupts](https://docs.langchain.com/oss/python/langgraph/interrupts) | 三种决策可恢复工作流 |
+| 周三 | 审批超时与职责分离 | 高风险操作不能由发起人自批；超时应转人工或失败，不默认通过<br>相关资料：[NIST RBAC Model](https://csrc.nist.gov/projects/role-based-access-control) | 自批和超时被阻止 |
+| 周四 | 审计日志与证据链 | 记录谁在何时用哪个版本执行什么，敏感参数使用摘要或 Hash<br>相关资料：[OWASP Logging Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Logging_Cheat_Sheet.html) | 版本发布到工具调用可追溯 |
+| 周五 | Prompt Injection 攻击实验 | 把网页、RAG 文档和工具输出视为不可信数据；测试指令覆盖和数据外泄<br>相关资料：[OWASP Prompt Injection](https://genai.owasp.org/llmrisk/llm01-prompt-injection/) | 直接/间接注入阻断记录 |
+| 周六 | MCP/Tool 投毒与输出校验 | 测试伪造工具描述、过宽 Scope、恶意输出和 Token 透传；执行前验证结构和权限<br>相关资料：[MCP Security Best Practices](https://modelcontextprotocol.io/specification/2025-11-25/basic/security_best_practices) | 至少四类攻击测试 |
+| 周日 | 威胁模型与残余风险 | 按资产、主体、信任边界、攻击路径、防护和残余风险整理<br>相关资料：[OWASP Threat Modeling](https://owasp.org/www-community/Threat_Modeling) | 完成本周提交 |
 
 ### 本周提交
 
@@ -88,13 +88,13 @@
 
 | 日期 | 学习任务 | 当天学习建议 | 当天验收 |
 | --- | --- | --- | --- |
-| 周一 | 平台 Eval 对象模型 | Dataset、Case、Evaluator、Run、Score 与 Agent/Workflow Version 关联；数据集发布后不可偷改 | Eval Schema 和 API |
-| 周二 | 离线回归和发布门禁 | 设置任务成功、安全、延迟和成本阈值；门禁失败不允许发布但可保留结果 | 劣化版本被阻止 |
-| 周三 | Trace 与统一观测字段 | traceId 贯穿 Java、Python、模型和 Tool；默认不记录敏感 Prompt/结果正文 | 跨服务 Trace 可查询 |
-| 周四 | 指标、SLO 和告警 | 选择可操作指标：成功率、P95、等待审批时长、Token、成本和越权阻断 | SLO 与告警规则草案 |
-| 周五 | 限流、背压和容量测试 | 分别压模型、工作流和工具；记录饱和点和降级行为，不追求虚高 QPS | 压测曲线和容量结论 |
-| 周六 | 备份恢复与故障手册 | 备份元数据、Checkpoint、评测和索引定义；实际恢复一次而非只写文档 | 恢复演练证据 |
-| 周日 | 平台阶段验收 | 从 Agent Draft 到发布、运行、审批、观测、评测和回滚完整演示 | 完成阶段提交 |
+| 周一 | 平台 Eval 对象模型 | Dataset、Case、Evaluator、Run、Score 与 Agent/Workflow Version 关联；数据集发布后不可偷改<br>相关资料：[OpenAI Evals 指南](https://platform.openai.com/docs/guides/evals) | Eval Schema 和 API |
+| 周二 | 离线回归和发布门禁 | 设置任务成功、安全、延迟和成本阈值；门禁失败不允许发布但可保留结果<br>相关资料：[OpenAI Eval 最佳实践](https://platform.openai.com/docs/guides/evaluation-best-practices) | 劣化版本被阻止 |
+| 周三 | Trace 与统一观测字段 | traceId 贯穿 Java、Python、模型和 Tool；默认不记录敏感 Prompt/结果正文<br>相关资料：[OpenTelemetry Semantic Conventions](https://opentelemetry.io/docs/specs/semconv/) | 跨服务 Trace 可查询 |
+| 周四 | 指标、SLO 和告警 | 选择可操作指标：成功率、P95、等待审批时长、Token、成本和越权阻断<br>相关资料：[Google SRE：Service Level Objectives](https://sre.google/sre-book/service-level-objectives/) | SLO 与告警规则草案 |
+| 周五 | 限流、背压和容量测试 | 分别压模型、工作流和工具；记录饱和点和降级行为，不追求虚高 QPS<br>相关资料：[Grafana k6 Documentation](https://grafana.com/docs/k6/latest/) | 压测曲线和容量结论 |
+| 周六 | 备份恢复与故障手册 | 备份元数据、Checkpoint、评测和索引定义；实际恢复一次而非只写文档<br>相关资料：[PostgreSQL Backup and Restore](https://www.postgresql.org/docs/current/backup.html) | 恢复演练证据 |
+| 周日 | 平台阶段验收 | 从 Agent Draft 到发布、运行、审批、观测、评测和回滚完整演示<br>相关资料：[成果与提交标准](../06-deliverable-standards.md) | 完成阶段提交 |
 
 ### 阶段提交
 
