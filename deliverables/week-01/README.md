@@ -10,10 +10,11 @@
 - [ ] Embedding、采样参数和上下文污染实验。
 - [ ] 延迟、Token 与成本的原始记录。
 - [ ] `docs/llm-engineering-basics.md`。
+- [ ] Python 3.11+ 环境、依赖版本、pytest 命令和一次失败运行记录。
 
 ## 验收记录
 
-- 复现方式：待填写。
+- 复现方式：待填写；默认按[开发语言路线](../../learning-plan/01-language-roadmap.md)使用 Python 3.11+。
 - 模型与参数版本：待填写。
 - 失败案例：待填写。
 - 最低标准：实验可重复；能从 AI 基本分类解释到 LLM 推理，并说明 Token、Embedding、采样和上下文的工程影响。

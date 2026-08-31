@@ -21,6 +21,19 @@
 | 管理端 | API 优先；React/TypeScript 最小控制台可按现有前端基础实现 |
 | 运行与观测 | Docker Compose、OpenTelemetry/Micrometer、结构化日志 |
 
+## 开发语言路线
+
+课程不是让学习者在第一天同时学习 Java、Python 和 TypeScript，而是按职责分阶段切换：
+
+```text
+第 1–4 周：Python 建立 AI 原理和原生协议直觉
+→ 第 5–8 周：Java/Spring AI 建业务与平台基础
+→ 第 9–13 周：Python 学 Agent 运行时
+→ 第 14–32 周：Java 控制面 + Python 执行面，按需增加 TypeScript 控制台
+```
+
+Java 21 是最终平台的主工程语言，Python 3.11+ 是 AI 实验与 Agent 执行语言，TypeScript/React 只承担最小控制台。每次语言切换使用 15–30 分钟桥接任务，并通过运行、测试和失败案例验收；不要求先完成整门语言教程。完整周次、职责边界和替代规则见[开发语言路线与切换策略](01-language-roadmap.md)。
+
 ## 学习者起点
 
 默认已经具备：
@@ -159,4 +172,4 @@ PostgreSQL / Vector Store / Object Storage / Sandbox
 
 相关官方资料：[LangGraph Persistence](https://docs.langchain.com/oss/python/langgraph/persistence)、[Spring AI Observability](https://docs.spring.io/spring-ai/reference/observability/index.html)、[MCP Authorization](https://modelcontextprotocol.io/specification/2025-11-25/basic/authorization)、[Claude Agent SDK](https://code.claude.com/docs/en/agent-sdk/overview)。
 
-每天先从[逐节课程教程](tutorials/README.md)进入当周课程，通用执行方式见[学习方法与建议](00-learning-method.md)，讲师监督和掌握度判定见[讲师监督与掌握度评估](07-instructor-supervision.md)，每周提交前检查[成果与提交标准](06-deliverable-standards.md)。本次学习者起点调整的边界和迁移依据见[AI 零基础开发者课程改造设计](08-ai-zero-foundation-curriculum-design.md)。
+每天先从[逐节课程教程](tutorials/README.md)进入当周课程，通用执行方式见[学习方法与建议](00-learning-method.md)，当周语言和切换桥接见[开发语言路线](01-language-roadmap.md)，讲师监督和掌握度判定见[讲师监督与掌握度评估](07-instructor-supervision.md)，每周提交前检查[成果与提交标准](06-deliverable-standards.md)。本次学习者起点调整的边界和迁移依据见[AI 零基础开发者课程改造设计](08-ai-zero-foundation-curriculum-design.md)。

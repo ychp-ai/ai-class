@@ -70,6 +70,38 @@ WEEK_GUIDES: dict[int, WeekGuide] = {
 }
 
 
+def language_label(week: int) -> str:
+    if 1 <= week <= 4:
+        return "Python 3.11+"
+    if 5 <= week <= 8:
+        return "Java 21"
+    if 9 <= week <= 13:
+        return "Python 3.11+"
+    if 14 <= week <= 16:
+        return "Java + Python"
+    if 17 <= week <= 24:
+        return "Java 主导 + Python 执行"
+    if 25 <= week <= 28:
+        return "语言中立"
+    return "Java + Python，按需 TypeScript"
+
+
+def language_focus(week: int) -> str:
+    if 1 <= week <= 4:
+        return "默认使用 Python 3.11+，以较少样板观察 AI 原理和原生协议；记录虚拟环境、依赖版本、pytest 命令和失败结果。"
+    if 5 <= week <= 8:
+        return "必须使用 Java 21、Maven、Spring Boot/Spring AI，并把前四周的原生能力映射到 Java 实现、测试和错误处理。"
+    if 9 <= week <= 13:
+        return "必须使用 Python 3.11+、类型标注、Pydantic 和 pytest，重点观察 Agent 抽象、异步事件、状态与恢复。"
+    if 14 <= week <= 16:
+        return "同时使用 Java 控制/API 层与 Python Agent 执行层；两端通过版本化 Schema、稳定错误、traceId、超时和取消语义连接。"
+    if 17 <= week <= 24:
+        return "Java 承担平台控制面与治理，Python 承担已授权的 Agent/Workflow 执行；TypeScript 只在管理流程需要时提供最小界面。"
+    if 25 <= week <= 28:
+        return "本周以业务证据和设计为主，语言中立；技术 Spike 只复用既有 Java/Python/TypeScript 栈，不引入新语言。"
+    return "组合 Java 控制面/业务 Connector、Python Agent 执行面和按需 TypeScript 控制台，所有端到端状态与回滚必须可验证。"
+
+
 WEEK_HEADING_RE = re.compile(r"^## 第 (\d+) 周：(.+)$")
 LESSON_ROW_RE = re.compile(r"^\| (周[一二三四五六日]) \| (.+?) \| (.+?) \| (.+?) \|$")
 
@@ -488,6 +520,10 @@ def render_week(week: int, lessons: list[Lesson]) -> str:
 
 {guide.what}
 
+### 本周语言定位
+
+{language_focus(week)}完整职责、切换桥接和替代规则见[开发语言路线](../01-language-roadmap.md)。
+
 ### 本周学习策略
 
 - 每天只完成下面一节，控制在约 1 小时，不提前堆叠下一节的新概念。
@@ -506,7 +542,7 @@ def render_week(week: int, lessons: list[Lesson]) -> str:
 
 def render_index() -> str:
     rows = "\n".join(
-        f"| {week:02d} | [{guide.title}](week-{week:02d}.md) | [阶段计划](../stages/{guide.stage_file}) |"
+        f"| {week:02d} | [{guide.title}](week-{week:02d}.md) | {language_label(week)} | [阶段计划](../stages/{guide.stage_file}) |"
         for week, guide in WEEK_GUIDES.items()
     )
     return f"""# 逐节课程教程
@@ -522,7 +558,7 @@ def render_index() -> str:
 ## 推荐使用顺序
 
 1. 先看对应[阶段计划](../stages/README.md)，确认本周目标、前置能力和阶段出口。
-2. 打开当周教程，每天只做一节，并按 60 分钟节奏留下真实证据；至少独立尝试 20 分钟后再看参考答案。
+2. 按[开发语言路线](../01-language-roadmap.md)确认当周默认语言和是否需要桥接，再打开当周教程；每天只做一节，并按 60 分钟节奏留下真实证据，至少独立尝试 20 分钟后再看参考答案。
 3. 参考答案只用于解除阻塞。看完后关闭答案，改变一个输入或约束独立重做，并把命令、输入输出、失败解释和 Teach-back 摘要写入周笔记。
 4. 周日从当周成果 README 链接证据，完成变体任务，再接受讲师验收。
 5. 若教程与阶段四列表格不一致，以阶段表格为准，并运行 `python3 scripts/generate_course_tutorials.py --check` 检查是否需要重新生成。
@@ -535,8 +571,8 @@ def render_index() -> str:
 
 ## 32 周教程索引
 
-| 周次 | 教程 | 对应阶段计划 |
-| ---: | --- | --- |
+| 周次 | 教程 | 默认语言 | 对应阶段计划 |
+| ---: | --- | --- | --- |
 {rows}
 
 ## 输入、输出与边界

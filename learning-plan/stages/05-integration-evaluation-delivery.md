@@ -6,6 +6,10 @@
 
 逐节学习入口：[第 14–16 周课程教程](../tutorials/README.md)。
 
+## 本阶段语言定位
+
+第 14–16 周首次同时使用 Java 与 Python：Java 提供业务/平台 API 和确定性治理，Python 提供 LangGraph 与 Claude Agent 执行。两端只能通过版本化 Schema、稳定错误码、traceId、幂等标识和超时/取消语义连接；第 14 周必须保留同一份合法与非法 JSON 在 Java DTO、Python Pydantic Model 中的对照验证。完整组合规则见[开发语言路线](../01-language-roadmap.md)。
+
 ## 开始前应会什么
 
 - 能分别运行 Java API、Python Agent、LangGraph 工作流和隔离的 Claude Agent 练习。

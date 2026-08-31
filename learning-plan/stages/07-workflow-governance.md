@@ -6,6 +6,10 @@
 
 逐节学习入口：[第 21–24 周课程教程](../tutorials/README.md)。
 
+## 本阶段语言定位
+
+第 21–24 周由 Java 管理 Workflow Definition、发布、Run 状态、RBAC、审批与审计，由 Python/LangGraph 执行节点、Checkpoint 和恢复协议。跨语言故障必须映射为平台稳定状态；不得把 Python 异常文本或前端显示直接当作平台状态真相。完整分工见[开发语言路线](../01-language-roadmap.md)。
+
 ## 开始前应会什么
 
 - 能运行第 11 周 LangGraph 暂停/恢复流程和第 20 周平台 Agent 发布闭环。

@@ -6,6 +6,10 @@
 
 逐节学习入口：[第 1–4 周课程教程](../tutorials/README.md)。
 
+## 本阶段语言定位
+
+默认使用 Python 3.11+ 完成第 1–4 周实验和原生模型客户端。这里选择 Python 是为了减少样板代码、直接观察 Token、事件、Schema 和 Tool Loop，不代表最终平台以 Python 为主。若暂时使用熟悉语言，必须保持相同输入、参数、失败案例和验收口径，并在第 9 周前补齐 Python 能力；完整分工见[开发语言路线](../01-language-roadmap.md)。
+
 ## 开始前应会什么
 
 - 能运行一个小程序和单元测试，并保存命令、输入、输出和错误信息。
@@ -14,7 +18,7 @@
 
 ## 零基础桥接
 
-开始第 1 周前，用 15–30 分钟完成一个非 AI 小实验：调用公开或本地 Stub HTTP API，打印 JSON 响应、耗时和一次错误响应。后续把模型调用持续映射到这个熟悉的请求链路，再逐步观察 Token、流式事件、结构化输出和工具请求的差异。
+开始第 1 周前，用 15–30 分钟建立 Python 虚拟环境，并完成一个带类型标注和 pytest 的非 AI 小实验：调用公开或本地 Stub HTTP API，打印 JSON 响应、耗时和一次错误响应。后续把模型调用持续映射到这个熟悉的请求链路，再逐步观察 Token、流式事件、结构化输出和工具请求的差异。
 
 ## 本阶段不要求什么
 
@@ -42,7 +46,7 @@
 
 建议 Commit：`docs: add reproducible llm engineering experiments`
 
-必须包含：AI/ML/深度学习/生成式 AI/LLM 概念关系图；训练与推理说明；Token、Embedding、采样和幻觉实验；运行方式；原始结果；至少两个失败案例；`docs/llm-engineering-basics.md`。
+必须包含：AI/ML/深度学习/生成式 AI/LLM 概念关系图；训练与推理说明；Token、Embedding、采样和幻觉实验；Python 与依赖版本；pytest/运行方式；原始结果；至少两个失败案例；`docs/llm-engineering-basics.md`。
 
 最低验收：实验可重复；参数和模型版本有记录；能解释 Token、Embedding、采样与上下文对质量和成本的影响。
 

@@ -5,7 +5,7 @@
 计划入口：
 
 - `detect_learning_progress.py`：读取周状态、验证占位符、讲师结论和阶段计划，向标准输出返回精简 JSON。
-- `generate_course_tutorials.py`：从九份阶段四列表格生成 32 份周教程，确保 224 节课都包含学习动机、概念边界、60 分钟步骤、资料章节、参考图/样例代码、验收方法和五步参考答案。
+- `generate_course_tutorials.py`：从九份阶段四列表格生成 32 份周教程，确保 224 节课都包含学习动机、概念边界、当周语言定位、60 分钟步骤、资料章节、参考图/样例代码、验收方法和五步参考答案。
 - `tests/`：扫描器的标准库 `unittest` 回归测试。
 
 进度扫描脚本只读，不修改周状态、成果、学习笔记或 Git 历史。课程教程生成器只更新自己的生成目录，不修改上述学习证据。
@@ -23,4 +23,4 @@ python3 scripts/generate_course_tutorials.py --check
 
 状态判断保持保守：脚本只能在周状态已完成、成果与验证齐全，并存在“讲师结论：通过、Teach-back 已完成、变体任务已完成”时识别为 `PASSED`。语义评审仍由 REVIEW/FULL Prompt 负责。
 
-课程教程生成器只写入 `learning-plan/tutorials/`，不修改阶段计划、周状态、成果或笔记。阶段表格发生变化后先运行生成命令，再用 `--check` 验证生成文件未漂移。
+课程教程生成器只写入 `learning-plan/tutorials/`，不修改阶段计划、周状态、成果或笔记。当周语言定位由生成器按[开发语言路线](../learning-plan/01-language-roadmap.md)写入每份周教程；阶段表格或语言映射发生变化后先运行生成命令，再用 `--check` 验证生成文件未漂移。

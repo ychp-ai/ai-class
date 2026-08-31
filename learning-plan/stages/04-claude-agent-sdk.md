@@ -6,6 +6,10 @@
 
 逐节学习入口：[第 12–13 周课程教程](../tutorials/README.md)。
 
+## 本阶段语言定位
+
+第 12–13 周继续使用 Python 3.11+ 构建 Claude Agent SDK 执行层，代码只进入 `python-agent/` 或隔离的 `sandbox-workspaces/`。Python 执行层不得提升为平台权限、租户或 Secret 管理真相；这些职责后续由 Java 控制面治理。完整边界见[开发语言路线](../01-language-roadmap.md)。
+
 ## 开始前应会什么
 
 - 能解释普通模型客户端、LangChain Agent 和 LangGraph 工作流分别控制什么。

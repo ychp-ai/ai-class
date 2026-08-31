@@ -14,6 +14,10 @@
 
 平台运维用 Eval Dataset、SLO、Trace、告警、压测、备份恢复和 Runbook 管理发布后的可用性与风险。
 
+### 本周语言定位
+
+Java 承担平台控制面与治理，Python 承担已授权的 Agent/Workflow 执行；TypeScript 只在管理流程需要时提供最小界面。完整职责、切换桥接和替代规则见[开发语言路线](../01-language-roadmap.md)。
+
 ### 本周学习策略
 
 - 每天只完成下面一节，控制在约 1 小时，不提前堆叠下一节的新概念。

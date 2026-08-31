@@ -14,6 +14,10 @@
 
 Tool Registry 管函数能力，MCP 标准化外部上下文和工具协议，Knowledge Base 控制数据源、索引版本、ACL 与检索配置。
 
+### 本周语言定位
+
+Java 承担平台控制面与治理，Python 承担已授权的 Agent/Workflow 执行；TypeScript 只在管理流程需要时提供最小界面。完整职责、切换桥接和替代规则见[开发语言路线](../01-language-roadmap.md)。
+
 ### 本周学习策略
 
 - 每天只完成下面一节，控制在约 1 小时，不提前堆叠下一节的新概念。

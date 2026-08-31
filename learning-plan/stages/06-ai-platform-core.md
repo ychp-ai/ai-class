@@ -6,6 +6,10 @@
 
 逐节学习入口：[第 17–20 周课程教程](../tutorials/README.md)。
 
+## 本阶段语言定位
+
+第 17–20 周以 Java 21/Spring Boot 建设模块化单体控制面，Python 继续作为已授权发布快照的 Agent 执行面。React/TypeScript 仅在管理流程需要时提供最小入口，不得复制权限或状态机真相；若 API 已能完成验收，不为展示效果提前扩充前端。职责边界见[开发语言路线](../01-language-roadmap.md)。
+
 ## 开始前应会什么
 
 - 能运行第 16 周端到端应用，并指出模型、Prompt、Tool、KB、Workflow 和运行记录的位置。

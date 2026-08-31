@@ -6,6 +6,10 @@
 
 逐节学习入口：[第 29–32 周课程教程](../tutorials/README.md)。
 
+## 本阶段语言定位
+
+第 29–32 周组合 Java 控制面/业务 Connector、Python Agent 执行面与按需 TypeScript 控制台完成交付。最终验收必须覆盖跨语言契约、身份与 traceId 传播、超时取消、幂等副作用、失败映射和版本回滚，不接受三个独立 Demo 代替端到端系统。完整分工见[开发语言路线](../01-language-roadmap.md)。
+
 ## 开始前应会什么
 
 - 已完成同一场景的 Scene Brief、AS-IS、TO-BE、接入契约、权限设计、指标和试点计划。

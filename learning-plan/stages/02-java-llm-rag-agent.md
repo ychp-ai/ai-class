@@ -6,6 +6,10 @@
 
 逐节学习入口：[第 5–8 周课程教程](../tutorials/README.md)。
 
+## 本阶段语言定位
+
+第 5–8 周必须使用 Java 21、Maven、Spring Boot 和 Spring AI。目标不是重做 Python 示例，而是把第 1–4 周观察到的原生协议迁移为可测试的 Java 业务服务，并明确 Spring AI 替代了哪些样板、没有替代哪些权限和失败控制；切换桥接见[开发语言路线](../01-language-roadmap.md)。
+
 ## 开始前应会什么
 
 - 能解释第 2 周原生模型请求、流式事件、结构化输出和 Tool Loop 的输入输出。
