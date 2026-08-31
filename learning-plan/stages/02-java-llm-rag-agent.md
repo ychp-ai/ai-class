@@ -4,6 +4,8 @@
 
 目标：使用 Java 21、Spring Boot 和 Spring AI 完成从模型调用到可控 Agent 的最小闭环。
 
+逐节学习入口：[第 5–8 周课程教程](../tutorials/README.md)。
+
 ## 开始前应会什么
 
 - 能解释第 2 周原生模型请求、流式事件、结构化输出和 Tool Loop 的输入输出。

@@ -4,6 +4,8 @@
 
 目标：使用 LangChain 构建结构化 Agent，并使用 LangGraph 实现状态、路由、审批和恢复。
 
+逐节学习入口：[第 9–11 周课程教程](../tutorials/README.md)。
+
 ## 开始前应会什么
 
 - 能解释手写 Java Agent 的计划、动作、观察、停止和失败状态。

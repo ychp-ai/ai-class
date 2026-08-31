@@ -4,6 +4,8 @@
 
 目标：将 Java RAG 服务、LangChain/LangGraph 工作流和 Claude Agent 执行层组合成可测量、可审计、可复现的首个 AI 应用，为后续平台化提取稳定能力和运行基线。
 
+逐节学习入口：[第 14–16 周课程教程](../tutorials/README.md)。
+
 ## 开始前应会什么
 
 - 能分别运行 Java API、Python Agent、LangGraph 工作流和隔离的 Claude Agent 练习。

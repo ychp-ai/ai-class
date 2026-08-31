@@ -6,6 +6,8 @@
 
 224 小时可以完成一个可运行、可演示、具备基础生产约束的平台 MVP 和一个业务试点闭环，但不等同于大型企业平台的全部能力。完成后仍需要通过真实流量、多个业务场景和持续运维提升熟练度。
 
+阶段文档给出 32 周排期和四列表格；[逐节课程教程](tutorials/README.md)进一步把 224 节课逐节展开为“为什么学、这个是什么、怎么学、怎么验证学会了”，并提供独立尝试后使用的参考答案。学习者应从当周教程进入每日实践，进度和通过状态仍以 `deliverables/week-XX/README.md` 为准。
+
 | 项目 | 安排 |
 | --- | --- |
 | 周期 | 32 周 |
@@ -157,4 +159,4 @@ PostgreSQL / Vector Store / Object Storage / Sandbox
 
 相关官方资料：[LangGraph Persistence](https://docs.langchain.com/oss/python/langgraph/persistence)、[Spring AI Observability](https://docs.spring.io/spring-ai/reference/observability/index.html)、[MCP Authorization](https://modelcontextprotocol.io/specification/2025-11-25/basic/authorization)、[Claude Agent SDK](https://code.claude.com/docs/en/agent-sdk/overview)。
 
-每天执行方式见[学习方法与建议](00-learning-method.md)，讲师监督和掌握度判定见[讲师监督与掌握度评估](07-instructor-supervision.md)，每周提交前检查[成果与提交标准](06-deliverable-standards.md)。本次学习者起点调整的边界和迁移依据见[AI 零基础开发者课程改造设计](08-ai-zero-foundation-curriculum-design.md)。
+每天先从[逐节课程教程](tutorials/README.md)进入当周课程，通用执行方式见[学习方法与建议](00-learning-method.md)，讲师监督和掌握度判定见[讲师监督与掌握度评估](07-instructor-supervision.md)，每周提交前检查[成果与提交标准](06-deliverable-standards.md)。本次学习者起点调整的边界和迁移依据见[AI 零基础开发者课程改造设计](08-ai-zero-foundation-curriculum-design.md)。

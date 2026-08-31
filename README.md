@@ -22,6 +22,7 @@
 | 文档 | 内容 |
 | --- | --- |
 | [完整路线总览](learning-plan/README.md) | 32 周路线、能力模型、架构边界和里程碑 |
+| [逐节课程教程](learning-plan/tutorials/README.md) | 32 周、224 节课的学习步骤、资料章节、参考图、样例代码、掌握验证和参考答案 |
 | [学习方法与建议](learning-plan/00-learning-method.md) | 每天 1 小时的学习、实践与复盘方式 |
 | [讲师监督与掌握度评估](learning-plan/07-instructor-supervision.md) | 每日监督、提示阶梯、评分、阶段考试和动态调整 |
 | [Hermes 进度识别入口](prompts/progress-detection.md) | 确定性扫描器与 FAST、REVIEW、FULL 低 Token 路由 |
@@ -98,8 +99,8 @@
 
 ## 当前执行方式
 
-1. 阅读[学习方法与建议](learning-plan/00-learning-method.md)。
-2. 每天完成一个小任务，不提前堆积框架。
+1. 阅读[学习方法与建议](learning-plan/00-learning-method.md)，再从[逐节课程教程](learning-plan/tutorials/README.md)打开当周课程。
+2. 每天按教程完成一节，不提前堆积框架，并保留运行、失败、Teach-back 和变体证据。
 3. 每周日整理成果、失败证据和下一周决策。
 4. 按[成果与提交标准](learning-plan/06-deliverable-standards.md)自检。
 5. 只有通过当前阶段出口条件，才进入下一阶段。
