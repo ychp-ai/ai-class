@@ -4,7 +4,7 @@
 
 ## 配套课程仓库
 
-- Git 仓库：`git@github.com:ychp/ai-class.git`
+- Git 仓库：`git@github.com:ychp-ai/ai-class.git`
 - 默认本地目录：`../ai-class`
 - 规则文件：`../ai-class/AGENTS.md`
 - 学习路线：`../ai-class/learning-plan/README.md`
