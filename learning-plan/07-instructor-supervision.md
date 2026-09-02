@@ -49,7 +49,7 @@
 
 讲师需要：
 
-1. 阅读当前阶段文档和 `deliverables/week-XX/README.md`。
+1. 阅读课程仓库当前阶段文档、同周公共成果要求，以及个人学习仓库的 `deliverables/week-XX/README.md`。
 2. 确认当周默认语言与是否需要 15–30 分钟桥接，再检查上一次遗留问题、薄弱点和未验证成果。
 3. 使用 2–3 个短问题检查当天前置知识。
 4. 明确一个核心目标、一个实践成果和一个验收证据。
@@ -220,15 +220,15 @@
 
 ## 记录位置
 
-- 当天和每周学习复盘：`notes/week-XX.md`。
-- 当周成果、验证和通过状态：`deliverables/week-XX/README.md`。
+- 当天和每周学习复盘：个人学习仓库的 `notes/week-XX.md`。
+- 当周成果、验证和通过状态：个人学习仓库的 `deliverables/week-XX/README.md`。
 - 长期可复用的 Prompt、设计和业务材料：放入其职责目录，并从周成果链接。
 
-不要额外复制源码或建立重复进度真相。`deliverables/week-XX/README.md` 是当周验收状态的唯一入口，`notes/week-XX.md` 保存学习过程和认知变化。
+不要额外复制源码或建立重复进度真相。个人学习仓库的 `deliverables/week-XX/README.md` 是当周验收状态的唯一入口，`notes/week-XX.md` 保存学习过程和认知变化；课程仓库的同周文件只能作为公共验收要求。
 
 ## 自动化监督前置识别
 
-Hermes 或其他定时监督 Agent 每次拉取或唤醒后，必须先运行 `scripts/detect_learning_progress.py`，再使用 `prompts/progress-detection.md` 选择模式：日常使用 FAST，周验收使用 REVIEW，首次扫描、阻塞、冲突和阶段考试使用 FULL。
+Hermes 或其他定时监督 Agent 每次拉取或唤醒后，必须先运行 `scripts/detect_learning_progress.py --repo <课程仓库> --progress-repo <个人仓库>`，再使用 `prompts/progress-detection.md` 选择模式：日常使用 FAST，周验收使用 REVIEW，首次扫描、阻塞、冲突和阶段考试使用 FULL。
 
 确定性扫描器输出当前阶段、当前周、周计划、占位符、越序进展和候选动作；Prompt 只处理需要语义判断的笔记、成果、学习债务和讲师评分。FAST、REVIEW、FULL 不得在同一次调用中全部加载。
 

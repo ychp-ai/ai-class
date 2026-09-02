@@ -1,0 +1,32 @@
+# Local secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Build and runtime output
+target/
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+node_modules/
+dist/
+.next/
+coverage/
+*.log
+
+# IDE and operating system
+.idea/
+.vscode/
+.DS_Store
+
+# Generated or disposable data
+sandbox-workspaces/runtime/
+!sandbox-workspaces/runtime/
+!sandbox-workspaces/runtime/README.md
+data/eval/generated/
+infra/runtime/

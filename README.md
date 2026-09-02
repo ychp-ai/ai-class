@@ -39,22 +39,30 @@
 | [成果与提交标准](learning-plan/06-deliverable-standards.md) | 每周提交、阶段出口、平台和业务验收标准 |
 | [Agent 协作规范](AGENTS.md) | 仓库目录、讲师监督、工程质量、安全和业务落地约束 |
 
-## 成果目录导航
+## 课程仓库与个人仓库
+
+本仓库只保存可共享的课程内容：路线、教程、成果要求、学习者仓库模板、监督 Prompt 和确定性工具。任何人的当前进度、笔记、评分、代码、实验数据和业务成果都必须保存在独立的个人仓库。
+
+新学习者可以直接复用本仓库，并初始化自己的仓库：
+
+```bash
+git clone <ai-class-course-repository> ai-class
+git clone <your-personal-learning-repository> ai-class-note
+python3 ai-class/scripts/init_learning_progress.py \
+  --course-repo ai-class \
+  --progress-repo ai-class-note
+```
+
+每位学习者使用自己的第二个仓库地址即可。`ai-class/` 与 `ai-class-note/` 是两个同级目录和两个独立 Git 仓库，不存在 Git 文件归属冲突。
+
+## 公共模板与工具导航
 
 | 目录 | 存放内容 |
 | --- | --- |
-| [deliverables](deliverables/README.md) | 第 1–32 周成果链接、证据和验收状态 |
-| [notes](notes/README.md) | 周复盘、实验记录和排错过程 |
+| [deliverables](deliverables/README.md) | 第 1–32 周公共成果要求和空白验收模板，不含个人状态 |
+| [templates](templates/README.md) | 个人仓库所需的完整目录和文档模板 |
 | [prompts](prompts/README.md) | 经评测、带版本的 Prompt 和模板 |
-| [docs](docs/README.md) | 平台架构、工作流、Eval、安全和运维设计 |
-| [business-cases](business-cases/README.md) | 场景调研、流程设计、接入方案、试点和效果报告 |
-| [data](data/README.md) | RAG 资料、固定评测集和脱敏测试数据 |
-| [java-service](java-service/README.md) | Java 控制面、平台 API 和业务接入层 |
-| [python-agent](python-agent/README.md) | Agent 运行时、LangGraph 和 Claude Agent Worker |
-| [platform-console](platform-console/README.md) | 最小管理控制台和交互原型 |
-| [infra](infra/README.md) | 本地环境、部署、监控和运行手册 |
-| [scripts](scripts/README.md) | 确定性进度扫描和低 Token 自动化辅助工具 |
-| [sandbox-workspaces](sandbox-workspaces/README.md) | Agent 隔离执行工作区 |
+| [scripts](scripts/README.md) | 个人仓库初始化、双仓进度扫描和低 Token 自动化辅助工具 |
 
 ## 目标平台边界
 
@@ -100,8 +108,8 @@
 
 ## 当前执行方式
 
-1. 阅读[学习方法与建议](learning-plan/00-learning-method.md)，再从[逐节课程教程](learning-plan/tutorials/README.md)打开当周课程。
-2. 按[开发语言路线](learning-plan/01-language-roadmap.md)确认当周默认语言；每天按教程完成一节，不提前堆积框架，并保留运行、失败、Teach-back 和变体证据。
+1. 使用 `scripts/init_learning_progress.py` 建立独立个人仓库，再阅读[学习方法与建议](learning-plan/00-learning-method.md)。
+2. 从[逐节课程教程](learning-plan/tutorials/README.md)打开当周课程，按[开发语言路线](learning-plan/01-language-roadmap.md)确认默认语言；所有进度、笔记和成果写入个人仓库。
 3. 每周日整理成果、失败证据和下一周决策。
 4. 按[成果与提交标准](learning-plan/06-deliverable-standards.md)自检。
 5. 只有通过当前阶段出口条件，才进入下一阶段。

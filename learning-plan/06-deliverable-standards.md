@@ -7,7 +7,7 @@
 每周成果必须同时满足：
 
 - 有可运行代码、可检查文档、固定数据或可复现实验。
-- `deliverables/week-XX/README.md` 链接真实成果，不复制源码。
+- 个人学习仓库的 `deliverables/week-XX/README.md` 链接真实成果，不复制源码；课程仓库同路径只保存公共要求和空白模板。
 - 记录实际运行或人工验收命令、日期和结果摘要。
 - 至少保留一个失败、边界、安全或降级案例。
 - 说明已经实现、尚未实现和已知限制。
@@ -32,7 +32,7 @@
 
 语言切换按[开发语言路线](01-language-roadmap.md)执行。桥接任务用于解除语法和工具链阻塞，不单独替代 AI 成果；第 5–8 周 Java 成果、第 9–13 周 Python Agent 成果和第 14 周 Java/Python 契约对照均属于必验证边界。
 
-## 每周成果 README 必填项
+## 个人仓库每周成果 README 必填项
 
 ```markdown
 # Week XX 成果
@@ -159,4 +159,4 @@ docs: document as-is and to-be business process
 chore: add production readiness checklist
 ```
 
-一个 Commit 只表达一个主要意图。每周可以有多个小 Commit，周末成果 README 负责汇总，不要求为了形式强行压成一个提交。
+一个 Commit 只表达一个主要意图。课程仓库和个人学习仓库分别提交；个人仓库每周可以有多个小 Commit，周末成果 README 负责汇总，不要求为了形式强行压成一个提交。

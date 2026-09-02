@@ -5,10 +5,6 @@
 *.pem
 *.key
 
-# Java
-target/
-*.class
-
 # Python
 .venv/
 __pycache__/
@@ -17,22 +13,10 @@ __pycache__/
 .mypy_cache/
 .ruff_cache/
 
-# Management console
-node_modules/
-dist/
-.next/
-coverage/
-
 # IDE and operating system
 .idea/
 .vscode/
 .DS_Store
 
-# Local Agent runtime data
-sandbox-workspaces/runtime/*
-!sandbox-workspaces/runtime/README.md
-
-# Generated evaluation and trace output
-data/eval/generated/
-infra/runtime/
+# Local course-maintenance logs
 *.log

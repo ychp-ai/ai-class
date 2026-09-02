@@ -20,4 +20,4 @@
 - `platform-governance.md`：RBAC、审批、审计、发布门禁和版本治理。
 - `production-readiness.md`：SLO、容量、告警、备份、恢复和发布评审。
 
-业务调研、AS-IS/TO-BE 和试点材料放入 `business-cases/`，不要混入纯技术架构文档。文档必须反映当前实现。实验性的短期笔记放入 `notes/`，每周成果索引放入 `deliverables/`。
+业务调研、AS-IS/TO-BE 和试点材料放入个人仓库的 `business-cases/`，不要混入纯技术架构文档。文档必须反映当前实现。实验性的短期笔记放入个人仓库的 `notes/`，每周成果索引放入个人仓库的 `deliverables/`。

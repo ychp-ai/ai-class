@@ -1,5 +1,7 @@
 # AI 零基础开发者课程改造 Implementation Plan
 
+> 历史说明：本计划记录零基础课程改造的执行过程。2026-09-02 完成双仓拆分后，个人状态和成果位于独立学习仓库，进度扫描接口升级为 `progress-scan.v2`；涉及“当前仓库进度”的旧验收应按全新个人仓库夹具理解。
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use `superpowers:subagent-driven-development` (recommended) or `superpowers:executing-plans` to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** 在不改变 32 周周期、最终目标、必修知识和成果门禁的前提下，把整套课程调整为适合“具备开发基础、AI 零基础”的学习者。
@@ -18,7 +20,7 @@
 - 原生模型 API、流式事件、结构化输出和手写 Tool Loop 必须先于高层框架。
 - RAG、Tool/MCP、工作流、Checkpoint、审批、权限、Eval、可观测性、安全、运维和业务闭环不得删除或降级。
 - 每日计划表继续使用 `日期`、`学习任务`、`当天学习建议`、`当天验收` 四列。
-- 不修改进度扫描器 Schema，不重置或覆盖任何学习成果。
+- 本历史计划执行时不修改进度扫描器 Schema；后续双仓拆分已在不丢失个人证据的前提下升级 Schema。
 - 未经用户明确授权，不执行 Git Commit 或 Push；每个任务以 Diff 和检查结果作为审核点。
 
 ---
@@ -133,7 +135,7 @@
 
 - [ ] **Step 6: 验证每日表和成果同步**
 
-  Run: `python3 scripts/detect_learning_progress.py --repo . --pretty`
+  Run: `python3 scripts/detect_learning_progress.py --repo . --progress-repo <个人仓库> --pretty`
 
   Expected: 当前阶段仍为 1、当前周仍为 1，`week_plan` 包含 7 天且周一从 AI 基本分类和训练/推理开始。
 
@@ -252,9 +254,9 @@
 
 - [ ] **Step 4: 运行当前仓库扫描**
 
-  Run: `python3 scripts/detect_learning_progress.py --repo . --pretty`
+  Run: `python3 scripts/detect_learning_progress.py --repo . --progress-repo <个人仓库> --pretty`
 
-  Expected: `repository_status=VALID`、`current_stage.id=1`、`current_week.number=1`、`recommended_day=周一`，周一任务为 AI 基本分类及训练/推理入门。
+  Expected: 对全新个人仓库，`repository_status=VALID`、`current_stage.id=1`、`current_week.number=1`、`recommended_day=周一`，周一任务为 AI 基本分类及训练/推理入门。
 
 - [ ] **Step 5: 检查 Markdown 结构**
 

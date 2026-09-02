@@ -4,12 +4,12 @@
 
 ```yaml
 name: learning-progress-router
-version: 2.0.0
+version: 3.0.0
 status: approved
-updated: 2026-08-24
+updated: 2026-09-02
 model_target: [Hermes Agent, general tool-using coding agent]
 audit_status: passed_with_manual_review
-last_audit: 2026-08-24
+last_audit: 2026-09-02
 owner: repository-maintainer
 ```
 
@@ -18,10 +18,12 @@ owner: repository-maintainer
 Hermes 拉取仓库或定时唤醒后，先运行：
 
 ```bash
-python3 scripts/detect_learning_progress.py --repo .
+python3 scripts/detect_learning_progress.py \
+  --repo <课程仓库> \
+  --progress-repo <个人仓库>
 ```
 
-脚本输出 `progress-scan.v1` 精简 JSON。根据触发场景选择 Prompt：
+脚本输出 `progress-scan.v2` 精简 JSON，并显式区分课程规则与个人证据。根据触发场景选择 Prompt：
 
 | 场景 | 使用文件 | 读取范围 |
 | --- | --- | --- |
@@ -54,6 +56,7 @@ python3 scripts/detect_learning_progress.py --repo .
 
 ## 验证记录
 
+- 2026-09-02 双仓改造人工复核通过：路由输入已显式区分课程仓库与个人仓库，扫描器回归测试通过。
 - 2026-08-24 自动审查通过，无 Critical/High/Medium 风险。
 - 自动工具提示缺少否定约束；人工复核确认路由规则已明确禁止同时加载三种模式，实际安全边界由被选中的 Prompt 定义。
 - 尚未验证 Hermes 实际定时任务的模式选择稳定性。

@@ -2,7 +2,7 @@
 
 # 第 02 周教程：原生模型 API
 
-> 计划来源：[01-ai-tools-and-engineering.md](../stages/01-ai-tools-and-engineering.md)。阶段文档决定课程任务和验收，本文件解释逐节学习方法；学习状态仍只记录在[第 02 周成果](../../deliverables/week-02/README.md)。
+> 计划来源：[01-ai-tools-and-engineering.md](../stages/01-ai-tools-and-engineering.md)。阶段文档决定课程任务和验收，[第 02 周公共成果要求](../../deliverables/week-02/README.md)定义门禁；学习状态只记录在个人学习仓库。
 
 ## 本周先理解
 

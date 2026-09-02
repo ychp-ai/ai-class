@@ -61,7 +61,7 @@
 | 日期 | 学习任务 | 当天学习建议 | 当天验收 |
 | --- | --- | --- | --- |
 | 周一 | 理解解析、切片、索引、检索和生成 | 为每一步写清输入输出和可能失败点，区分检索质量与生成质量<br>相关资料：[Spring AI RAG](https://docs.spring.io/spring-ai/reference/api/retrieval-augmented-generation.html) | 绘制 RAG 流程图 |
-| 周二 | 准备 5–10 个文档或代码文件 | 选自己能判断答案的资料，提前写 5 个问题和预期来源，避免事后挑题<br>相关资料：[RAG 资料目录](../../data/docs/README.md) | 放入 `data/docs` |
+| 周二 | 准备 5–10 个文档或代码文件 | 选自己能判断答案的资料，提前写 5 个问题和预期来源，避免事后挑题<br>相关资料：[个人仓库 RAG 资料目录模板](../../templates/learner-repository/data/docs/README.md) | 放入个人仓库的 `data/docs` |
 | 周三 | 文档解析与切片 | 先打印 Chunk 人工检查，不要只看数量；保留标题、路径和位置元数据<br>相关资料：[Spring AI ETL Pipeline](https://docs.spring.io/spring-ai/reference/api/etl-pipeline.html) | Chunk 带路径、位置和序号 |
 | 周四 | 生成 Embedding 并写入 Qdrant | 使用稳定文档 ID，先考虑重建策略；重复执行前后比较记录数<br>相关资料：[Qdrant Points](https://qdrant.tech/documentation/concepts/points/) | 能重复构建索引 |
 | 周五 | 实现 TopK 检索 | 暂时不生成答案，只观察召回片段和分数，记录漏召回与干扰项<br>相关资料：[Spring AI Vector Databases](https://docs.spring.io/spring-ai/reference/api/vectordbs.html) | 输出片段、来源和分数 |

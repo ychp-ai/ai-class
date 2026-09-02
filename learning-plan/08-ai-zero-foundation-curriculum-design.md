@@ -123,7 +123,7 @@ Java、Spring Boot 和 Python 只补充完成课程所需的工程桥接内容�
 - `learning-plan/06-deliverable-standards.md`：增加零基础阶段的认知证据要求，不降低原有门禁。
 - `deliverables/week-01/README.md` 至 `week-04/README.md`：同步前四周成果描述。
 
-进度扫描器及其 Schema 不调整。阶段计划变化会反映到 `rules_fingerprint`，现有 Hermes 路由仍可使用。
+本次零基础课程改造当时不调整进度扫描器 Schema。2026-09-02 起，课程与个人进度拆为两个仓库，扫描接口已升级为 `progress-scan.v2`；阶段计划变化仍反映到 `rules_fingerprint`，个人记录变化反映到 `progress_fingerprint`。
 
 ## 验收标准
 
@@ -141,4 +141,4 @@ Java、Spring Boot 和 Python 只补充完成课程所需的工程桥接内容�
 
 ## 迁移说明
 
-改造时仓库进度为第 1 周 `NOT_STARTED`，不存在需要迁移的已通过学习成果。若改造过程中学习者已开始提交第 1 周内容，应保留其成果并按照新旧要求的交集验收，不删除既有证据。
+零基础改造时仓库进度为第 1 周 `NOT_STARTED`，不存在需要迁移的已通过学习成果。后续出现的个人第 1 周记录已在 2026-09-02 双仓拆分时迁入个人学习仓库；课程仓库只保留空白模板。

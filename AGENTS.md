@@ -64,10 +64,10 @@ LLM 原理与原生 API
 - 32 周路线与平台边界：`learning-plan/README.md`
 - 学习方法：`learning-plan/00-learning-method.md`
 - 讲师监督、掌握度评分和动态调整：`learning-plan/07-instructor-supervision.md`
-- 自动监督或进度识别：`scripts/detect_learning_progress.py` 和 `prompts/progress-detection.md`
+- 自动监督或进度识别：课程仓库的 `scripts/detect_learning_progress.py` 和 `prompts/progress-detection.md`，以及显式指定的个人学习仓库
 - 当前阶段：`learning-plan/stages/` 下对应文档
 - 成果门禁：`learning-plan/06-deliverable-standards.md`
-- 当周状态：`deliverables/week-XX/README.md`
+- 当周状态：个人学习仓库的 `deliverables/week-XX/README.md`
 - 业务任务：目标案例目录下的 Scene Brief、AS-IS/TO-BE 和接入设计
 
 不要在未确认当前周目标、平台边界和业务上下文时增加框架、基础设施或大范围功能。
@@ -77,29 +77,21 @@ LLM 原理与原生 API
 | 目录 | 职责 | 不应存放 |
 | --- | --- | --- |
 | `learning-plan/` | 总路线、每日计划、学习建议和验收规范 | 源码和运行日志 |
-| `deliverables/` | 第 1–32 周成果链接、状态和证据 | 重复源码和大体积产物 |
-| `notes/` | 周复盘、实验和排错过程 | 正式架构和业务方案 |
+| `deliverables/` | 第 1–32 周公共成果要求和空白模板 | 任何学习者的当前状态、评分和个人证据 |
+| `templates/learner-repository/` | 个人学习仓库的完整目录与文档模板 | 个人记录、运行日志和唯一成果副本 |
 | `prompts/` | 带版本、经过评测的 Prompt | 临时聊天、密钥和敏感上下文 |
-| `docs/` | 平台架构、协议、工作流、Eval、安全和运维设计 | 业务访谈流水账 |
-| `business-cases/` | 场景调研、流程、接入、试点和效果复盘 | 平台源码和生产敏感数据 |
-| `data/docs/` | 可安全提交的 RAG 资料 | 未授权内部资料和索引文件 |
-| `data/eval/` | 固定数据集、评分规则和脱敏结果 | 为提高分数而临时删改的样例 |
-| `java-service/` | Java 控制面、平台 API、模型/RAG 和业务接入层 | Python Agent Runtime |
-| `python-agent/` | LangChain、LangGraph、Claude Agent SDK 执行面 | Java 控制面实现 |
-| `platform-console/` | Agent、Workflow、Run 和 Eval 的最小管理界面 | 服务端权限判断和长期凭证 |
-| `infra/` | 本地部署、观测、压测、Runbook 和恢复资料 | 业务源码、真实 Secret 和生产数据 |
 | `scripts/` | 无需 LLM 的确定性扫描、校验和辅助工具 | 业务服务实现、真实 Secret 和不可审计的状态写入 |
-| `sandbox-workspaces/` | 无敏感信息的 Agent 隔离练习项目 | 真实工作仓库、主目录和生产资料 |
-| `sandbox-workspaces/runtime/` | 可丢弃的运行副本和临时产物 | 长期成果和唯一数据副本 |
 
 新增目录必须提供 README，说明用途、预期内容、禁止内容、输入输出和与其他目录的边界。
+
+个人仓库的 `docs/`、`business-cases/`、`data/`、`java-service/`、`python-agent/`、`platform-console/`、`infra/`、`prompts/` 和 `sandbox-workspaces/` 职责由 `templates/learner-repository/` 中的 README 定义；学习者实际产出只写入个人仓库的同名目录。
 
 ## 学习计划维护规则
 
 - 根 README 只保留目标、导航、平台边界和最终交付简介。
 - 每个阶段文档必须包含每日计划、每天学习建议、每天验收、周提交和阶段出口。
 - 每日表格保持四列：`日期`、`学习任务`、`当天学习建议`、`当天验收`。
-- 调整周次时同步修改总览、阶段索引、成果标准和对应 `deliverables/week-XX/`。
+- 调整周次时同步修改总览、阶段索引、成果标准和课程仓库对应的 `deliverables/week-XX/` 模板；不得静默改写个人仓库状态。
 - Spring AI、LangChain、LangGraph 和 Claude Agent SDK 必须各自保留独立学习成果与平台集成成果。
 - 技术/API 说明修改前核对当前官方文档，记录重要版本差异。
 - 不以赶进度为由跳过失败案例、测试、安全或阶段出口条件。
@@ -118,7 +110,7 @@ LLM 原理与原生 API
 - 阶段出口需要独立实现、排错和迁移任务，不能只重复每日练习或使用讲师已经给出的完整答案。
 - 每日和每周反馈必须明确给出“通过、部分通过、未通过”之一，以及证据、薄弱点和下一步。
 - 同一知识点连续两次未通过时安排补救任务；周核心成果未通过时不直接进入下一周核心能力。
-- 自动化 Agent 拉取仓库后必须先运行 `scripts/detect_learning_progress.py`，再由 `prompts/progress-detection.md` 路由到 FAST、REVIEW 或 FULL 模式。
+- 自动化 Agent 拉取课程仓库和个人仓库后，必须先运行 `scripts/detect_learning_progress.py --repo <课程仓库> --progress-repo <个人仓库>`，再由 `prompts/progress-detection.md` 路由到 FAST、REVIEW 或 FULL 模式。
 - 日常督促不得加载 FULL Prompt；只有首次扫描、阻塞、状态冲突、规则变化或阶段考试时才升级为 FULL。
 - 自动进度不得根据自然日期、文件数量、Commit 数量或 Agent 自述推进；以周成果、实际验证和讲师验收证据为准。
 - 学习者只能运行示例但不能解释输入、观察结果和失败原因时，最高判定为 L1；复制术语定义不得作为 Teach-back 证据。
@@ -263,6 +255,7 @@ mypy src
 
 - 使用 Conventional Commits，一个 Commit 表达一个主要意图。
 - 不擅自提交、推送、创建分支或改写历史，除非用户明确要求。
+- 用户已明确长期授权个人学习仓库 `ai-class-note`：个人进度、笔记、验收记录或成果发生变更时，完成必要检查后直接使用 Conventional Commit 提交并推送，无需再次确认。该授权不扩展到课程仓库、其他仓库、建分支或改写历史。
 - 不修改或删除与当前任务无关的用户变更。
 - 正式文档使用简体中文，标识符和 API 名保留英文。
 - 架构图、流程图、状态图和接口示例必须与当前实现一致。

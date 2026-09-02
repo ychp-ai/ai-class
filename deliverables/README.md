@@ -1,12 +1,20 @@
-# 每周成果目录
+# 每周课程成果要求与复制模板
 
-本目录为第 1–32 周预留成果索引和验收记录。每个 `week-XX/README.md` 只记录目标、真实成果链接、验证证据、失败案例、取舍和状态。
+本目录保存第 1–32 周的公共成果要求和空白验收模板，不保存任何学习者的当前状态、成果链接、评分或个人证据。每位学习者应把个人记录放在独立仓库的 `deliverables/week-XX/README.md`。
 
-成果应放在实际职责目录：源码进入 `java-service/`、`python-agent/` 或 `platform-console/`，平台设计进入 `docs/`，业务落地材料进入 `business-cases/`，运行和部署资料进入 `infra/`，数据进入 `data/`。不要为了周提交复制相同文件。
+首次建立个人仓库时运行：
+
+```bash
+python3 scripts/init_learning_progress.py \
+  --course-repo . \
+  --progress-repo ../ai-class-note
+```
+
+脚本从 [`templates/learner-repository`](../templates/learner-repository/README.md) 复制通用文档，并从本目录读取 32 周主题。个人源码、设计、业务材料、数据和运行证据都写入个人仓库的对应职责目录，不回写课程仓库。
 
 周提交标准见[成果与提交标准](../learning-plan/06-deliverable-standards.md)。
 
-## 周成果索引
+## 课程周要求索引
 
 | 周次 | 主题 | 目录 |
 | --- | --- | --- |

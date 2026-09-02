@@ -508,7 +508,7 @@ def render_week(week: int, lessons: list[Lesson]) -> str:
 
 # 第 {week:02d} 周教程：{guide.title}
 
-> 计划来源：[{guide.stage_file}](../stages/{guide.stage_file})。阶段文档决定课程任务和验收，本文件解释逐节学习方法；学习状态仍只记录在[第 {week:02d} 周成果](../../deliverables/week-{week:02d}/README.md)。
+> 计划来源：[{guide.stage_file}](../stages/{guide.stage_file})。阶段文档决定课程任务和验收，[第 {week:02d} 周公共成果要求](../../deliverables/week-{week:02d}/README.md)定义门禁；学习状态只记录在个人学习仓库。
 
 ## 本周先理解
 
@@ -553,14 +553,14 @@ def render_index() -> str:
 
 参考答案严格对应“怎么学”的五个步骤：先给预测示例，再定位资料链接中的章节/条目，然后提供对应 Mermaid 图、样例代码或文档模板，最后给出失败注入、交付物和 Teach-back 示例。
 
-本目录只负责教学展开，不保存学习进度、运行日志、源码或周验收结论。阶段计划仍以 `learning-plan/stages/` 为准；当周证据与状态仍以 `deliverables/week-XX/README.md` 为唯一入口；学习过程记录在 `notes/week-XX.md`。
+本目录只负责教学展开，不保存学习进度、运行日志、源码或周验收结论。阶段计划仍以课程仓库的 `learning-plan/stages/` 为准；当周证据与状态以个人学习仓库的 `deliverables/week-XX/README.md` 为唯一入口，学习过程记录在个人仓库的 `notes/week-XX.md`。
 
 ## 推荐使用顺序
 
 1. 先看对应[阶段计划](../stages/README.md)，确认本周目标、前置能力和阶段出口。
 2. 按[开发语言路线](../01-language-roadmap.md)确认当周默认语言和是否需要桥接，再打开当周教程；每天只做一节，并按 60 分钟节奏留下真实证据，至少独立尝试 20 分钟后再看参考答案。
 3. 参考答案只用于解除阻塞。看完后关闭答案，改变一个输入或约束独立重做，并把命令、输入输出、失败解释和 Teach-back 摘要写入周笔记。
-4. 周日从当周成果 README 链接证据，完成变体任务，再接受讲师验收。
+4. 周日在个人学习仓库的当周成果 README 中链接证据，完成变体任务，再接受讲师验收。
 5. 若教程与阶段四列表格不一致，以阶段表格为准，并运行 `python3 scripts/generate_course_tutorials.py --check` 检查是否需要重新生成。
 
 ## 每节课的通过含义

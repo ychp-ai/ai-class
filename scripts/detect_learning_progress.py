@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Deterministically scan learning progress without calling an LLM."""
+"""Scan a learner repository against this course without calling an LLM."""
 
 from __future__ import annotations
 
@@ -13,7 +13,7 @@ from typing import Any
 
 
 WEEK_COUNT = 32
-CORE_FILES = (
+COURSE_FILES = (
     "AGENTS.md",
     "README.md",
     "learning-plan/README.md",
@@ -21,6 +21,10 @@ CORE_FILES = (
     "learning-plan/06-deliverable-standards.md",
     "learning-plan/07-instructor-supervision.md",
     "learning-plan/stages/README.md",
+    "deliverables/README.md",
+)
+PROGRESS_FILES = (
+    "README.md",
     "deliverables/README.md",
 )
 PLACEHOLDER_TERMS = ("待填写", "待完成", "待补充")
@@ -63,12 +67,17 @@ class WeekScan:
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="Read learning artifacts and emit a compact progress-scan.v1 JSON."
+        description="Read course rules plus learner artifacts and emit progress-scan.v2 JSON."
     )
     parser.add_argument(
         "--repo",
         default=".",
         help="Repository directory or a child directory. Defaults to current directory.",
+    )
+    parser.add_argument(
+        "--progress-repo",
+        required=True,
+        help="Independent learner repository containing deliverables/ and notes/.",
     )
     parser.add_argument(
         "--pretty",
@@ -78,12 +87,12 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def locate_repo(start: Path) -> Path | None:
+def locate_course_repo(start: Path) -> Path | None:
     current = start.resolve()
     if current.is_file():
         current = current.parent
     for candidate in (current, *current.parents):
-        if all((candidate / path).exists() for path in CORE_FILES[:4]):
+        if all((candidate / path).exists() for path in COURSE_FILES[:4]):
             return candidate
     return None
 
@@ -258,11 +267,16 @@ def extract_week_plan(root: Path, stage: Stage | None, week: int) -> list[dict[s
     ]
 
 
-def invalid_result(root: Path | None, missing: list[str]) -> dict[str, Any]:
+def invalid_result(
+    course_root: Path | None,
+    progress_root: Path | None,
+    missing: list[str],
+) -> dict[str, Any]:
     return {
-        "schema_version": "progress-scan.v1",
+        "schema_version": "progress-scan.v2",
         "repository_status": "INVALID",
-        "repository_root": str(root) if root else None,
+        "course_root": str(course_root) if course_root else None,
+        "progress_root": str(progress_root) if progress_root else None,
         "missing_required_files": missing,
         "current_stage": None,
         "current_week": None,
@@ -276,22 +290,41 @@ def invalid_result(root: Path | None, missing: list[str]) -> dict[str, Any]:
     }
 
 
-def scan(root: Path) -> dict[str, Any]:
-    required = list(CORE_FILES) + [
+def scan(course_root: Path, progress_root: Path) -> dict[str, Any]:
+    if course_root.resolve() == progress_root.resolve():
+        return invalid_result(
+            course_root,
+            progress_root,
+            ["progress repository must be separate from course repository"],
+        )
+    course_required = list(COURSE_FILES)
+    progress_required = list(PROGRESS_FILES) + [
         f"deliverables/week-{week:02d}/README.md" for week in range(1, WEEK_COUNT + 1)
     ]
-    missing = [relative for relative in required if not (root / relative).exists()]
+    missing = [
+        f"course:{relative}"
+        for relative in course_required
+        if not (course_root / relative).exists()
+    ] + [
+        f"progress:{relative}"
+        for relative in progress_required
+        if not (progress_root / relative).exists()
+    ]
     if missing:
-        return invalid_result(root, missing)
+        return invalid_result(course_root, progress_root, missing)
 
-    stages = parse_stages(root)
-    topics = parse_topics(root)
+    stages = parse_stages(course_root)
+    topics = parse_topics(course_root)
     if not stages:
-        return invalid_result(root, ["learning-plan/stages/README.md:stage mappings"])
+        return invalid_result(
+            course_root,
+            progress_root,
+            ["course:learning-plan/stages/README.md:stage mappings"],
+        )
 
     weeks = [
         classify_week(
-            root / f"deliverables/week-{week:02d}/README.md",
+            progress_root / f"deliverables/week-{week:02d}/README.md",
             topics.get(week, f"Week {week:02d}"),
         )
         for week in range(1, WEEK_COUNT + 1)
@@ -302,7 +335,7 @@ def scan(root: Path) -> dict[str, Any]:
         None,
     )
 
-    rules_paths = [*CORE_FILES[:-1], *[stage.path for stage in stages]]
+    rules_paths = [*COURSE_FILES, *[stage.path for stage in stages]]
     progress_paths = [
         "deliverables/README.md",
         *[
@@ -311,16 +344,17 @@ def scan(root: Path) -> dict[str, Any]:
         ],
     ]
     current_notes = f"notes/week-{current.number:02d}.md" if current else None
-    if current_notes and (root / current_notes).exists():
+    if current_notes and (progress_root / current_notes).exists():
         progress_paths.append(current_notes)
 
     if current is None:
         return {
-            "schema_version": "progress-scan.v1",
+            "schema_version": "progress-scan.v2",
             "repository_status": "VALID",
-            "repository_root": ".",
-            "rules_fingerprint": sha256_files(root, rules_paths),
-            "progress_fingerprint": sha256_files(root, progress_paths),
+            "course_root": str(course_root),
+            "progress_root": str(progress_root),
+            "rules_fingerprint": sha256_files(course_root, rules_paths),
+            "progress_fingerprint": sha256_files(progress_root, progress_paths),
             "overall_status": "COMPLETED",
             "current_stage": None,
             "current_week": None,
@@ -334,7 +368,7 @@ def scan(root: Path) -> dict[str, Any]:
         }
 
     current_stage = stage_for_week(stages, current.number)
-    week_plan = extract_week_plan(root, current_stage, current.number)
+    week_plan = extract_week_plan(course_root, current_stage, current.number)
     recommended_day = None
     if current.recognized_status == "NOT_STARTED" and week_plan:
         recommended_day = week_plan[0]["date"]
@@ -370,11 +404,12 @@ def scan(root: Path) -> dict[str, Any]:
     )
 
     return {
-        "schema_version": "progress-scan.v1",
+        "schema_version": "progress-scan.v2",
         "repository_status": "VALID",
-        "repository_root": ".",
-        "rules_fingerprint": sha256_files(root, rules_paths),
-        "progress_fingerprint": sha256_files(root, progress_paths),
+        "course_root": str(course_root),
+        "progress_root": str(progress_root),
+        "rules_fingerprint": sha256_files(course_root, rules_paths),
+        "progress_fingerprint": sha256_files(progress_root, progress_paths),
         "overall_status": (
             "BLOCKED"
             if current.recognized_status == "BLOCKED"
@@ -404,7 +439,7 @@ def scan(root: Path) -> dict[str, Any]:
             "readme_path": f"deliverables/week-{current.number:02d}/README.md",
             "notes_path": (
                 f"notes/week-{current.number:02d}.md"
-                if (root / f"notes/week-{current.number:02d}.md").exists()
+                if (progress_root / f"notes/week-{current.number:02d}.md").exists()
                 else None
             ),
             "placeholders": current.placeholders,
@@ -424,11 +459,12 @@ def scan(root: Path) -> dict[str, Any]:
 
 def main() -> int:
     args = parse_args()
-    repo = locate_repo(Path(args.repo))
-    if repo is None:
-        result = invalid_result(None, list(CORE_FILES[:4]))
+    course_root = locate_course_repo(Path(args.repo))
+    progress_root = Path(args.progress_repo).resolve()
+    if course_root is None:
+        result = invalid_result(None, progress_root, list(COURSE_FILES[:4]))
     else:
-        result = scan(repo)
+        result = scan(course_root, progress_root)
     if args.pretty:
         print(json.dumps(result, ensure_ascii=False, indent=2))
     else:

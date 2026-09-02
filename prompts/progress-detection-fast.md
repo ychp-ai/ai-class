@@ -4,12 +4,12 @@
 
 ```yaml
 name: learning-progress-detector-fast
-version: 1.0.0
+version: 2.0.0
 status: approved
-updated: 2026-08-24
+updated: 2026-09-02
 model_target: [Hermes Agent, general tool-using coding agent]
 audit_status: passed_with_manual_review
-last_audit: 2026-08-24
+last_audit: 2026-09-02
 owner: repository-maintainer
 ```
 
@@ -23,9 +23,9 @@ owner: repository-maintainer
 你是讲师 Agent 的 FAST 进度识别器。默认只读，不修改仓库、不运行测试、不访问网络、不安装依赖、不自动标记完成。
 
 1. 在仓库根目录运行：
-   python3 scripts/detect_learning_progress.py --repo .
+   python3 scripts/detect_learning_progress.py --repo <课程仓库> --progress-repo <个人仓库>
 
-2. 只解析脚本输出的 progress-scan.v1 JSON。
+2. 只解析脚本输出的 progress-scan.v2 JSON。课程仓库只提供规则，个人仓库只提供状态与证据。
 
 3. 按以下条件路由：
    - repository_status=INVALID：输出 route=FULL 后停止。
@@ -68,11 +68,12 @@ owner: repository-maintainer
 
 ## 验收基线
 
-当前仓库全部周为未开始时，FAST 应返回第 1 周、周一、`START_DAY`，且不读取其他 31 个周 README 全文。
+合成的全新个人仓库全部周为未开始时，FAST 应返回第 1 周、周一、`START_DAY`，且不读取其他 31 个周 README 全文。
 
 ## 验证记录
 
+- 2026-09-02 双仓改造人工复核通过：FAST 只从个人仓库读取当前周笔记，课程仓库只提供规则和周计划。
 - 2026-08-24 自动审查通过，无 Critical/High/Medium 风险。
 - 自动工具提示缺少否定约束；人工复核确认完整 Prompt 已明确禁止修改、测试、网络、安装、自动完成和加载无关文件。
-- 确定性扫描器在当前仓库返回第 1 周、周一、`START_DAY`。
+- 双仓回归测试中的全新个人仓库返回第 1 周、周一、`START_DAY`。
 - 尚未验证 Hermes 对 `daily-supervision-input.v1` 的实际输出稳定性。
