@@ -21,6 +21,12 @@
 | 管理端 | API 优先；React/TypeScript 最小控制台可按现有前端基础实现 |
 | 运行与观测 | Docker Compose、OpenTelemetry/Micrometer、结构化日志 |
 
+## 杭州就业方向与课程调整
+
+2026-09-06 按杭州 Java + AI、Agent 应用/平台和企业集成岗位复核课程，保留 32 周、224 小时和四个必修框架。重点加强 AI 编程贡献证据、上下文预算、混合检索/重排、评分复核、CI 回归和业务反馈闭环；第 25 周场景选择与第 32 周岗位答辩面向杭州。详细岗位来源、证据等级、时间替换和个人进度迁移规则见[杭州招聘与课程对齐](10-job-market-alignment.md)。
+
+完成主线能形成应用与平台 MVP 证据，不等于满足全部高级岗位。部分杭州岗位明确要求微调、Python 深度、真实用户上线经历或更高学历；这些差距必须单列，不能把选型文档写成训练实战。
+
 ## 开发语言路线
 
 课程不是让学习者在第一天同时学习 Java、Python 和 TypeScript，而是按职责分阶段切换：
@@ -168,7 +174,7 @@ PostgreSQL / Vector Store / Object Storage / Sandbox
 
 每个每日课程的“当天学习建议”末尾都附有“相关资料”链接。每天约 20 分钟的资料学习只阅读与当天任务直接相关的章节，并把版本、关键结论和仍待验证的问题记入周笔记；链接是实践入口，不替代亲自运行、失败实验和 Teach-back。
 
-框架和 API 优先链接当前官方入口，协议则固定到明确的稳定版本，避免课程内容随网页默认版本静默变化。平台工作流设计应利用持久化、人工审批和故障恢复能力；LangGraph 的 Checkpoint 用于 HITL、恢复和调试，Spring AI 的模型、工具与向量调用可以接入统一观测，MCP HTTP 接入必须按协议实现授权和资源绑定。MCP 课程当前以 `2025-11-25` 稳定版为基线，`2026-07-28` Release Candidate 暂不作为实现验收依据。
+框架和 API 优先链接当前官方入口，学习前必须核对页面主版本与工程兼容关系。2026-09-06 Spring AI 默认页已为 2.x（面向 Boot 4.x），本课程仍使用 Boot 3.x，须选择兼容的官方 BOM 与版本文档；差异记录见[版本核验](10-job-market-alignment.md#版本核验与维护)。协议固定到明确的稳定版本，避免课程内容随网页默认版本静默变化。平台工作流设计应利用持久化、人工审批和故障恢复能力；LangGraph 的 Checkpoint 用于 HITL、恢复和调试，Spring AI 的模型、工具与向量调用可以接入统一观测，MCP HTTP 接入必须按协议实现授权和资源绑定。MCP 课程当前以 `2025-11-25` 稳定版为基线，`2026-07-28` Release Candidate 暂不作为实现验收依据。
 
 相关官方资料：[LangGraph Persistence](https://docs.langchain.com/oss/python/langgraph/persistence)、[Spring AI Observability](https://docs.spring.io/spring-ai/reference/observability/index.html)、[MCP Authorization](https://modelcontextprotocol.io/specification/2025-11-25/basic/authorization)、[Claude Agent SDK](https://code.claude.com/docs/en/agent-sdk/overview)。
 

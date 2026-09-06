@@ -36,6 +36,7 @@
 | [阶段七：工作流与平台治理](learning-plan/stages/07-workflow-governance.md) | 第 21–24 周：编排运行时、审批、权限、评测和运维 |
 | [阶段八：业务场景与流程设计](learning-plan/stages/08-business-scenario-process.md) | 第 25–28 周：调研、AS-IS/TO-BE、价值评估和接入设计 |
 | [阶段九：试点上线与最终交付](learning-plan/stages/09-pilot-production-capstone.md) | 第 29–32 周：系统接入、试点、生产硬化和效果复盘 |
+| [杭州招聘与课程对齐](learning-plan/10-job-market-alignment.md) | 2026-09-06 岗位证据、能力差距、课程调整与专项边界 |
 | [成果与提交标准](learning-plan/06-deliverable-standards.md) | 每周提交、阶段出口、平台和业务验收标准 |
 | [Agent 协作规范](AGENTS.md) | 仓库目录、讲师监督、工程质量、安全和业务落地约束 |
 

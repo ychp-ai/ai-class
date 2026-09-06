@@ -34,7 +34,7 @@
 
 | 日期 | 学习任务 | 当天学习建议 | 当天验收 |
 | --- | --- | --- | --- |
-| 周一 | 建立候选场景清单 | 从频次、耗时、错误、知识密度、跨系统和可复核性评分；不要以“能聊天”作为价值<br>相关资料：[GOV.UK Discovery Phase](https://www.gov.uk/service-manual/agile-delivery/how-the-discovery-phase-works) | 至少三个场景评分表 |
+| 周一 | 建立候选场景清单 | 结合杭州岗位场景，从商家运营工单、内部 IT 服务、研发知识排障等选择三个候选；按频次、耗时、错误、知识密度、跨系统、授权数据和可复核性评分；行业名称不替代真实需求证据<br>相关资料：[GOV.UK Discovery Phase](https://www.gov.uk/service-manual/agile-delivery/how-the-discovery-phase-works) | 三个场景评分与数据/Owner 可得性 |
 | 周二 | 选择场景与明确业务目标 | 与业务负责人确认目标、非目标、用户、Owner 和决策期限；优先选择可小范围试点场景<br>相关资料：[GOV.UK Discovery Phase](https://www.gov.uk/service-manual/agile-delivery/how-the-discovery-phase-works) | 一页 Scene Brief |
 | 周三 | 设计访谈提纲 | 分别询问执行者、审批者、系统 Owner 和风险角色；关注真实例外而非理想 SOP<br>相关资料：[GOV.UK 用户研究计划](https://www.gov.uk/service-manual/user-research/plan-user-research-for-your-service) | 访谈问题与对象表 |
 | 周四 | 执行访谈或高保真模拟 | 记录事实、原话摘要、分歧和待验证项；模拟案例必须注明假设和数据来源<br>相关资料：[GOV.UK Discovery 用户研究](https://www.gov.uk/service-manual/user-research/user-research-in-discovery) | 访谈纪要与问题清单 |

@@ -78,15 +78,15 @@
 | 周二 | Few-shot、反例和拒答 | 示例应覆盖边界而非只给正常路径；加入资料不足时明确拒答的例子<br>相关资料：[OpenAI Prompt Engineering](https://platform.openai.com/docs/guides/prompt-engineering) | 固定样例集结果更稳定 |
 | 周三 | Prompt 版本与最小 Eval 回归集 | 先固定输入、预期、判定规则和模型配置；每次只改变一个主要变量，不为提分替换困难样例<br>相关资料：[OpenAI Evals 指南](https://platform.openai.com/docs/guides/evals) | 可重复比较两个 Prompt 版本 |
 | 周四 | AI 辅助理解代码仓库 | 要求 AI 先搜索证据再下结论，所有结论回到文件和测试；抽查至少三项<br>相关资料：[Google SRE：Effective Troubleshooting](https://sre.google/sre-book/effective-troubleshooting/) | 形成可核验调用链说明 |
-| 周五 | AI 辅助实现最小变更 | 先写验收测试再让 AI 修改；检查 Diff 中的额外重构和依赖变化<br>相关资料：[Martin Fowler：Test Pyramid](https://martinfowler.com/articles/practical-test-pyramid.html) | 一个小功能测试通过 |
+| 周五 | AI 辅助实现最小变更 | 先写验收测试再让 AI 修改；记录任务约束、AI 建议、人工修正和实际测试耗时，审查额外重构与依赖变化；单次实验不推断普遍提效比例<br>相关资料：[Martin Fowler：Test Pyramid](https://martinfowler.com/articles/practical-test-pyramid.html) | 一个小功能测试通过且个人贡献可追溯 |
 | 周六 | AI 输出审查与安全 | 检查命令、依赖、许可证、敏感信息和越权访问；至少拒绝一条不安全建议<br>相关资料：[OWASP Agentic AI Top 10](https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/) | 审查清单和拒绝记录 |
-| 周日 | 固化可复用协作模板 | 模板包含目标、上下文、非目标、验收、可用工具和停止条件<br>相关资料：[成果与提交标准](../06-deliverable-standards.md) | 完成本周提交 |
+| 周日 | 固化可复用协作模板 | 复用本周改动，模板包含目标、上下文、非目标、验收、工具和停止条件；更换一个输入验证模板并保留人工纠错记录<br>相关资料：[成果与提交标准](../06-deliverable-standards.md) | 模板变体有证据，完成本周提交 |
 
 ### 本周提交
 
 建议 Commit：`docs: establish evaluated ai coding workflow`
 
-必须包含：版本化 Prompt、固定回归样例、代码库分析记录、一次测试驱动的小改动和 AI 输出审查清单。
+必须包含：版本化 Prompt、固定回归样例、代码库分析记录、一次测试驱动的小改动、人工修正与耗时记录、可复用任务模板及变体验证、AI 输出审查清单。
 
 最低验收：结论可追溯；代码修改有测试；Prompt 改进基于同一回归集而非主观感觉。
 

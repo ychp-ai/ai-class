@@ -80,13 +80,13 @@
 | 周四 | 超时、重试、熔断与 Cache | 重试只覆盖安全错误；Cache Key 包含模型、Prompt、Tool Schema 和参数，敏感内容不跨项目复用<br>相关资料：[Resilience4j Guide](https://resilience4j.readme.io/docs/getting-started) | 故障与 Cache 隔离测试 |
 | 周五 | 路由与 Fallback | 按能力、成本、延迟和数据策略路由；Fallback 前确认 Schema、上下文和工具能力兼容<br>相关资料：[Google SRE：Handling Overload](https://sre.google/sre-book/handling-overload/) | 主模型失败可受控降级 |
 | 周六 | 配额、限流与成本预算 | 同时设置请求、Token、并发和单次预算；超额返回明确业务错误<br>相关资料：[RFC 9333：RateLimit 字段](https://www.rfc-editor.org/rfc/rfc9333.html) | 超限请求不会调用模型 |
-| 周日 | 基准与路由报告 | 用固定任务比较质量、P95 延迟、Token 和成本，避免只比回答观感<br>相关资料：[OpenAI Eval 最佳实践](https://platform.openai.com/docs/guides/evaluation-best-practices) | 完成本周提交 |
+| 周日 | 基准与路由报告 | 复用本周实验，固定任务、输入/输出长度、硬件、并发、模型与量化版本，比较质量、首 Token 延迟、P95 总延迟、Token 和成本；本地成本单列假设，不按零元；补 RAG/Prompt/微调选型理由，不把选型等同训练经验<br>相关资料：[vLLM 服务基准指标](https://docs.vllm.ai/en/stable/cli/bench/serve/) | 可复核基准与选型 ADR，完成本周提交 |
 
 ### 本周提交
 
 建议 Commit：`feat: implement governed model gateway with routing`
 
-必须包含：统一模型接口、至少两个适配器或一个真实加一个 Stub、模型别名、路由、配额、Fallback、Usage 和基准报告。
+必须包含：统一模型接口、至少两个适配器或一个真实加一个 Stub、模型别名、路由、配额、Fallback、Usage 和含硬件/并发/模型版本/首 Token 延迟/质量的基准报告；本地推理与量化实验、Prompt/RAG/微调选型 ADR。
 
 验收标准：业务代码不依赖供应商细节；配额和隔离由代码控制；失败、降级和成本可以观测。
 
@@ -97,16 +97,16 @@
 | 周一 | Tool Registry 与版本 | Schema、风险级别、Owner、权限和版本都必填；同名工具不可悄悄换语义<br>相关资料：[MCP Tools](https://modelcontextprotocol.io/specification/2025-11-25/server/tools) | 工具注册和版本 API |
 | 周二 | Tool Credential 与权限 | 凭证使用引用，运行时按 Project、Agent、用户和 Scope 求交集<br>相关资料：[MCP Authorization](https://modelcontextprotocol.io/specification/2025-11-25/basic/authorization) | 无授权工具无法注入 |
 | 周三 | MCP Client/Server 与授权 | 同时做最小 Server 和 Client；HTTP 方式验证资源绑定，stdio 不套用 HTTP OAuth<br>相关资料：[MCP 2025-11-25 Specification](https://modelcontextprotocol.io/specification/2025-11-25) | MCP 往返与拒绝案例 |
-| 周四 | 动态工具发现与上下文预算 | 工具多时先搜索再加载；对历史、工具结果和检索内容设置预算、裁剪和摘要策略<br>相关资料：[LangChain Context Engineering](https://docs.langchain.com/oss/python/langchain/context-engineering) | Token 节省和质量对比 |
+| 周四 | 动态工具发现与上下文预算 | 复用第 8 周构造器，先按任务筛选已有工具再加载；区分会话状态、跨会话记忆和审计日志；对历史、工具结果、检索片段设预算，验证 Project/session 隔离及历史清理，不新增记忆数据库<br>相关资料：[LangChain Context Engineering](https://docs.langchain.com/oss/python/langchain/context-engineering) | Token/质量对比、隔离与清理测试 |
 | 周五 | Knowledge Base 控制面 | 管理数据源、Chunk、Embedding、索引版本和状态；重建索引不覆盖线上版本<br>相关资料：[Spring AI ETL Pipeline](https://docs.spring.io/spring-ai/reference/api/etl-pipeline.html) | 索引版本可切换 |
-| 周六 | 进阶检索、权限与评测 | 比较 BM25+向量混合检索、Rerank、Query Rewrite；加入 ACL，并用 Recall@K/MRR 验证<br>相关资料：[Qdrant Hybrid Queries](https://qdrant.tech/documentation/concepts/hybrid-queries/) | 质量提升且越权文档不召回 |
+| 周六 | 重排、权限与检索评测 | 复用第 10 周混合检索，在同一固定数据上只改变是否重排；重排只能排序已有候选，不能补回漏召回；ACL 在候选返回前生效，比较 Recall@K、MRR、答案质量和延迟；Query Rewrite 另作可选实验<br>相关资料：[Qdrant Hybrid Queries](https://qdrant.tech/documentation/search/hybrid-queries/) | 重排收益或退化可解释，越权文档不进入候选 |
 | 周日 | 平台核心端到端验收 | 发布一个同时使用模型、工具和知识库的 Agent，记录每项依赖版本<br>相关资料：[成果与提交标准](../06-deliverable-standards.md) | 完成阶段提交 |
 
 ### 阶段提交
 
 建议 Commit：`feat: complete platform tool mcp and knowledge registries`
 
-必须包含：Tool/MCP Registry、凭证引用、Scope、MCP 示例、上下文预算、Knowledge Base 与索引版本、混合检索/Rerank、ACL、检索评测、Agent 依赖快照和端到端记录。
+必须包含：Tool/MCP Registry、凭证引用、Scope、MCP 示例、上下文预算与会话隔离、Knowledge Base 与索引版本、混合检索/Rerank、ACL、检索评测、Agent 依赖快照和端到端记录。
 
 验收标准：已发布 Agent 的所有依赖可追溯；未授权工具和文档不可见；索引升级可以灰度或回滚。
 
@@ -117,6 +117,7 @@
 - 至少支持 Project 级资源隔离和基础 RBAC。
 - 模型调用具备路由、配额、降级、成本和错误治理。
 - Agent 运行可以追溯到模型、Prompt、工具和索引的具体版本。
+- 检索和模型选型有固定条件的对照；上下文和会话不跨 Project 混用，必要信息超预算明确失败。
 
 官方资料：[Spring AI Tool Calling](https://docs.spring.io/spring-ai/reference/api/tools.html)、[Hugging Face PEFT/LoRA](https://huggingface.co/docs/peft/main/conceptual_guides/lora)、[MCP Specification](https://modelcontextprotocol.io/specification/2025-11-25)、[MCP Authorization](https://modelcontextprotocol.io/specification/2025-11-25/basic/authorization)。本课程以 `2025-11-25` 稳定版为实现和验收基线；[2026-07-28 RC](https://blog.modelcontextprotocol.io/posts/2026-07-28-release-candidate/) 仅用于了解下一版变化。
 

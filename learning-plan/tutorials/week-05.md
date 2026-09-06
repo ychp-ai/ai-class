@@ -107,25 +107,25 @@ final class HealthController {
 
 **为什么学**
 
-本周要把原生模型能力接入熟悉的 Java 服务，同时保留流式、配置、错误和观测边界。本节把“引入 Spring AI 模型 Starter”推进为可检查成果；如果跳过，后续会缺少“API Key 仅来自环境变量”这项关键证据。
+本周要把原生模型能力接入熟悉的 Java 服务，同时保留流式、配置、错误和观测边界。本节把“引入 Spring AI 模型 Starter”推进为可检查成果；如果跳过，后续会缺少“依赖兼容且 API Key 仅来自环境变量”这项关键证据。
 
 **这个是什么**
 
-本周核心概念是：Spring AI Chat 是 Spring 生态中的模型与消息抽象；它减少 Provider 接入样板，但不替代业务权限、失败处理或质量验证。今天的“引入 Spring AI 模型 Starter”是这个核心能力的最小学习单元：你会通过“使用官方 BOM 和当前文档；先配置 `.env.example`，再设置本地环境变量”观察输入如何转化为“API Key 仅来自环境变量”。它既包含可观察结果，也包含至少一个失败或不适用边界。只读完资料或只跑通正常路径，都不能证明已经掌握。
+本周核心概念是：Spring AI Chat 是 Spring 生态中的模型与消息抽象；它减少 Provider 接入样板，但不替代业务权限、失败处理或质量验证。今天的“引入 Spring AI 模型 Starter”是这个核心能力的最小学习单元：你会通过“使用与 Spring Boot 3.x 兼容的官方 BOM 与版本文档；默认官网已到 2.x，不直接复制其依赖；先配置 `.env.example` 再设置环境变量，记录构建结果”观察输入如何转化为“依赖兼容且 API Key 仅来自环境变量”。它既包含可观察结果，也包含至少一个失败或不适用边界。只读完资料或只跑通正常路径，都不能证明已经掌握。
 
 **怎么学（约 60 分钟）**
 
 1. `0–5 分钟`：不查资料，写下你对本节主题的一句话解释、预期输入输出和一个疑问。
 2. `5–15 分钟`：只阅读下方资料中与当前任务直接相关的部分，记录一个关键约束和版本信息。
-3. `15–45 分钟`：执行专项任务：使用官方 BOM 和当前文档；先配置 `.env.example`，再设置本地环境变量
+3. `15–45 分钟`：执行专项任务：使用与 Spring Boot 3.x 兼容的官方 BOM 与版本文档；默认官网已到 2.x，不直接复制其依赖；先配置 `.env.example` 再设置环境变量，记录构建结果
 4. `45–55 分钟`：主动制造一个错误输入、边界条件、依赖失败或反例，保存现象并解释原因。
 5. `55–60 分钟`：整理命令、输入、输出、Diff、图表或访谈证据，并用自己的语言完成 Teach-back。
 
-专项资料：[Spring AI Getting Started](https://docs.spring.io/spring-ai/reference/getting-started.html)
+专项资料：[Spring AI 1.1 文档入口](https://docs.spring.io/spring-ai/reference/1.1/index.html)
 
 **怎么验证学会了**
 
-- 必交证据：API Key 仅来自环境变量。
+- 必交证据：依赖兼容且 API Key 仅来自环境变量。
 - Teach-back：不看资料解释“引入 Spring AI 模型 Starter”解决什么问题、主要输入输出、一个边界，以及它不是什么。
 - 失败证据：展示一个非正常场景，指出失败发生在哪一层，不能只贴错误截图。
 - 变体任务：改变一个输入、参数、角色、权限或失败条件，在不照抄原步骤的情况下重新完成。
@@ -138,17 +138,17 @@ final class HealthController {
 #### 步骤 1 参考：先写预测
 
 - 一句话解释：Spring AI Chat 是 Spring 生态中的模型与消息抽象；它减少 Provider 接入样板，但不替代业务权限、失败处理或质量验证。
-- 预测：完成“引入 Spring AI 模型 Starter”后，应能观察到“API Key 仅来自环境变量”；失败输入不应产生假成功。
+- 预测：完成“引入 Spring AI 模型 Starter”后，应能观察到“依赖兼容且 API Key 仅来自环境变量”；失败输入不应产生假成功。
 
 #### 步骤 2 参考：阅读资料
 
-- 链接：[Spring AI Getting Started](https://docs.spring.io/spring-ai/reference/getting-started.html)
+- 链接：[Spring AI 1.1 文档入口](https://docs.spring.io/spring-ai/reference/1.1/index.html)
 - 指定章节/条目：Getting Started → Dependency Management、Add repositories and BOM、Model provider starter、API key properties
 - 阅读方法：只摘录一个定义、一个输入输出约束和一个失败边界；记录页面日期、协议版本或依赖版本。
 
 #### 步骤 3 参考：按专项动作完成产出
 
-- 专项动作：使用官方 BOM 和当前文档；先配置 `.env.example`，再设置本地环境变量
+- 专项动作：使用与 Spring Boot 3.x 兼容的官方 BOM 与版本文档；默认官网已到 2.x，不直接复制其依赖；先配置 `.env.example` 再设置环境变量，记录构建结果
 - 样例代码（先核对课程链接中的当前 API，再按本仓库边界修改）：
 
 ```xml
@@ -184,7 +184,7 @@ OPENAI_API_KEY=
 
 #### 步骤 5 参考：整理交付与 Teach-back
 
-- 当天交付：API Key 仅来自环境变量。
+- 当天交付：依赖兼容且 API Key 仅来自环境变量。
 - 完整字段：运行时与依赖版本；配置键；Secret 引用方式；示例占位值；启动命令；缺失配置的错误；泄露检查。
 - Teach-back 参考：本节输入是什么、经过了什么处理、输出如何验证、哪种失败最危险、为什么当前方案没有越过课程边界。
 - 完成后变体：更换一个输入、参数、角色、权限或失败条件，不看上述样例重新完成。

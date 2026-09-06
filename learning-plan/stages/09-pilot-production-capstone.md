@@ -59,14 +59,14 @@
 | 周三 | 修复 P0/P1 并回归 | 每个修复先增加回归用例；不要在试点前大范围更换模型或架构<br>相关资料：[Google SRE：Testing for Reliability](https://sre.google/sre-book/testing-reliability/) | 关键问题关闭有证据 |
 | 周四 | 小流量或影子试点 | 首选建议模式或影子模式验证准确性；高风险动作继续人工审批<br>相关资料：[GOV.UK Beta Phase](https://www.gov.uk/service-manual/agile-delivery/how-the-beta-phase-works) | 试点流量和版本可追踪 |
 | 周五 | 监控业务与 AI 指标 | 同时观察处理时间、返工、采纳率、完成率、越权、延迟和成本<br>相关资料：[GOV.UK Measuring Success](https://www.gov.uk/service-manual/measuring-success) | 日报可从数据生成 |
-| 周六 | 用户反馈与失败分析 | 将反馈映射到流程、知识、模型、工具、界面或培训，不把所有问题归因于 Prompt<br>相关资料：[GOV.UK Discovery 用户研究](https://www.gov.uk/service-manual/user-research/user-research-in-discovery) | 失败分类和优先级 |
+| 周六 | 用户反馈转为回归用例 | 将反馈归到流程、知识、模型、工具、界面或培训；选择至少一例脱敏，人工审核预期与失败分类，加入新版本数据集并跑回归；保留原固定集，不把点赞直接当正确标签<br>相关资料：[LangSmith Evaluation Concepts](https://docs.langchain.com/langsmith/evaluation-concepts) | 反馈→Case ID→数据集版本→回归结果可追溯 |
 | 周日 | TO-BE 流程验证 | 对比 Baseline，检查流程是否真的减少等待和交接；收益不足则调整或停止<br>相关资料：[GOV.UK Measuring Success](https://www.gov.uk/service-manual/measuring-success) | 完成本周提交 |
 
 ### 本周提交
 
 建议 Commit：`test: complete business pilot and workflow validation`
 
-必须包含：UAT 数据、测试记录、修复回归、试点版本、指标日报、用户反馈、失败分析和 AS-IS/TO-BE 对比。
+必须包含：UAT 数据、测试记录、修复回归、试点版本、指标日报、用户反馈、失败分析、至少一条反馈进入新版本评测集的回归记录和 AS-IS/TO-BE 对比。
 
 验收标准：试点范围、版本和数据可追溯；没有隐藏失败样例；业务收益和风险都基于统一口径。
 
@@ -98,9 +98,9 @@
 | 周二 | 计算收益、成本和风险 | 汇总节省时间、返工变化、调用成本、复核成本和事故风险，报告区间而非假精确值<br>相关资料：[AWS Well-Architected Cost Optimization](https://docs.aws.amazon.com/wellarchitected/latest/cost-optimization-pillar/welcome.html) | ROI/TCO 复盘 |
 | 周三 | 决定推广、调整或停止 | 依据预设阈值作决策；推广必须说明适用边界和新增容量/治理需求<br>相关资料：[NIST AI Resource Center](https://airc.nist.gov/) | 决策记录和后续路线 |
 | 周四 | 整理平台发布包 | 从干净环境安装、迁移、启动、创建 Agent、发布工作流和运行案例<br>相关资料：[Reproducible Builds](https://reproducible-builds.org/docs/) | 发布包可复现 |
-| 周五 | 完成架构和业务案例文档 | 图和字段必须与当前实现一致；分别写平台设计与业务过程，避免只列框架<br>相关资料：[C4 Model](https://c4model.com/) | 文档审查无过期描述 |
+| 周五 | 整理架构、业务案例与岗位证据 | 图和字段与实现一致；选两个杭州目标岗位，区分职责、硬性要求和加分项，将项目证据映射到能力、指标、个人贡献与差距；真实/模拟明确标注，不堆框架词<br>相关资料：[杭州招聘与课程对齐](../10-job-market-alignment.md) | 平台/业务文档及两岗证据映射 |
 | 周六 | 准备最终演示与故障场景 | 依次展示管理、发布、业务触发、审批、恢复、评测、攻击阻断和回滚<br>相关资料：[Google SRE：Testing for Reliability](https://sre.google/sre-book/testing-reliability/) | 20 分钟内稳定演示 |
-| 周日 | 能力答辩与学习复盘 | 按原理、实现、取舍、证据、失败、优化和限制回答；列出下一阶段真实流量目标<br>相关资料：[讲师监督与掌握度评估](../07-instructor-supervision.md) | 完成最终提交 |
+| 周日 | 能力答辩与学习复盘 | 用已有成果写三条可核实项目描述；按原理、实现、取舍、证据、失败和限制回答；现场独立改变一个预算、权限或检索条件并解释，列下一阶段岗位差距与真实流量目标<br>相关资料：[讲师监督与掌握度评估](../07-instructor-supervision.md) | 独立变体和贡献答辩，完成最终提交 |
 
 ### 最终提交
 
@@ -114,6 +114,7 @@
 - 自动化测试、固定 Eval、安全攻击集、压测和恢复演练。
 - 架构图、部署说明、Runbook、发布/回滚步骤和已知限制。
 - 演示脚本：发布 Agent、运行工作流、业务接入、审批、恢复、攻击阻断和版本回滚。
+- 两个杭州目标岗位的要求—成果—指标—个人贡献—差距映射、三条可核实项目描述和现场独立变体记录。
 
 最终验收标准：
 
@@ -130,4 +131,4 @@
 - 能独立完成业务场景发现、流程分析、方案设计、系统接入、试点和复盘。
 - 能基于质量、成本、延迟、安全和业务指标做技术决策。
 - 能处理失败、降级、审批、恢复、回滚和安全事件，而不只展示正常回答。
-- 能明确平台 MVP 与企业级规模化能力之间尚存的差距。
+- 能明确平台 MVP 与企业级规模化能力之间尚存的差距，以及杭州目标岗位的学历、资历、训练或基础设施专项差距。

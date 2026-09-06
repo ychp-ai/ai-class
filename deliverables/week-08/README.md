@@ -17,6 +17,11 @@
 - 阶段二出口检查：待填写。
 - 建议 Commit：`feat: implement bounded java agent loop with run logs`
 
+## 岗位能力补充证据
+
+- [ ] 上下文预算构造器、关键约束/工具消息配对保留、超长输出及必要信息超预算测试，同任务裁剪前后对比。
+- 依据：[杭州招聘与课程对齐](../../learning-plan/10-job-market-alignment.md)。沿用本周原成果，不另建项目。
+
 ## 讲师验收
 
 - 结论：未评审

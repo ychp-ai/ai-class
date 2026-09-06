@@ -60,12 +60,12 @@
 
 | 日期 | 学习任务 | 当天学习建议 | 当天验收 |
 | --- | --- | --- | --- |
-| 周一 | 加载和切分文档 | 尽量复用第 6 周资料与切片规则；打印元数据确认两个框架语义一致<br>相关资料：[LangChain Text Splitters](https://docs.langchain.com/oss/python/integrations/splitters) | Chunk 元数据完整 |
+| 周一 | 加载和切分文档 | 复用第 6 周资料与切片规则；抽查一份含标题、表格或重复段落的文档，记录来源 ID、版本和解析失败，不将空文本静默入库<br>相关资料：[LangChain Text Splitters](https://docs.langchain.com/oss/python/integrations/splitters) | Chunk 元数据完整且解析失败可定位 |
 | 周二 | 复用 Qdrant 或建立实验索引 | 为实验使用独立 Collection 或命名空间，避免覆盖 Spring AI Baseline<br>相关资料：[Qdrant Collections](https://qdrant.tech/documentation/concepts/collections/) | 完成语义检索 |
-| 周三 | 将 Retriever 暴露为工具 | 工具返回受控长度的片段与来源；准备无需检索的问题检查误调用<br>相关资料：[LangChain Retrieval](https://docs.langchain.com/oss/python/langchain/retrieval) | Agent 自主判断是否检索 |
-| 周四 | 增加受限文件工具 | 复用第 7 周安全用例，不因换成 Python 就降低路径校验标准<br>相关资料：[OWASP Path Traversal](https://owasp.org/www-community/attacks/Path_Traversal) | 保持只读和路径限制 |
+| 周三 | 将 Retriever 暴露为工具 | 工具返回受控长度的片段与来源；复用第 7 周只读文件工具及路径测试；准备无需检索的问题检查误调用<br>相关资料：[LangChain Retrieval](https://docs.langchain.com/oss/python/langchain/retrieval) | Agent 判断是否检索，文件工具仍只读且限路径 |
+| 周四 | 实现最小混合检索对照 | 关键词检索补充精确词，向量检索补充语义，合并候选而非直接加分；在隔离实验索引上复用五条问题，含错误码精确词及语义改写；保留纯向量配置用于周六框架公平对比，不加重排<br>相关资料：[Qdrant Hybrid Queries](https://qdrant.tech/documentation/search/hybrid-queries/) | 纯向量/混合检索逐题召回与耗时记录 |
 | 周五 | 返回结构化引用 | 用 Pydantic 约束答案与引用；程序验证引用是否属于实际召回集合<br>相关资料：[LangChain Structured Output](https://docs.langchain.com/oss/python/langchain/structured-output) | 回答关联来源 |
-| 周六 | 对比 Spring AI 与 LangChain | 用同一数据、问题、模型和指标；区分开发体验与回答质量<br>相关资料：[LangChain Retrieval](https://docs.langchain.com/oss/python/langchain/retrieval) | 完成职责和 API 对比 |
+| 周六 | 对比 Spring AI 与 LangChain | 两框架先固定纯向量检索、文档、切片、模型和问题；逐题记录预期来源、实际召回、引用与答案，区分解析、检索和生成错误；周四混合检索另列实验，不归因于框架<br>相关资料：[LangChain Retrieval](https://docs.langchain.com/oss/python/langchain/retrieval) | 公平框架对比与分层失败诊断 |
 | 周日 | 使用相同问题集验证 | 保存完整成功与失败结果，不根据结果临时替换问题；总结选择建议<br>相关资料：[OpenAI Evals 指南](https://platform.openai.com/docs/guides/evals) | 完成本周提交 |
 
 ### 本周提交
@@ -78,6 +78,7 @@
 - 与 Spring AI 使用同一批文档和 5 条问题的结果。
 - `docs/spring-ai-vs-langchain.md`，对比模型接口、工具、RAG、Agent、测试和适用场景。
 - 至少一个“模型不应检索”的问题和一个资料不足的拒答案例。
+- 同一问题集的纯向量/混合检索实验、解析失败记录和分层诊断；原只读文件工具与路径限制测试继续通过。
 
 验收标准：对比基于运行结果而非框架宣传；两种实现的输入数据和评测问题一致；引用能够回到原文件。
 
@@ -111,7 +112,7 @@
 
 - 能使用类型标注、Pydantic 和异步 API 编写基础 Python Agent。
 - LangChain Agent 能正确处理工具成功、工具失败和无需工具三类任务。
-- 能解释 LangChain 与 Spring AI 的选择依据。
+- 能解释 LangChain 与 Spring AI 的选择依据，并区分框架对比与检索策略实验。
 - LangGraph 工作流可以暂停、拒绝和恢复。
 - 确定性业务规则由代码控制，而不是全部交给模型判断。
 

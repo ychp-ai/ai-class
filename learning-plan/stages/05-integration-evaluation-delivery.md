@@ -79,12 +79,12 @@ class ExecutionResult(BaseModel):
 
 | 日期 | 学习任务 | 当天学习建议 | 当天验收 |
 | --- | --- | --- | --- |
-| 周一 | 定义 RAG 和 Agent 指标 | 每个指标写清计算公式、数据来源和好坏方向，避免“整体感觉不错”<br>相关资料：[OpenAI Eval 最佳实践](https://platform.openai.com/docs/guides/evaluation-best-practices) | 指标有明确判断方法 |
-| 周二 | 准备 20 条 RAG 问题 | 在看系统结果前先写预期答案与来源；加入无答案和相似干扰问题<br>相关资料：[NIST AI Resource Center](https://airc.nist.gov/) | 覆盖事实、路径、总结和拒答 |
-| 周三 | 准备 10 条 Agent 任务 | 每个任务提供初始工作区、允许副作用和机器可执行的验收命令<br>相关资料：[OpenAI Evals 指南](https://platform.openai.com/docs/guides/evals) | 覆盖只读、修改、失败和拒绝 |
+| 周一 | 定义 RAG 和 Agent 分层指标 | 分别衡量召回、引用依据、答案、工具选择/参数、任务完成和权限阻断；为每个指标写公式、数据来源和方向，确定性结果用代码断言<br>相关资料：[LangSmith Evaluation Concepts](https://docs.langchain.com/langsmith/evaluation-concepts) | 分层指标和固定评分规则 |
+| 周二 | 准备 20 条 RAG 问题并固定划分 | 复用已有问题与文档，在看结果前标预期来源、答案或拒答规则；分开发集 15 条、留出集 5 条，两组均含无答案及干扰样例；冻结 ID 和版本<br>相关资料：[LangSmith Evaluation Concepts](https://docs.langchain.com/langsmith/evaluation-concepts) | 20 条数据有来源、评分和不可随意变动的划分 |
+| 周三 | 准备 10 条 Agent 任务 | 每题包含初始工作区、允许副作用、预期工具/参数约束与验收命令；分开发集 7 条、留出集 3 条，合计覆盖只读、修改、失败和拒绝<br>相关资料：[LangSmith Evaluation Concepts](https://docs.langchain.com/langsmith/evaluation-concepts) | 10 条任务有执行断言和固定划分 |
 | 周四 | 统一 Trace、日志和成本字段 | 使用同一任务 ID 贯穿服务；日志字段稳定，敏感内容脱敏且大输出截断<br>相关资料：[OpenTelemetry Semantic Conventions](https://opentelemetry.io/docs/specs/semconv/) | Java/Python 关联同一任务 |
-| 周五 | 跑第一轮 Baseline | 冻结模型、Prompt、数据和参数；保存全部原始结果，包括超时和失败<br>相关资料：[OpenAI Evals 指南](https://platform.openai.com/docs/guides/evals) | 保存完整原始结果 |
-| 周六 | 只调整一个主要变量并复测 | 选择最可能影响失败的变量，记录假设；不要为了提升分数删除困难用例<br>相关资料：[OpenAI Eval 最佳实践](https://platform.openai.com/docs/guides/evaluation-best-practices) | 有可解释对照 |
+| 周五 | 跑 Baseline 并人工复核评分 | 冻结模型、Prompt、数据和评分规则；先在开发集运行，保留超时与失败；复核五条覆盖正确、错误、拒答、工具失败及评分存疑的样例，记录评分分歧；模型裁判不能替代代码断言<br>相关资料：[评分可信度与复核方法](../10-job-market-alignment.md#评分可信度第-15-周) | Baseline、五条复核与裁判/规则版本 |
+| 周六 | 只调整一个主要变量并复测 | 仅用开发集选一次改动；在固定留出集上比较改动前后，不看结果逐题调参；如改评分规则，两版本同口径重跑；无提升也报告原因<br>相关资料：[LangSmith Evaluation Concepts](https://docs.langchain.com/langsmith/evaluation-concepts) | 开发/留出对照、失败保留且结论可解释 |
 | 周日 | 分析失败并形成报告 | 按检索、生成、工具、流程、环境分类失败，并给出下一步验证而非空泛结论<br>相关资料：[NIST 生成式 AI 风险框架](https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.600-1.pdf) | 完成本周提交 |
 
 建议指标：
@@ -104,6 +104,7 @@ class ExecutionResult(BaseModel):
 - 可重复执行的 Eval Runner。
 - Baseline 原始结果和汇总报告。
 - 一次单变量优化实验和失败案例分析。
+- 开发/留出划分、五条人工评分复核与分歧处理，评分规则/裁判版本和分层结果。
 
 验收标准：评测可重复运行；结果包含失败项而非只保留成功项；优化前后使用同一数据集和评分规则。
 
@@ -140,7 +141,7 @@ class ExecutionResult(BaseModel):
 - Java API 与 Python Worker 能端到端通信。
 - LangGraph 明确控制哪些任务只读、需审批或拒绝。
 - Claude Agent 只在隔离工作区执行。
-- RAG 和 Agent 都有固定评测集、Baseline 和失败分析。
+- RAG 和 Agent 都有固定评测集、Baseline、留出对照、评分复核和失败分析。
 - 运行、测试、评测和演示均有文档。
 - 能在 10 分钟内解释业务价值、架构取舍、效果和风险。
 

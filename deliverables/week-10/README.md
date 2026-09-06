@@ -16,6 +16,11 @@
 - 最低标准：对比使用相同数据和评分条件；引用可定位到原文件。
 - 建议 Commit：`feat: build langchain rag agent with structured citations`
 
+## 岗位能力补充证据
+
+- [ ] 文档解析失败证据、纯向量/混合检索逐题对照、预期来源/召回/引用/答案分层诊断；框架比较使用相同纯向量策略。
+- 依据：[杭州招聘与课程对齐](../../learning-plan/10-job-market-alignment.md)。沿用本周原成果，不另建项目。
+
 ## 讲师验收
 
 - 结论：未评审

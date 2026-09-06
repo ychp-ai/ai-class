@@ -16,6 +16,11 @@
 - 最低标准：能解释 Prompt 与函数契约的相似点和差异；改进使用同一回归集；代码结论和修改均有证据。
 - 建议 Commit：`docs: establish evaluated ai coding workflow`
 
+## 岗位能力补充证据
+
+- [ ] 任务约束、AI 建议、人工修正、实际耗时、测试与可复用模板的变体验证。
+- 依据：[杭州招聘与课程对齐](../../learning-plan/10-job-market-alignment.md)。沿用本周原成果，不另建项目。
+
 ## 讲师验收
 
 - 结论：未评审

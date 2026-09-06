@@ -17,6 +17,11 @@
 - 最低标准：数据与评分固定；保留失败项；优化前后条件一致。
 - 建议 Commit：`test: add rag and agent evaluation baseline`
 
+## 岗位能力补充证据
+
+- [ ] 20 条 RAG + 10 条 Agent 的开发集 15+7、留出集 5+3；分层评分、五条人工复核与分歧处理、裁判/规则版本及单变量结果。
+- 依据：[杭州招聘与课程对齐](../../learning-plan/10-job-market-alignment.md)。沿用本周原成果，不另建项目。
+
 ## 讲师验收
 
 - 结论：未评审

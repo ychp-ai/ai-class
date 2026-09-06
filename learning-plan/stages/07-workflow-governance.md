@@ -95,7 +95,7 @@
 | 日期 | 学习任务 | 当天学习建议 | 当天验收 |
 | --- | --- | --- | --- |
 | 周一 | 平台 Eval 对象模型 | Dataset、Case、Evaluator、Run、Score 与 Agent/Workflow Version 关联；数据集发布后不可偷改<br>相关资料：[OpenAI Evals 指南](https://platform.openai.com/docs/guides/evals) | Eval Schema 和 API |
-| 周二 | 离线回归和发布门禁 | 设置任务成功、安全、延迟和成本阈值；门禁失败不允许发布但可保留结果<br>相关资料：[OpenAI Eval 最佳实践](https://platform.openai.com/docs/guides/evaluation-best-practices) | 劣化版本被阻止 |
+| 周二 | 离线回归与 CI 发布门禁 | 复用第 15 周 Runner 与评分版本，接入现有 CI；固定任务成功、安全、延迟和成本阈值；造一个劣化版本验证失败状态与报告留存，Fake 通过不冒充真实模型质量通过<br>相关资料：[LangSmith Evaluation Concepts](https://docs.langchain.com/langsmith/evaluation-concepts) | CI 中基线通过、劣化阻断且报告可追溯 |
 | 周三 | Trace 与统一观测字段 | traceId 贯穿 Java、Python、模型和 Tool；默认不记录敏感 Prompt/结果正文<br>相关资料：[OpenTelemetry Semantic Conventions](https://opentelemetry.io/docs/specs/semconv/) | 跨服务 Trace 可查询 |
 | 周四 | 指标、SLO 和告警 | 选择可操作指标：成功率、P95、等待审批时长、Token、成本和越权阻断<br>相关资料：[Google SRE：Service Level Objectives](https://sre.google/sre-book/service-level-objectives/) | SLO 与告警规则草案 |
 | 周五 | 限流、背压和容量测试 | 分别压模型、工作流和工具；记录饱和点和降级行为，不追求虚高 QPS<br>相关资料：[Grafana k6 Documentation](https://grafana.com/docs/k6/latest/) | 压测曲线和容量结论 |
@@ -106,7 +106,7 @@
 
 建议 Commit：`feat: complete governed and observable workflow platform`
 
-必须包含：Eval 模型、发布门禁、跨服务 Trace、仪表盘或查询、SLO、压测、备份恢复和完整演示脚本。
+必须包含：Eval 模型、CI 回归及基线通过/劣化阻断报告、发布门禁、跨服务 Trace、仪表盘或查询、SLO、压测、备份恢复和完整演示脚本。
 
 验收标准：劣化版本不可发布；关键故障有告警和手册；一个工作流可以暂停、恢复、取消、回滚并完整审计。
 

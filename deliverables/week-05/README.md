@@ -17,6 +17,11 @@
 - 最低标准：干净环境可启动；无密钥泄漏；错误得到统一处理。
 - 建议 Commit：`feat: add spring ai chat api with streaming and error handling`
 
+## 岗位能力补充证据
+
+- [ ] Spring Boot 3.x 与 Spring AI 官方 BOM 的兼容版本、对应文档及实际构建结果；不可直接套默认页 2.x 依赖。
+- 依据：[杭州招聘与课程对齐](../../learning-plan/10-job-market-alignment.md)。沿用本周原成果，不另建项目。
+
 ## 讲师验收
 
 - 结论：未评审

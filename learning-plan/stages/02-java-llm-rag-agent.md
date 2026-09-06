@@ -35,7 +35,7 @@
 | 日期 | 学习任务 | 当天学习建议 | 当天验收 |
 | --- | --- | --- | --- |
 | 周一 | 初始化 Java 21 + Maven + Spring Boot | 只引入 Web 和基础测试依赖，先保证空项目与健康检查稳定，再增加 AI 依赖<br>相关资料：[Spring Boot Reference](https://docs.spring.io/spring-boot/reference/) | 健康检查可访问 |
-| 周二 | 引入 Spring AI 模型 Starter | 使用官方 BOM 和当前文档；先配置 `.env.example`，再设置本地环境变量<br>相关资料：[Spring AI Getting Started](https://docs.spring.io/spring-ai/reference/getting-started.html) | API Key 仅来自环境变量 |
+| 周二 | 引入 Spring AI 模型 Starter | 使用与 Spring Boot 3.x 兼容的官方 BOM 与版本文档；默认官网已到 2.x，不直接复制其依赖；先配置 `.env.example` 再设置环境变量，记录构建结果<br>相关资料：[Spring AI 1.1 文档入口](https://docs.spring.io/spring-ai/reference/1.1/index.html) | 依赖兼容且 API Key 仅来自环境变量 |
 | 周三 | 实现 Chat API 或 CLI | 保持 Controller/CLI 薄，模型调用放在 Service；记录一次原始请求和响应结构<br>相关资料：[Spring AI ChatClient](https://docs.spring.io/spring-ai/reference/api/chatclient.html) | 完成一次真实模型调用 |
 | 周四 | System Prompt 与结构化输出 | 先定义 Java DTO 和校验规则，再写 Prompt；主动测试字段缺失和类型错误<br>相关资料：[Spring AI Structured Output](https://docs.spring.io/spring-ai/reference/api/structured-output.html) | 返回值能被 Java 对象解析 |
 | 周五 | 实现流式响应 | 用命令行客户端观察分块，关注断连、首 Token 延迟和流结束信号<br>相关资料：[Spring AI ChatClient](https://docs.spring.io/spring-ai/reference/api/chatclient.html) | 客户端逐步接收内容 |
@@ -115,7 +115,7 @@
 | 周二 | 生成结构化任务计划 | 步骤必须包含动作和验收条件；限制步骤数量并测试无法解析的计划<br>相关资料：[Spring AI Structured Output](https://docs.spring.io/spring-ai/reference/api/structured-output.html) | 计划可被 Java 对象解析 |
 | 周三 | 设计任务、步骤和运行日志对象 | 先定义状态机，避免用多个布尔值组合出矛盾状态；为状态转换写测试<br>相关资料：[W3C SCXML 状态机规范](https://www.w3.org/TR/scxml/) | 状态转换明确 |
 | 周四 | 调用文件与检索工具完成任务 | 只做只读任务，把 Agent 与工具本身的错误分开记录<br>相关资料：[Spring AI Tool Calling](https://docs.spring.io/spring-ai/reference/api/tools.html) | 完成只读分析任务 |
-| 周五 | 记录模型、工具、观察和结果 | 日志保存必要摘要和关联 ID，不记录密钥或无限增长的完整上下文<br>相关资料：[OpenTelemetry Logs](https://opentelemetry.io/docs/specs/otel/logs/) | 可复盘每一步 |
+| 周五 | 构造有预算的上下文并记录步骤 | 上下文工程是选择本次模型调用需要的信息，类比构造请求 DTO；复用日志对象只记 ID、长度和摘要；用普通 Java 裁剪无关历史与长工具结果，保留约束、来源及调用/结果配对；必要信息超预算时明确失败<br>相关资料：[上下文实验与概念边界](../10-job-market-alignment.md#新增验收概念的教学边界) | 对比裁剪前后输入，关键约束不丢失且步骤可复盘 |
 | 周六 | 最大步数、超时、重试和人工中断 | 人为制造循环与工具失败，验证限制真正生效；重试只针对可恢复错误<br>相关资料：[Resilience4j Guide](https://resilience4j.readme.io/docs/getting-started) | Agent 不会无限循环 |
 | 周日 | 完成 README 整理 Agent | 演示一次成功、一次失败和一次超限，按阶段出口条件自检<br>相关资料：[成果与提交标准](../06-deliverable-standards.md) | 完成阶段提交 |
 
@@ -129,6 +129,7 @@
 - 最大步骤、整体超时、有限重试和取消机制。
 - 至少一个成功任务、一个工具失败和一个超限测试。
 - 一份完整执行日志，能还原每个 Action 和 Observation。
+- 上下文预算构造器及超长工具输出、约束保留、必要信息超预算的测试；与未裁剪基线比较同一任务结果。
 
 验收标准：Agent 达到停止条件后不会继续调用模型；失败状态明确；日志中不记录密钥和完整敏感内容。
 
@@ -137,7 +138,7 @@
 - Spring AI Chat API 支持普通与流式输出。
 - RAG 回答有来源，资料不足时拒答。
 - 三个只读工具有参数与路径安全测试。
-- 手写 Agent 有边界、日志、超时和停止条件。
+- 手写 Agent 有边界、日志、超时和停止条件；上下文裁剪不破坏工具消息配对和任务约束。
 - 能解释 Tool Calling 与 Agent 的区别。
 
 ## 学习建议
