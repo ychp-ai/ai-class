@@ -85,7 +85,7 @@ class ExecutionResult(BaseModel):
 | 周四 | 统一 Trace、日志和成本字段 | 使用同一任务 ID 贯穿服务；日志字段稳定，敏感内容脱敏且大输出截断<br>相关资料：[OpenTelemetry Semantic Conventions](https://opentelemetry.io/docs/specs/semconv/) | Java/Python 关联同一任务 |
 | 周五 | 跑 Baseline 并人工复核评分 | 冻结模型、Prompt、数据和评分规则；先在开发集运行，保留超时与失败；复核五条覆盖正确、错误、拒答、工具失败及评分存疑的样例，记录评分分歧；模型裁判不能替代代码断言<br>相关资料：[评分可信度与复核方法](../10-job-market-alignment.md#评分可信度第-15-周) | Baseline、五条复核与裁判/规则版本 |
 | 周六 | 只调整一个主要变量并复测 | 仅用开发集选一次改动；在固定留出集上比较改动前后，不看结果逐题调参；如改评分规则，两版本同口径重跑；无提升也报告原因<br>相关资料：[LangSmith Evaluation Concepts](https://docs.langchain.com/langsmith/evaluation-concepts) | 开发/留出对照、失败保留且结论可解释 |
-| 周日 | 分析失败并形成报告 | 按检索、生成、工具、流程、环境分类失败，并给出下一步验证而非空泛结论<br>相关资料：[NIST 生成式 AI 风险框架](https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.600-1.pdf) | 完成本周提交 |
+| 周日 | 分析失败并形成报告 | 按检索、生成、工具、流程、环境分类；选已有一例，绑定 Case/Run/Trace 与版本，保存最小脱敏输入、复现命令及预期/实际；Fake 回放与真实模型重跑分开记录，不重放真实副作用<br>相关资料：[失败最小复现与边界](../10-job-market-alignment.md#实验解释与实现边界) | 一例最小复现、定位依据及下一步，完成周提交 |
 
 建议指标：
 
@@ -103,7 +103,7 @@ class ExecutionResult(BaseModel):
 - `data/eval/agent-*`：不少于 10 条任务、初始工作区、验收命令和允许副作用。
 - 可重复执行的 Eval Runner。
 - Baseline 原始结果和汇总报告。
-- 一次单变量优化实验和失败案例分析。
+- 一次单变量优化实验和失败案例分析；至少一例包含版本、Case/Run/Trace、最小脱敏输入、复现命令、预期/实际和失败定位，注明 Fake 回放或真实模型重跑及其限制。
 - 开发/留出划分、五条人工评分复核与分歧处理，评分规则/裁判版本和分层结果。
 
 验收标准：评测可重复运行；结果包含失败项而非只保留成功项；优化前后使用同一数据集和评分规则。
@@ -141,7 +141,7 @@ class ExecutionResult(BaseModel):
 - Java API 与 Python Worker 能端到端通信。
 - LangGraph 明确控制哪些任务只读、需审批或拒绝。
 - Claude Agent 只在隔离工作区执行。
-- RAG 和 Agent 都有固定评测集、Baseline、留出对照、评分复核和失败分析。
+- RAG 和 Agent 都有固定评测集、Baseline、留出对照、评分复核和失败分析；能用一例最小复现定位失败层，并解释模型重跑的不确定性。
 - 运行、测试、评测和演示均有文档。
 - 能在 10 分钟内解释业务价值、架构取舍、效果和风险。
 

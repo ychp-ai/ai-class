@@ -55,18 +55,20 @@
 | 日期 | 学习任务 | 当天学习建议 | 当天验收 |
 | --- | --- | --- | --- |
 | 周一 | Run/Step/Event 状态机 | 明确 Pending、Running、Waiting、Succeeded、Failed、Cancelled；非法状态迁移必须拒绝<br>相关资料：[W3C SCXML 状态机规范](https://www.w3.org/TR/scxml/) | 状态迁移单测 |
-| 周二 | Checkpoint 和恢复 | 每个有副作用节点前后保存边界；模拟进程退出后从上次成功点恢复<br>相关资料：[LangGraph Persistence](https://docs.langchain.com/oss/python/langgraph/persistence) | 重启后不重复已完成步骤 |
-| 周三 | 幂等和副作用凭证 | 写工具使用 idempotency key；把请求、结果引用和副作用摘要绑定到 Step<br>相关资料：[RFC 9110：幂等方法](https://www.rfc-editor.org/rfc/rfc9110.html#name-idempotent-methods) | 重复投递不产生重复写入 |
+| 周二 | Checkpoint 和恢复 | 复用第 11 周持久存储，确认 Checkpoint 真正落盘；退出并重启执行进程，恢复同一任务与发布版本；内存 Saver 不能作为重启恢复证据<br>相关资料：[LangGraph Persistence](https://docs.langchain.com/oss/python/langgraph/persistence) | 进程重启后恢复，已完成步骤不重复执行 |
+| 周三 | 幂等和副作用凭证 | 复用单节点持久 Stub：外部写成功后丢失回执，在本地成功 Checkpoint 前退出；按同一幂等键查询/核对外部结果并绑定 Step；结果未知时待核对，不盲写<br>相关资料：[恢复与副作用边界](../10-job-market-alignment.md#实验解释与实现边界) | 重启恢复后副作用计数为 1，未知结果不显示成功 |
 | 周四 | 异步任务、轮询与事件 | 先实现清晰的异步协议和状态查询；消息队列只有在可靠性要求明确时引入<br>相关资料：[RFC 7240：respond-async](https://www.rfc-editor.org/rfc/rfc7240.html) | 提交、查询、事件链路可用 |
 | 周五 | Retry、Timeout 与补偿 | 节点级和全局截止时间分开；补偿不是简单重试，先列可逆和不可逆动作<br>相关资料：[Resilience4j Guide](https://resilience4j.readme.io/docs/getting-started) | 故障矩阵与自动测试 |
 | 周六 | 取消、暂停和恢复 | 取消需传播到模型和工具；无法取消的外部动作要标为未知并人工核对<br>相关资料：[LangGraph Interrupts](https://docs.langchain.com/oss/python/langgraph/interrupts) | 四种状态行为可复现 |
-| 周日 | 故障注入演练 | 注入模型超时、工具 500、进程退出、重复事件和数据库短暂失败<br>相关资料：[Google SRE：Testing for Reliability](https://sre.google/sre-book/testing-reliability/) | 完成本周提交 |
+| 周日 | 故障注入演练 | 汇总本周模型超时、工具 500、进程退出、重复事件和数据库失败测试；重点重跑周三回执丢失案例，关联 Run/Step/Trace、幂等键及外部凭证；恢复沿用原授权与版本<br>相关资料：[Google SRE：Testing for Reliability](https://sre.google/sre-book/testing-reliability/) | 故障矩阵、复现命令、恢复前后证据与周提交 |
 
 ### 本周提交
 
 建议 Commit：`feat: implement durable workflow runtime and run center`
 
-必须包含：状态机、Checkpoint、恢复、幂等、取消、受控重试、异步 API、故障注入测试和运行详情。
+必须包含：状态机、持久 Checkpoint、进程重启恢复、幂等、取消、受控重试、异步 API、故障注入测试和运行详情；保留外部写成功但回执丢失案例的复现命令、Run/Step/Trace、幂等键、外部凭证及副作用计数。
+
+本周复盘用 [Agent Harness](../10-job-market-alignment.md#实验解释与实现边界) 归纳已学的循环、上下文、工具、状态、预算、隔离、恢复与评测，不新增框架。Checkpoint 不与外部写入自动构成事务；本地调用记录不能代替外部成功凭证。
 
 验收标准：故障不返回假成功；恢复不重复副作用；每个 Run 能查看 Step、Event、错误和最终状态。
 
@@ -113,7 +115,7 @@
 ## 阶段出口条件
 
 - 能把平台 Workflow Schema 编译为可运行、可持久化的 LangGraph 工作流。
-- Run/Step/Event 状态清晰，支持恢复、幂等、取消和故障诊断。
+- Run/Step/Event 状态清晰，支持恢复、幂等、取消和故障诊断；外部写成功但回执丢失后，进程重启不产生重复副作用，无法确认的结果进入待核对路径。
 - RBAC、审批、审计和工具权限均由平台代码控制。
 - Agent/Workflow 发布需要通过固定 Eval 和安全门禁。
 - 平台有基础 SLO、告警、压测和恢复证据。

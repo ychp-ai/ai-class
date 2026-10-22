@@ -25,4 +25,4 @@ python3 scripts/generate_course_tutorials.py --check
 
 状态判断保持保守：脚本只能在周状态已完成、成果与验证齐全，并存在“讲师结论：通过、Teach-back 已完成、变体任务已完成”时识别为 `PASSED`。语义评审仍由 REVIEW/FULL Prompt 负责。
 
-课程教程生成器只写入 `learning-plan/tutorials/`，不修改阶段计划、周状态、成果或笔记。当周语言定位由生成器按[开发语言路线](../learning-plan/01-language-roadmap.md)写入每份周教程；上下文、混合检索/重排、评分复核、CI、反馈回归和基准课使用对应的实验骨架，避免生成无关的通用 Agent 示例。阶段表格或语言映射发生变化后先运行生成命令，再用 `--check` 验证生成文件未漂移。
+课程教程生成器只写入 `learning-plan/tutorials/`，不修改阶段计划、周状态、成果或笔记。当周语言定位由生成器按[开发语言路线](../learning-plan/01-language-roadmap.md)写入每份周教程；上下文、混合检索/重排、评分复核、CI、反馈回归和基准课使用对应的实验骨架。失败复现、持久恢复/幂等、试点指标及岗位答辩也有专项骨架，避免生成无关的通用 Agent 示例。阶段表格或语言映射发生变化后先运行生成命令，再用 `--check` 验证生成文件未漂移。
