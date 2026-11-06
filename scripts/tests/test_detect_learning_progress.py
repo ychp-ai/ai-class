@@ -33,6 +33,7 @@ class LearningProgressInitializerTest(unittest.TestCase):
             self.assertTrue(
                 (progress / "deliverables" / "week-32" / "README.md").exists()
             )
+            self.assertFalse((progress / "deliverables" / "week-33").exists())
             self.assertIn("状态：未开始", week_one.read_text(encoding="utf-8"))
             self.assertTrue((progress / "notes" / "week-template.md").exists())
             self.assertTrue((progress / "java-service" / "README.md").exists())
@@ -43,10 +44,49 @@ class LearningProgressInitializerTest(unittest.TestCase):
             self.assertEqual(
                 week_one.read_text(encoding="utf-8"), "# learner-owned state\n"
             )
+            originals = {
+                path.relative_to(progress): path.read_bytes()
+                for path in progress.rglob("*") if path.is_file()
+            }
+            extended = subprocess.run(
+                [*command, "--include-super-agent"],
+                check=False, capture_output=True, text=True,
+            )
+            self.assertEqual(extended.returncode, 0, extended.stderr)
+            self.assertEqual(len(list((progress / "deliverables").glob("week-*/README.md"))), 40)
+            for relative, content in originals.items():
+                self.assertEqual((progress / relative).read_bytes(), content, str(relative))
+            for week in range(33, 41):
+                text = (progress / "deliverables" / f"week-{week:02d}" / "README.md").read_text(encoding="utf-8")
+                self.assertIn("状态：未开始", text)
+                self.assertIn(f"deliverables/week-{week:02d}/README.md", text)
+
+    def test_invalid_reinforcement_fails_before_creating_learner_files(self) -> None:
+        for missing_topic in (True, False):
+            with self.subTest(missing_topic=missing_topic), tempfile.TemporaryDirectory() as tmp:
+                root = Path(tmp)
+                course = root / "course"
+                (course / "deliverables").mkdir(parents=True)
+                index = (PROJECT_ROOT / "deliverables" / "README.md").read_text(encoding="utf-8")
+                if missing_topic:
+                    index = "\n".join(line for line in index.splitlines() if not line.startswith("| 40 |"))
+                (course / "deliverables" / "README.md").write_text(index, encoding="utf-8")
+                for week in range(33, 40):
+                    directory = course / "deliverables" / f"week-{week:02d}"
+                    directory.mkdir()
+                    (directory / "README.md").write_text("# Requirements\n", encoding="utf-8")
+                result = subprocess.run(
+                    [sys.executable, str(INIT_SCRIPT), "--course-repo", str(course),
+                     "--progress-repo", str(root / "progress"), "--include-super-agent"],
+                    check=False, capture_output=True, text=True,
+                )
+                self.assertNotEqual(result.returncode, 0)
+                self.assertIn("topics missing" if missing_topic else "requirements missing", result.stderr)
+                self.assertFalse((root / "progress").exists())
 
 
 class ProgressScannerTest(unittest.TestCase):
-    def run_scan(self, root: Path) -> dict:
+    def run_scan(self, root: Path, *, include_super_agent: bool = False) -> dict:
         course = root / "course"
         progress = root / "progress"
         completed = subprocess.run(
@@ -57,6 +97,7 @@ class ProgressScannerTest(unittest.TestCase):
                 str(course),
                 "--progress-repo",
                 str(progress),
+                *(["--include-super-agent"] if include_super_agent else []),
             ],
             check=False,
             capture_output=True,
@@ -71,6 +112,7 @@ class ProgressScannerTest(unittest.TestCase):
         *,
         week_overrides: dict[int, str] | None = None,
         omit_week: int | None = None,
+        include_super_agent: bool = False,
     ) -> None:
         week_overrides = week_overrides or {}
         course = root / "course"
@@ -136,7 +178,8 @@ class ProgressScannerTest(unittest.TestCase):
             "| 周次 | 主题 | 目录 |",
             "| --- | --- | --- |",
         ]
-        for week in range(1, 33):
+        week_count = 40 if include_super_agent else 32
+        for week in range(1, week_count + 1):
             index_lines.append(
                 f"| {week} | Topic {week} | [week-{week:02d}](week-{week:02d}/README.md) |"
             )
@@ -148,7 +191,27 @@ class ProgressScannerTest(unittest.TestCase):
             "# Personal progress\n", encoding="utf-8"
         )
 
-        for week in range(1, 33):
+        if include_super_agent:
+            stages = course / "learning-plan" / "stages"
+            with (stages / "README.md").open("a", encoding="utf-8") as index:
+                for start, end, name in ((33, 36, "coordination"), (37, 40, "reliability")):
+                    index.write(f"| {name} | {start}–{end} | [{name}.md]({name}.md) |\n")
+                    sections = []
+                    for week in range(start, end + 1):
+                        sections.append(f"## 第 {week} 周：强化\n\n")
+                        sections.extend(
+                            f"| 周{day} | 任务 {week} | 建议 | 验收 |\n" for day in "一二三四五六日"
+                        )
+                    (stages / f"{name}.md").write_text("".join(sections), encoding="utf-8")
+            (course / "learning-plan" / "11-super-agent-reinforcement.md").write_text(
+                "# Reinforcement requirements\n", encoding="utf-8"
+            )
+            for week in range(33, 41):
+                directory = course / "deliverables" / f"week-{week:02d}"
+                directory.mkdir()
+                (directory / "README.md").write_text("# Public requirement\n", encoding="utf-8")
+
+        for week in range(1, week_count + 1):
             if week == omit_week:
                 continue
             week_dir = progress / "deliverables" / f"week-{week:02d}"
@@ -371,6 +434,118 @@ class ProgressScannerTest(unittest.TestCase):
             after = self.run_scan(repo)["progress_fingerprint"]
 
         self.assertNotEqual(before, after)
+
+    def mark_passed(self, root: Path, weeks: range) -> None:
+        for week in weeks:
+            (root / "progress" / "deliverables" / f"week-{week:02d}" / "README.md").write_text(
+                self.passed_week(root, week), encoding="utf-8"
+            )
+
+    def test_core_completion_does_not_complete_selected_reinforcement(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            self.create_repo(root, include_super_agent=True)
+            self.mark_passed(root, range(1, 33))
+
+            core = self.run_scan(root)
+            extended = self.run_scan(root, include_super_agent=True)
+
+        self.assertEqual(core["overall_status"], "COMPLETED")
+        self.assertEqual(core["course_scope"], "core")
+        self.assertEqual(core["total_weeks"], 32)
+        self.assertEqual(core["metrics"]["schedule_progress_percent"], 100.0)
+        self.assertEqual(extended["course_scope"], "core+super-agent")
+        self.assertEqual(extended["total_weeks"], 40)
+        self.assertEqual(extended["current_week"]["number"], 33)
+        self.assertEqual(extended["candidate_action"], "START_DAY")
+        self.assertEqual(extended["metrics"]["core_passed_weeks"], 32)
+        self.assertEqual(extended["metrics"]["reinforcement_passed_weeks"], 0)
+        self.assertEqual(extended["metrics"]["schedule_progress_percent"], 80.0)
+        self.assertEqual(len(extended["current_week"]["week_plan"]), 7)
+        self.assertNotEqual(core["rules_fingerprint"], extended["rules_fingerprint"])
+
+    def test_selected_course_completes_only_after_week_forty_passes(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            self.create_repo(root, include_super_agent=True)
+            self.mark_passed(root, range(1, 40))
+            before = self.run_scan(root, include_super_agent=True)
+            self.mark_passed(root, range(40, 41))
+            after = self.run_scan(root, include_super_agent=True)
+
+        self.assertEqual(before["current_week"]["number"], 40)
+        self.assertEqual(before["metrics"]["schedule_progress_percent"], 97.5)
+        self.assertEqual(after["overall_status"], "COMPLETED")
+        self.assertEqual(after["candidate_action"], "MAINTENANCE")
+        self.assertEqual(after["metrics"]["core_passed_weeks"], 32)
+        self.assertEqual(after["metrics"]["reinforcement_passed_weeks"], 8)
+        self.assertEqual(after["metrics"]["schedule_progress_percent"], 100.0)
+
+    def test_reinforcement_cannot_skip_unpassed_core(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            self.create_repo(root, include_super_agent=True)
+            self.mark_passed(root, range(33, 34))
+            result = self.run_scan(root, include_super_agent=True)
+
+        self.assertEqual(result["current_week"]["number"], 1)
+        self.assertEqual(result["out_of_order_progress"], [33])
+
+    def test_missing_reinforcement_record_invalidates_only_selected_scope(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            self.create_repo(root, include_super_agent=True, omit_week=40)
+            core = self.run_scan(root)
+            extended = self.run_scan(root, include_super_agent=True)
+
+        self.assertEqual(core["repository_status"], "VALID")
+        self.assertEqual(extended["repository_status"], "INVALID")
+        self.assertEqual(extended["total_weeks"], 40)
+        self.assertIn("progress:deliverables/week-40/README.md", extended["missing_required_files"])
+
+    def test_incomplete_extension_plan_is_rejected_without_fallback(self) -> None:
+        defects = ("missing_day", "duplicate_day", "missing_topic", "overlapping_stage", "missing_requirement")
+        for defect in defects:
+            with self.subTest(defect=defect), tempfile.TemporaryDirectory() as tmp:
+                root = Path(tmp)
+                self.create_repo(root, include_super_agent=True)
+                course = root / "course"
+                plan = course / "learning-plan" / "stages" / "reliability.md"
+                if defect in ("missing_day", "duplicate_day"):
+                    text = plan.read_text(encoding="utf-8")
+                    row = "| 周日 | 任务 40 | 建议 | 验收 |\n"
+                    text = text.replace(row, "" if defect == "missing_day" else row.replace("周日", "周六"))
+                    plan.write_text(text, encoding="utf-8")
+                elif defect == "missing_topic":
+                    index = course / "deliverables" / "README.md"
+                    text = index.read_text(encoding="utf-8")
+                    index.write_text("\n".join(line for line in text.splitlines() if not line.startswith("| 40 |")), encoding="utf-8")
+                elif defect == "overlapping_stage":
+                    with (course / "learning-plan" / "stages" / "README.md").open("a", encoding="utf-8") as index:
+                        index.write("| duplicate | 39–40 | [reliability.md](reliability.md) |\n")
+                else:
+                    (course / "deliverables" / "week-40" / "README.md").unlink()
+
+                self.assertEqual(self.run_scan(root)["repository_status"], "VALID")
+                result = self.run_scan(root, include_super_agent=True)
+                self.assertEqual(result["repository_status"], "INVALID")
+                self.assertEqual(result["total_weeks"], 40)
+                self.assertTrue(result["missing_required_files"])
+
+    def test_extension_rule_changes_do_not_change_core_fingerprint(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            self.create_repo(root, include_super_agent=True)
+            core_before = self.run_scan(root)
+            extended_before = self.run_scan(root, include_super_agent=True)
+            plan = root / "course" / "learning-plan" / "stages" / "reliability.md"
+            with plan.open("a", encoding="utf-8") as output:
+                output.write("\n新的专项恢复要求。\n")
+            core_after = self.run_scan(root)
+            extended_after = self.run_scan(root, include_super_agent=True)
+
+        self.assertEqual(core_before["rules_fingerprint"], core_after["rules_fingerprint"])
+        self.assertNotEqual(extended_before["rules_fingerprint"], extended_after["rules_fingerprint"])
 
 
 if __name__ == "__main__":

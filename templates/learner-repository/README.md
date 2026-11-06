@@ -24,6 +24,8 @@ python3 ../ai-class/scripts/detect_learning_progress.py \
 
 ## 目录边界
 
+默认初始化与扫描范围为第 1–32 周。明确选择 Super-agent 强化后，在初始化和每次扫描命令中添加 `--include-super-agent`，新增第 33–40 周空白记录；已有文件不会被覆盖。范围以明确选择为准，不按目录数量推断，原主线毕业不能替代专项通过。
+
 - `deliverables/`：每周状态、成果链接、验证证据和讲师验收的唯一入口。
 - `notes/`：周复盘、实验过程、错误模型和补救记录。
 - `docs/`、`java-service/`、`python-agent/`、`platform-console/`：个人平台成果。

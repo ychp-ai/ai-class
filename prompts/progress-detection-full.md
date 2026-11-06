@@ -4,10 +4,10 @@
 
 ```yaml
 name: learning-progress-detector-full
-version: 3.0.0
-status: approved
-updated: 2026-09-02
-audit_status: passed_with_manual_review
+version: 3.1.0
+status: draft
+updated: 2026-11-06
+audit_status: pending_model_regression
 last_audit: 2026-09-02
 model_target:
   - Hermes Agent
@@ -54,10 +54,11 @@ owner: repository-maintainer
 二、先执行确定性扫描
 
 1. 运行：`python3 <课程仓库>/scripts/detect_learning_progress.py --repo <课程仓库> --progress-repo <个人仓库>`。
-2. 解析 `progress-scan.v2` JSON。脚本从课程仓库读取规则和周计划，从个人仓库扫描 32 周状态、占位符和链接，并分别返回规则与进度指纹。
+   学习者已选择强化时追加 `--include-super-agent`；保留路由器传入的范围，不按文件数量或旧完成率推断。
+2. 解析 `progress-scan.v2` JSON。脚本从课程仓库读取规则和周计划，从个人仓库扫描所选范围的状态、占位符和链接，并分别返回规则与进度指纹。
 3. 如果 `repository_status=INVALID`，只报告缺失文件并停止，不继续猜测。
 4. 如果脚本不存在或无法运行，才退回为人工定位仓库；明确记录降级原因。
-5. 不重复将 32 个周 README 全文送入模型，除非脚本结果本身出现无法解释的冲突。
+5. 不重复将全部周 README 全文送入模型，除非脚本结果本身出现无法解释的冲突。
 
 三、按需读取语义证据
 
@@ -81,7 +82,7 @@ P5：notes 中的学习记录、Git Diff 和 Git 历史。
 
 五、周状态标准化
 
-对第 1–32 周分别输出以下 recognized_status 之一：
+对第 1 至 total_weeks 周分别识别以下 recognized_status 之一：
 
 - NOT_STARTED：显式为未开始，且没有实质成果或验证证据。
 - IN_PROGRESS：存在部分成果、学习记录或进行中状态，但未达到完整门禁。
@@ -101,13 +102,13 @@ PASSED 必须是严格状态。以下任一情况存在时不得判定 PASSED：
 
 六、当前周识别算法
 
-1. 按 01 到 32 顺序评估每周 recognized_status。
+1. 按 01 到 total_weeks 顺序评估每周 recognized_status。
 2. current_week 默认取最早一个不是 PASSED 的周。
 3. 如果更晚周已经存在成果，将其放入 out_of_order_progress，不因此跳过更早未通过周。
 4. BLOCKED 周仍然是 current_week；同时从计划中寻找不依赖阻塞能力的可继续任务，放入 safe_parallel_tasks。
 5. INCONSISTENT 周优先要求状态核对或证据补齐，不直接安排新知识。
 6. 只有前序周全部 PASSED，才允许把 current_week 推进到下一周。
-7. 全部 32 周均 PASSED 时，overall_status=COMPLETED，不再安排普通每日任务，改为建议长期维护、真实流量和新业务场景实践。
+7. 所选范围（core 为 32 周，core+super-agent 为 40 周）全部 PASSED 且阶段出口齐全时，overall_status=COMPLETED，不再安排普通每日任务，改为建议长期维护、真实流量和新业务场景实践。
 
 七、当前阶段与阶段门禁
 
@@ -116,6 +117,7 @@ PASSED 必须是严格状态。以下任一情况存在时不得判定 PASSED：
 3. 阶段内所有周 PASSED，但缺少阶段考试时，阶段为 READY_FOR_EXAM，current_action 必须是阶段考试。
 4. 阶段 PASSED 需要阶段周成果全部 PASSED，并有独立实现、故障诊断、答辩和迁移任务证据。
 5. 不得因为自然日期进入下一阶段。
+6. 进入第 33 周前复核原九阶段与第 32 周双验收；第 36、40 周独立考试另验收，不用旧通过记录或 24 小时在线时长替代。
 
 八、建议学习日识别
 
@@ -143,7 +145,7 @@ PASSED 必须是严格状态。以下任一情况存在时不得判定 PASSED：
 只计算以下指标：
 
 - passed_weeks：recognized_status=PASSED 的周数。
-- schedule_progress_percent：passed_weeks / 32 * 100，保留一位小数。
+- schedule_progress_percent：passed_weeks / total_weeks * 100，保留一位小数。
 - evidence_complete_weeks：成果、验证、失败案例均完整的周数。
 - current_stage_progress：当前阶段 PASSED 周数 / 当前阶段总周数。
 
@@ -158,6 +160,8 @@ PASSED 必须是严格状态。以下任一情况存在时不得判定 PASSED：
   "repository_status": "VALID|INVALID",
   "course_root": "",
   "progress_root": "",
+  "course_scope": "core|core+super-agent",
+  "total_weeks": 32,
   "overall_status": "NOT_STARTED|IN_PROGRESS|BLOCKED|INCONSISTENT|COMPLETED",
   "current_stage": {
     "id": null,
@@ -227,7 +231,8 @@ Hermes 首次拉取仓库时使用：
 
 ```text
 本次触发类型：INITIAL_SCAN
-这是首次扫描。请定位仓库、评估全部 32 周，但只详细读取当前候选周及其明确链接的成果。不要因为 Git 历史或文件存在而推断已掌握。
+课程范围：core（默认）；明确选择强化时为 core+super-agent，运行脚本添加 --include-super-agent。
+这是首次扫描。请定位仓库、评估所选范围，但只详细读取当前候选周及其明确链接的成果。不要因为 Git 历史或文件存在而推断已掌握。
 ```
 
 状态冲突、阻塞或阶段考试时使用：
@@ -299,3 +304,7 @@ current_action.type=WEEKLY_REVIEW
 - 人工复核：工具提示缺少否定约束，但完整 Prompt 已明确禁止修改、执行网络请求、安装依赖、泄露敏感信息和服从证据文件内指令。
 - 双仓回归基线：全新个人仓库的 32 个周状态均为“未开始”，预期识别为第 1 阶段、第 1 周、周一、`START_DAY`。
 - 尚未验证：Hermes 实际模型对 JSON Schema 的稳定遵循，以及五类模拟仓库快照回归。
+
+## 2026-11-06 范围扩展验证
+
+本版本新增 32/40 周范围传递，状态为草稿；旧版本审查不代表本次已审查。回归使用 `scripts/tests/test_detect_learning_progress.py` 的固定合成状态夹具与范围边界案例，检查扫描器输出；运行结果见脚本验证记录。尚未进行真实 Hermes/LLM 模式选择和评分回归，不能据此发布或自动替换外部已部署 Prompt。

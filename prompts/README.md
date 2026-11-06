@@ -1,6 +1,6 @@
 # Prompt 目录
 
-本目录只存放课程仓库自身使用、经过验证且可以重复执行的监督 Prompt，不保存学习者的 Prompt 成果或个人上下文。
+本目录存放课程仓库自身使用、带版本与验证记录的监督 Prompt，不保存学习者的 Prompt 成果或个人上下文。标为草稿或待模型回归的版本仅供评审，不自动替换外部已部署版本。
 
 建议按周或场景组织：
 
@@ -14,3 +14,5 @@
 每个 Prompt 应说明用途、所需输入、约束、期望输出、版本、关联 Eval 数据集和至少一个验证记录。仓库级自动化 Prompt 还必须说明指令层级、只读/写入边界、间接 Prompt Injection 防护、错误处理和机器可解析输出。已发布 Agent 引用不可变 Prompt 版本，不能直接覆盖线上内容。不得包含真实 API Key、Cookie、Token 或敏感业务数据。
 
 Hermes 默认只加载路由入口和被选中的一种模式，不要在同一次调用中加载 FAST、REVIEW、FULL 三份 Prompt。
+
+2026-11-06 新增 Super-agent 范围传递：默认 `core` 为 32 周，明确选择后 `core+super-agent` 为 40 周。四份 Prompt 均须使用同一 `--include-super-agent` 选项；范围变化升级 FULL。确定性夹具见 `scripts/tests/test_detect_learning_progress.py`；实际模型路由和评分回归尚未验证，当前修订保留草稿状态。

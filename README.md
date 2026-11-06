@@ -2,10 +2,12 @@
 
 这是一套面向 **AI 零基础开发者** 的长期 AI 工程实践仓库。学习者只需具备一种编程语言、Git、命令行、HTTP/JSON、数据库、基础测试和排错经验，不要求预先了解机器学习、LLM、RAG、Agent 或任何 AI 框架。
 
-课程目标是在**每天约 1 小时、共 32 周**的节奏下，形成两项可以独立交付的能力：
+课程围绕 **AI 应用与 Agent 工程 → AI 平台与治理 → 垂直业务落地** 三个方向展开，分别以第 1–16 周、第 17–24 周和第 25–32 周为学习重点。每天约 1 小时，最终形成两项可以独立交付的能力：
 
 1. 建设一个技术型 AI 平台，提供模型接入、Agent 管理、工具与知识库管理、工作流编排、运行追踪、评测、安全和基础运维能力。
 2. 将 AI 能力接入真实业务系统，完成场景发现、现状调研、流程优化、方案设计、系统集成、试点上线、效果评估与持续迭代。
+
+完成原 32 周主线后，可继续第 33–40 周的 [Super-agent 强化课程](learning-plan/11-super-agent-reinforcement.md)，用约 56 小时训练多任务调度、事件与跨渠道接入、中途纠正、持久恢复和持续运行。主线毕业与专项通过分别验收；选择完整路线时合计 40 周、约 280 小时。
 
 计划不把“学会框架 API”视为终点。最终需要同时证明：理解核心原理、能实现平台能力、能诊断生产问题、能推动业务闭环。
 
@@ -21,8 +23,8 @@
 
 | 文档 | 内容 |
 | --- | --- |
-| [完整路线总览](learning-plan/README.md) | 32 周路线、能力模型、架构边界和里程碑 |
-| [逐节课程教程](learning-plan/tutorials/README.md) | 32 周、224 节课的学习步骤、资料章节、参考图、样例代码、掌握验证和参考答案 |
+| [完整路线总览](learning-plan/README.md) | 32 周主线与追加 8 周、贯穿项目、重点能力、架构边界和验收里程碑 |
+| [逐节课程教程](learning-plan/tutorials/README.md) | 主线 224 节与强化 56 节的学习步骤、资料、练习、掌握验证和参考提示 |
 | [学习方法与建议](learning-plan/00-learning-method.md) | 每天 1 小时的学习、实践与复盘方式 |
 | [开发语言路线](learning-plan/01-language-roadmap.md) | Java 主平台、Python 执行面、TypeScript 控制台的周次分工与切换桥接 |
 | [讲师监督与掌握度评估](learning-plan/07-instructor-supervision.md) | 每日监督、提示阶梯、评分、阶段考试和动态调整 |
@@ -36,6 +38,9 @@
 | [阶段七：工作流与平台治理](learning-plan/stages/07-workflow-governance.md) | 第 21–24 周：编排运行时、审批、权限、评测和运维 |
 | [阶段八：业务场景与流程设计](learning-plan/stages/08-business-scenario-process.md) | 第 25–28 周：调研、AS-IS/TO-BE、价值评估和接入设计 |
 | [阶段九：试点上线与最终交付](learning-plan/stages/09-pilot-production-capstone.md) | 第 29–32 周：系统接入、试点、生产硬化和效果复盘 |
+| [Super-agent 强化设计](learning-plan/11-super-agent-reinforcement.md) | 项目范围、固定评测集、独立考试和来源核验 |
+| [阶段十：任务协作与事件接入](learning-plan/stages/10-super-agent-coordination.md) | 第 33–36 周：独立设计、并发调度、主动触发和跨渠道身份 |
+| [阶段十一：持续执行与独立交付](learning-plan/stages/11-super-agent-reliability.md) | 第 37–40 周：纠正、恢复、持续运行、对照评测和独立考试 |
 | [杭州招聘与课程对齐](learning-plan/10-job-market-alignment.md) | 2026-10-22 岗位复核、失败复现/恢复/业务指标验收及专项边界 |
 | [成果与提交标准](learning-plan/06-deliverable-standards.md) | 每周提交、阶段出口、平台和业务验收标准 |
 | [Agent 协作规范](AGENTS.md) | 仓库目录、讲师监督、工程质量、安全和业务落地约束 |
@@ -60,7 +65,7 @@ python3 ai-class/scripts/init_learning_progress.py \
 
 | 目录 | 存放内容 |
 | --- | --- |
-| [deliverables](deliverables/README.md) | 第 1–32 周公共成果要求和空白验收模板，不含个人状态 |
+| [deliverables](deliverables/README.md) | 第 1–32 周主线与第 33–40 周强化成果要求，不含个人状态 |
 | [templates](templates/README.md) | 个人仓库所需的完整目录和文档模板 |
 | [prompts](prompts/README.md) | 经评测、带版本的 Prompt 和模板 |
 | [scripts](scripts/README.md) | 个人仓库初始化、双仓进度扫描和低 Token 自动化辅助工具 |

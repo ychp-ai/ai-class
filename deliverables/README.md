@@ -1,6 +1,6 @@
 # 每周课程成果要求与复制模板
 
-本目录保存第 1–32 周的公共成果要求和空白验收模板，不保存任何学习者的当前状态、成果链接、评分或个人证据。每位学习者应把个人记录放在独立仓库的 `deliverables/week-XX/README.md`。
+本目录保存第 1–32 周主线与第 33–40 周 Super-agent 强化的公共成果要求和空白验收模板，不保存任何学习者的当前状态、成果链接、评分或个人证据。每位学习者应把个人记录放在独立仓库的 `deliverables/week-XX/README.md`。
 
 首次建立个人仓库时运行：
 
@@ -11,6 +11,8 @@ python3 scripts/init_learning_progress.py \
 ```
 
 脚本从 [`templates/learner-repository`](../templates/learner-repository/README.md) 复制通用文档，并从本目录读取 32 周主题。个人源码、设计、业务材料、数据和运行证据都写入个人仓库的对应职责目录，不回写课程仓库。
+
+选择原主线毕业后的强化课程时，初始化和后续扫描均添加 `--include-super-agent`，覆盖 40 周；重复初始化只新增缺失模板，保留已有个人记录。原毕业与专项通过分别评审，不能由目录是否存在推断。
 
 周提交标准见[成果与提交标准](../learning-plan/06-deliverable-standards.md)。
 
@@ -50,3 +52,16 @@ python3 scripts/init_learning_progress.py \
 | 30 | UAT 与业务试点 | [week-30](week-30/README.md) |
 | 31 | 生产硬化 | [week-31](week-31/README.md) |
 | 32 | 平台和业务最终交付 | [week-32](week-32/README.md) |
+
+## Super-agent 强化成果要求
+
+| 周次 | 主题 | 目录 |
+| --- | --- | --- |
+| 33 | 需求、独立设计与单会话基线 | [week-33](week-33/README.md) |
+| 34 | 多任务调度与隔离 | [week-34](week-34/README.md) |
+| 35 | 事件接入与主动触发 | [week-35](week-35/README.md) |
+| 36 | 跨渠道身份与上下文 | [week-36](week-36/README.md) |
+| 37 | 中途纠正、取消与撤权 | [week-37](week-37/README.md) |
+| 38 | 多任务持久恢复与副作用核对 | [week-38](week-38/README.md) |
+| 39 | 持续运行与运维 | [week-39](week-39/README.md) |
+| 40 | 对照评测与独立交付 | [week-40](week-40/README.md) |

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate one tutorial for every daily lesson in the 32-week plan.
+"""Generate tutorials for the 32-week core and 8-week reinforcement plan.
 
 Stage documents remain the source of truth for schedule, task, advice and
 acceptance. This generator adds a teaching layer without duplicating progress
@@ -8,6 +8,7 @@ state or allowing tutorials to drift from the required four-column tables.
 
 from __future__ import annotations
 
+import os
 import re
 from dataclasses import dataclass
 from pathlib import Path
@@ -67,10 +68,97 @@ WEEK_GUIDES: dict[int, WeekGuide] = {
     30: WeekGuide("UAT 与试点", "09-pilot-production-capstone.md", "让真实用户和受控流量验证流程价值、可用性与失败恢复，而不只验证模型答案。", "UAT 验证用户任务能否完成；试点在限定人群、流量、版本和停止条件下比较 Baseline、收益、风险与成本。"),
     31: WeekGuide("生产硬化", "09-pilot-production-capstone.md", "在发布前通过压测、攻击、恢复和运行交接证明关键故障可发现、可止损、可恢复。", "生产硬化覆盖环境与 Secret、容量、限流、安全回归、备份恢复、告警、Runbook 和发布门禁。"),
     32: WeekGuide("最终发布与复盘", "09-pilot-production-capstone.md", "用统一证据回答平台是否可交付、业务是否值得推广以及能力边界在哪里。", "最终发布把可复现平台包、业务案例、指标、成本、风险、决策和答辩串成完整证据链，允许得出调整或停止结论。"),
+    33: WeekGuide("独立设计与单会话基线", "10-super-agent-coordination.md", "把持续协作需求转为可验证的任务边界，先建立公平对照。", "持续协作系统接收事件、管理长期目标并派发执行尝试；Task 是目标，Run 是一次尝试，模型建议由平台校验后才生效。"),
+    34: WeekGuide("并发调度与任务隔离", "10-super-agent-coordination.md", "让多个任务共享有限资源时仍能推进并保持隔离。", "调度器依据队列、容量、租约和预算派发已授权任务；并发数增加不会自动带来公平性、文件隔离或执行唯一性。"),
+    35: WeekGuide("事件驱动与主动触发", "10-super-agent-coordination.md", "让外部事件触发受控工作，同时抵御重复、积压与通知循环。", "事件说明已经发生的事实，触发规则决定是否行动；接收事件、获得上下文和取得执行权限是三个不同判断。"),
+    36: WeekGuide("跨渠道身份与任务上下文", "10-super-agent-coordination.md", "使不同入口的补充信息正确延续同一任务，避免串人、串租户与旧上下文污染。", "跨渠道协作依赖可信身份、显式任务关联和版本校验；语义相似度只提供候选，不能代替身份或权限。"),
+    37: WeekGuide("中途纠正、取消与撤权", "11-super-agent-reliability.md", "保证执行期间的控制输入能持久接收，并在明确边界生效。", "命令收件箱记录变更意图，执行器在安全边界应用命令；接收、应用和外部副作用完成具有不同状态。"),
+    38: WeekGuide("多任务持久恢复与副作用核对", "11-super-agent-reliability.md", "在进程退出、接管和回执丢失后重建可信状态。", "持久恢复结合数据库、Checkpoint、投递凭证和外部核对；重启不能清除未知事实，也不能重新授予已经撤销的权限。"),
+    39: WeekGuide("持续运行、停滞与运行交接", "11-super-agent-reliability.md", "用受控长时间实验识别资源泄漏、无效循环和无法交接的运维问题。", "持续运行需要有效进展观测、有限恢复和可执行 Runbook；心跳只证明存活，短时加速测试不能替代真实墙钟观察。"),
+    40: WeekGuide("对照评测与独立交付考试", "11-super-agent-reliability.md", "以公平实验和陌生变体验证架构收益与独立能力。", "专项交付分别判断控制正确性、任务质量、成本、可运维性和学习掌握度；能够实现系统不代表它值得推广。"),
+}
+
+
+# 每节只展开一个原理问题和一个反例；考试条目仅给证据格式。
+REINFORCEMENT_PROBES: dict[int, list[tuple[str, str]]] = {
+    33: [
+        ("怎样把‘持续修复问题’拆成可验收且有停止条件的授权范围？", "需求要求 Agent 自动合并所有修改，是否超出当前交付范围？"),
+        ("一次尝试失败后，哪些 ID 应保持不变，哪些需要新建？", "相同问题重试两次却生成三个独立目标，如何从记录发现？"),
+        ("为什么模型选择关联某任务后，仍需普通代码决定是否接纳？", "路由建议指向另一个 Project，模型置信度很高时应怎样处理？"),
+        ("执行契约为什么同时需要需求版本与发布版本？", "Worker 收到缺少授权引用或过期 revision 的任务。"),
+        ("固定案例与留出案例分别防止哪种自我欺骗？", "查看留出失败后改评分规则，却继续把同一结果称为留出评测。"),
+        ("基线中的失败、等待和人工操作应该怎样计入分母？", "三个代表任务中一个失败，只报告成功任务的平均耗时。"),
+        ("哪些需求用普通函数就足够，什么时候才需要模型参与？", "把一个完全确定的规则交给模型，输出偶尔改变。"),
+    ],
+    34: [
+        ("Worker 数量限制与等待队列容量分别限制什么资源？", "Worker 已满且队列已满，新的任务仍被应答为已派发。"),
+        ("如何从有限实验发现饥饿风险，并解释规则的等待上界？", "持续到来的高优先任务让一个旧任务一直无法获得槽位。"),
+        ("租约到期与旧 Worker 停止为什么不是同一个事实？", "两个 Worker 同时申请同一个任务，数据库是否接受两个 owner？"),
+        ("独立会话为什么不等于文件和工具访问隔离？", "任务 A 尝试用相对路径读取任务 B 的工作目录。"),
+        ("为什么需要在执行前预留预算，怎样处理取消后的释放？", "两个任务同时看到剩余额度足够，随后合计超出全局上限。"),
+        ("怎样从时间线证明三个任务并行且慢任务没有阻塞其他任务？", "一个任务占用所有执行槽，另一个任务又触发资源耗尽。"),
+        ("容量改变后，哪些状态迁移应保持正确？", "容量从三降到二时已有三个任务运行，不能靠删除记录降容量。"),
+    ],
+    35: [
+        ("哪些事件字段来自可信接入层，哪些只是用户正文？", "正文自称管理员且附带别人的 Project ID。"),
+        ("去重键为何包含来源，为什么不能只比较时间戳？", "重启后再次收到同一来源同一 eventId 的旧事件。"),
+        ("订阅信息或模型兴趣为什么不能自行产生执行授权？", "普通聊天提到一个缺陷，系统没有适用的主动触发规则。"),
+        ("任务结束后订阅应该怎样失效，剩余事件如何处理？", "已取消任务仍收到外部更新，旧订阅试图把它唤醒。"),
+        ("接收失败和延迟处理应怎样让来源可观察并安全重投？", "事件突发超过容量，系统悄悄丢弃一部分却返回成功。"),
+        ("哪些变化值得通知人，怎样防止通知再次触发自身？", "机器人的完成消息被入口适配器重新当作新任务。"),
+        ("调换投递顺序后，什么证据决定事件应新建、关联或忽略？", "旧事件晚于任务终态到达且被重复投递五次。"),
+    ],
+    36: [
+        ("渠道账号怎样被验证并绑定到平台主体？", "两个渠道中昵称相同的两个用户访问同一个任务。"),
+        ("任务关联需要哪些证据，关联错误如何撤销且保留历史？", "两个候选任务语义相近，其中一个属于别的 Project。"),
+        ("为什么时间戳不能代替 expectedRevision 的并发校验？", "两个入口都基于 revision 3 提交不同要求。"),
+        ("记忆中的事实、当前需求与权限真相分别由谁维护？", "旧摘要要求扩大范围，但当前需求已缩小且记忆已过期。"),
+        ("注入内容在哪里被当成数据，哪里可能变成执行意图？", "检索文档要求读取另一工作区并向外发送结果。"),
+        ("跨入口关联正确与执行中修订生效为何需要不同证据？", "补充消息入库成功，但 Worker 仍按旧要求执行。"),
+        ("在未见过的入口条件下，你如何独立选择最小关联方案？", "讲师提供一例未练过的错关联；先取证，再定位修复。"),
+    ],
+    37: [
+        ("命令接收成功与命令生效分别可以向用户承诺什么？", "应答成功后进程退出，命令尚未保存。"),
+        ("怎样证明长工具等待没有阻塞控制消息接收？", "函数标了 async，却在事件循环中进行同步阻塞调用。"),
+        ("需求修订在哪个边界生效，旧结果到达时如何判断有效性？", "新需求已接收，旧 Worker 随后提交旧 revision 的成功结果。"),
+        ("取消与完成竞争时依据什么选定终态，已发生动作怎么办？", "先取消、后完成与先完成、后取消产生相互矛盾的状态。"),
+        ("恢复前与副作用前为什么都要检查当前授权？", "等待审批期间权限被撤销，旧 Checkpoint 恢复后尝试写入。"),
+        ("如何串联命令时间线、版本和副作用次数证明组合行为？", "伪造主体提交取消，之后又有重复命令与迟到工具结果。"),
+        ("缩小范围与取消整个任务分别影响哪些未来动作？", "已完成写入被当作取消后不存在的事实。"),
+    ],
+    38: [
+        ("进程消失后哪些数据必须仍存在，怎样证明它们真正持久？", "测试只抛异常但共享内存仍在，误认为验证了重启恢复。"),
+        ("状态与投递意图同事务解决什么间隙，还留下什么重复风险？", "提交已成功、派发前退出；重启时又派发了两次。"),
+        ("epoch 必须由谁核验，为什么只在 Worker 自查不够？", "旧 Worker 暂停后恢复，新 Worker 此时已取得新租约。"),
+        ("外部调用超时后，什么证据能区分未发生、成功与未知？", "外部写成功但回执丢失，外部又不支持查询或幂等。"),
+        ("排队、执行中和待审批任务应分别从哪里重建状态？", "重启把所有任务统一置为执行中，连未批准任务也被启动。"),
+        ("如何证明退出实验覆盖了真实的跨进程副作用间隙？", "服务与外部 Stub 同时重置，写入计数被清零导致假通过。"),
+        ("陌生退出位置下，先检查哪类证据可以缩小故障范围？", "命令已签收未应用时退出，禁止直接改库补出成功结论。"),
+    ],
+    39: [
+        ("什么是可验证进展，正常人工等待为什么不能按无进展重启？", "Worker 不断发心跳却重复同一步骤，没有新的结果。"),
+        ("恢复策略何时必须停止自动处理并交人工？", "每次重启都失败，Watchdog 持续重试并发送重复通知。"),
+        ("接收延迟、生效延迟和任务完成延迟分别回答什么问题？", "只统计成功请求平均值，隐藏失败与长时间排队。"),
+        ("停止派发、保存状态和核对在途操作的顺序有什么依据？", "回滚软件版本时顺手删除了已成功副作用的记录。"),
+        ("什么条件使 24 小时后台观察可控并可提前止损？", "观察中预算耗尽或队列失控，却没有可用的终止开关。"),
+        ("加速时钟和真实墙钟观察分别能验证哪些问题？", "只运行十分钟却按模拟时间写了连续 24 小时通过。"),
+        ("陌生操作者如何仅凭 Runbook 决定重试、终止或人工核对？", "手册只写‘重启即可’，无法处理未知外部写入结果。"),
+    ],
+    40: [
+        ("哪些条件必须相同，才能把差异归因于调度架构？", "新方案使用更强模型或更大总预算，却把提升归因于并发。"),
+        ("三轮实验怎样保留失败、样本量和留出结果的独立性？", "第一轮看到留出失败就改实现，再把后三轮都称为盲测。"),
+        ("安全断言都通过但性能无收益时，应该如何形成决策？", "只列成功任务成本，省略失败重试、人工操作和通知负担。"),
+        ("面对新约束，怎样从需求推导方案而不先套现有实现？", "讲师临场改变条件；考试不预给字段、状态机或标准实现。"),
+        ("最小关键路径要验证什么，哪些复用与提示需要如实披露？", "复用完整答案后声称关键实现完全独立。"),
+        ("怎样让故障假设被证据证实或推翻，再迁移到第二个约束？", "陌生故障无法安全修复时，需说明安全停止的依据。"),
+        ("专项掌握度与系统推广决策为什么要分别记录？", "仅演示正常路径便宣称通过全部可靠性考试或达到生产成熟度。"),
+    ],
 }
 
 
 def language_label(week: int) -> str:
+    if week >= 33:
+        return "Java 控制面 + Python Worker"
     if 1 <= week <= 4:
         return "Python 3.11+"
     if 5 <= week <= 8:
@@ -87,6 +175,8 @@ def language_label(week: int) -> str:
 
 
 def language_focus(week: int) -> str:
+    if week >= 33:
+        return "复用原平台：Java 管任务、授权和持久状态，Python Worker 执行已授权快照，PostgreSQL 保存控制记录；先用持久 Fake/Stub 验证，真实模型与外部系统验证范围单列。"
     if 1 <= week <= 4:
         return "默认使用 Python 3.11+，以较少样板观察 AI 原理和原生协议；记录虚拟环境、依赖版本、pytest 命令和失败结果。"
     if 5 <= week <= 8:
@@ -629,9 +719,79 @@ def render_lesson(lesson: Lesson, guide: WeekGuide, number: int) -> str:
 """
 
 
+def relocate_stage_links(text: str) -> str:
+    """Keep stage-relative sources valid in the sibling tutorials directory."""
+    def replace(match: re.Match[str]) -> str:
+        label, target = match.groups()
+        if target.startswith(("https://", "http://", "#")):
+            return match.group(0)
+        path, separator, anchor = target.partition("#")
+        relative = os.path.relpath(STAGES_DIR / path, OUTPUT_DIR)
+        return f"[{label}]({relative}{separator}{anchor})"
+
+    return re.sub(r"\[([^\]]+)\]\(([^)]+)\)", replace, text)
+
+
+def render_reinforcement_lesson(week: int, lesson: Lesson, number: int) -> str:
+    action, separator, resource = lesson.advice.partition("\n\n相关资料：")
+    question, failure = REINFORCEMENT_PROBES[week][number - 1]
+    resource_line = f"\n专项资料：{relocate_stage_links(resource)}" if separator else ""
+    is_exam = (week == 36 and number == 7) or (week == 40 and number >= 4)
+    hints = (
+        "本节为独立考试或答辩，不预给实现答案。讲师只给需求、约束、故障现象与成功条件；"
+        "记录实际提示级别。若已用过完整答案，本题只能计练习，另换陌生变体重考。"
+        if is_exam else
+        "H1：先找第一个与预测不一致的事件、状态或证据。\n\n"
+        "H2：回答上面的原理问题，明确由谁持有状态、授权和副作用凭证。\n\n"
+        "H3：只为出错的一步画输入 → 前置校验 → 状态变化 → 可观察结果，"
+        "请讲师给局部伪代码或一条断言，再独立补齐。\n\n"
+        "H4：仍阻塞时再请求当前小问题的完整参考实现；记录使用范围，"
+        "关闭答案后改变一个事件顺序、角色、版本或资源上限重新完成。"
+    )
+    return f"""### {lesson.day} · 第 {number} 节：{lesson.task}
+
+**为什么学**
+
+本节只推进“{lesson.task}”，为“{lesson.acceptance}”留下可以复核的证据。
+
+**这是什么与今天的边界**
+
+{action}。首次接触术语时，用自己的话补齐定义、输入输出、开发类比及其局限、反例和“不是什么”；复习日不再增加新概念。
+
+**原理问题**
+
+{question}
+
+**怎么学（约 60 分钟）**
+
+1. `0–5 分钟`：检查上次遗留问题和本节依赖，先写正常结果与失败结果的预测。
+2. `5–15 分钟`：仅阅读当前任务相关段落，对照既有实现；记录来源版本和差异。考试日这段时间用于独立分析约束。
+3. `15–40 分钟`：完成本节最小实现、设计或实验，不扩展到下一天的能力。复用既有平台，所有执行都在隔离练习目录。
+4. `40–50 分钟`：验证反例：{failure}
+5. `50–60 分钟`：整理证据，用自己的话回答原理问题；改变一个输入或约束先预测再复验。若未完成则记录未通过项，不能凭时间推进。
+{resource_line}
+
+**卡住后的提示阶梯**
+
+{hints}
+
+**怎么验证学会了**
+
+- 必交证据：{lesson.acceptance}。
+- 记录格式：Case ID、输入/事件顺序、主体与 Project、任务/运行/版本、预期、实际、验证命令、状态/副作用/通知数量、失败解释、提示级别。
+- 设计或报告课保留决策依据与反例推演；实现和实验课必须亲自运行。真实模型、持久 Stub、加速时钟和墙钟观察分别标注。
+- 不看教程完成复述与一个小变体；只会照抄或运行时最高 L1，不能标记掌握。
+- 讲师结论为“通过、部分通过、未通过”；阶段考试只给“通过/未通过”。证据写入个人仓库，公共教程不填个人结果。
+"""
+
+
 def render_week(week: int, lessons: list[Lesson]) -> str:
     guide = WEEK_GUIDES[week]
-    sections = "\n".join(render_lesson(lesson, guide, index) for index, lesson in enumerate(lessons, start=1))
+    sections = "\n".join(
+        render_reinforcement_lesson(week, lesson, index)
+        if week >= 33 else render_lesson(lesson, guide, index)
+        for index, lesson in enumerate(lessons, start=1)
+    )
     return f"""<!-- 本文件由 scripts/generate_course_tutorials.py 生成，请修改阶段计划或生成器后重新生成。 -->
 
 # 第 {week:02d} 周教程：{guide.title}
@@ -669,17 +829,23 @@ def render_week(week: int, lessons: list[Lesson]) -> str:
 
 
 def render_index() -> str:
-    rows = "\n".join(
+    core_rows = "\n".join(
         f"| {week:02d} | [{guide.title}](week-{week:02d}.md) | {language_label(week)} | [阶段计划](../stages/{guide.stage_file}) |"
-        for week, guide in WEEK_GUIDES.items()
+        for week, guide in WEEK_GUIDES.items() if week <= 32
+    )
+    reinforcement_rows = "\n".join(
+        f"| {week:02d} | [{guide.title}](week-{week:02d}.md) | {language_label(week)} | [阶段计划](../stages/{guide.stage_file}) |"
+        for week, guide in WEEK_GUIDES.items() if week >= 33
     )
     return f"""# 逐节课程教程
 
 ## 目录定位
 
-本目录为 32 周学习计划提供逐节教程，共 32 份周教程、224 节每日课程。每节都回答四个问题：为什么学、这个是什么、怎么学、怎么验证学会了，并提供一份卡住后再看的参考答案。
+本目录为 32 周主线与 8 周 Super-agent 强化提供逐节教程，共 40 份周教程、280 节每日课程。原主线为 224 节，强化为 56 节；原课程毕业与专项通过分别验收。每节回答为什么学、这是什么、怎么学、怎么验证学会了。
 
 参考答案严格对应“怎么学”的五个步骤：先给预测示例，再定位资料链接中的章节/条目，然后提供对应 Mermaid 图、样例代码或文档模板，最后给出失败注入、交付物和 Teach-back 示例。
+
+强化课程使用任务专属的原理问题、失败场景和 H1→H4 提示；不预给阶段考试的实现答案。先独立尝试，再按阻塞程度请求局部示例或完整参考。专项项目、固定评测与进入条件见[强化课程设计](../11-super-agent-reinforcement.md)。
 
 本目录只负责教学展开，不保存学习进度、运行日志、源码或周验收结论。阶段计划仍以课程仓库的 `learning-plan/stages/` 为准；当周证据与状态以个人学习仓库的 `deliverables/week-XX/README.md` 为唯一入口，学习过程记录在个人仓库的 `notes/week-XX.md`。
 
@@ -697,15 +863,21 @@ def render_index() -> str:
 - “学会”：还能脱离步骤解释原理、诊断失败并完成变体。
 - “通过”：讲师依据证据给出通过结论；只阅读、只复制、只跑通 happy path 都不算通过。
 
-## 32 周教程索引
+## 原 32 周主线教程
 
 | 周次 | 教程 | 默认语言 | 对应阶段计划 |
 | ---: | --- | --- | --- |
-{rows}
+{core_rows}
+
+## 第 33–40 周 Super-agent 强化教程
+
+| 周次 | 教程 | 默认语言 | 对应阶段计划 |
+| ---: | --- | --- | --- |
+{reinforcement_rows}
 
 ## 输入、输出与边界
 
-- 输入：九份阶段计划中的四列表格、课程资料链接和验收要求。
+- 输入：十一份阶段计划中的四列表格、课程资料链接和验收要求。
 - 输出：按周组织的逐节学习教程。
 - 禁止内容：真实密钥、生产数据、唯一成果副本、自动推进的学习状态和未经验证的业务收益。
 - 维护方式：修改阶段日程后运行生成脚本；不要直接改生成的 `week-XX.md`，需要改变教程规则时修改生成器。
@@ -715,9 +887,14 @@ def render_index() -> str:
 def expected_files() -> dict[Path, str]:
     lessons_by_week = parse_lessons()
     missing = sorted(set(WEEK_GUIDES) - set(lessons_by_week))
-    invalid = {week: len(lessons) for week, lessons in lessons_by_week.items() if len(lessons) != 7}
-    if missing or invalid:
-        raise SystemExit(f"invalid course plan: missing_weeks={missing}, lesson_counts={invalid}")
+    unexpected = sorted(set(lessons_by_week) - set(WEEK_GUIDES))
+    invalid = {
+        week: [lesson.day for lesson in lessons]
+        for week, lessons in lessons_by_week.items()
+        if [lesson.day for lesson in lessons] != [f"周{day}" for day in "一二三四五六日"]
+    }
+    if missing or unexpected or invalid:
+        raise SystemExit(f"invalid course plan: missing_weeks={missing}, unexpected_weeks={unexpected}, invalid_days={invalid}")
     files = {OUTPUT_DIR / "README.md": render_index()}
     files.update({OUTPUT_DIR / f"week-{week:02d}.md": render_week(week, lessons_by_week[week]) for week in WEEK_GUIDES})
     return files
@@ -736,13 +913,13 @@ def main() -> int:
             for path in stale:
                 print(path.relative_to(REPO_ROOT))
             return 1
-        print(f"course tutorials are current: {len(files) - 1} weeks, 224 lessons")
+        print(f"course tutorials are current: {len(files) - 1} weeks, {(len(files) - 1) * 7} lessons")
         return 0
 
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     for path, content in files.items():
         path.write_text(content, encoding="utf-8")
-    print(f"generated {len(files) - 1} weekly tutorials with 224 lessons")
+    print(f"generated {len(files) - 1} weekly tutorials with {(len(files) - 1) * 7} lessons")
     return 0
 
 

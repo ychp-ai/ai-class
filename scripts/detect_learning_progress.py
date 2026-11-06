@@ -13,6 +13,7 @@ from typing import Any
 
 
 WEEK_COUNT = 32
+REINFORCED_WEEK_COUNT = 40
 COURSE_FILES = (
     "AGENTS.md",
     "README.md",
@@ -83,6 +84,11 @@ def parse_args() -> argparse.Namespace:
         "--pretty",
         action="store_true",
         help="Pretty-print JSON. Compact JSON is the default for low-token agent use.",
+    )
+    parser.add_argument(
+        "--include-super-agent",
+        action="store_true",
+        help="Scan the selected 40-week course instead of the default 32-week core.",
     )
     return parser.parse_args()
 
@@ -229,12 +235,12 @@ def parse_stages(root: Path) -> list[Stage]:
     return stages
 
 
-def parse_topics(root: Path) -> dict[int, str]:
+def parse_topics(root: Path, week_count: int = WEEK_COUNT) -> dict[int, str]:
     text = read_text(root / "deliverables/README.md")
     return {
         int(match.group("week")): match.group("topic").strip()
         for match in TOPIC_PATTERN.finditer(text)
-        if 1 <= int(match.group("week")) <= WEEK_COUNT
+        if 1 <= int(match.group("week")) <= week_count
     }
 
 
@@ -271,10 +277,13 @@ def invalid_result(
     course_root: Path | None,
     progress_root: Path | None,
     missing: list[str],
+    week_count: int = WEEK_COUNT,
 ) -> dict[str, Any]:
     return {
         "schema_version": "progress-scan.v2",
         "repository_status": "INVALID",
+        "course_scope": "core+super-agent" if week_count > WEEK_COUNT else "core",
+        "total_weeks": week_count,
         "course_root": str(course_root) if course_root else None,
         "progress_root": str(progress_root) if progress_root else None,
         "missing_required_files": missing,
@@ -290,16 +299,29 @@ def invalid_result(
     }
 
 
-def scan(course_root: Path, progress_root: Path) -> dict[str, Any]:
+def scan(
+    course_root: Path, progress_root: Path, *, include_super_agent: bool = False
+) -> dict[str, Any]:
+    week_count = REINFORCED_WEEK_COUNT if include_super_agent else WEEK_COUNT
+    course_scope = "core+super-agent" if include_super_agent else "core"
     if course_root.resolve() == progress_root.resolve():
         return invalid_result(
             course_root,
             progress_root,
             ["progress repository must be separate from course repository"],
+            week_count,
         )
     course_required = list(COURSE_FILES)
+    if include_super_agent:
+        course_required += [
+            "learning-plan/11-super-agent-reinforcement.md",
+            *[
+                f"deliverables/week-{week:02d}/README.md"
+                for week in range(WEEK_COUNT + 1, week_count + 1)
+            ],
+        ]
     progress_required = list(PROGRESS_FILES) + [
-        f"deliverables/week-{week:02d}/README.md" for week in range(1, WEEK_COUNT + 1)
+        f"deliverables/week-{week:02d}/README.md" for week in range(1, week_count + 1)
     ]
     missing = [
         f"course:{relative}"
@@ -311,23 +333,36 @@ def scan(course_root: Path, progress_root: Path) -> dict[str, Any]:
         if not (progress_root / relative).exists()
     ]
     if missing:
-        return invalid_result(course_root, progress_root, missing)
+        return invalid_result(course_root, progress_root, missing, week_count)
 
-    stages = parse_stages(course_root)
-    topics = parse_topics(course_root)
+    stages = [stage for stage in parse_stages(course_root) if stage.start <= week_count]
+    topics = parse_topics(course_root, week_count)
     if not stages:
         return invalid_result(
             course_root,
             progress_root,
             ["course:learning-plan/stages/README.md:stage mappings"],
+            week_count,
         )
+
+    # Opting in requires a complete extension plan, not only eight empty records.
+    for week in range(WEEK_COUNT + 1, week_count + 1):
+        matches = [stage for stage in stages if stage.start <= week <= stage.end]
+        if week not in topics or len(matches) != 1:
+            missing.append(f"course:week-{week:02d}:topic or unique stage mapping")
+            continue
+        days = extract_week_plan(course_root, matches[0], week)
+        if [day["date"] for day in days] != [f"周{day}" for day in "一二三四五六日"]:
+            missing.append(f"course:{matches[0].path}:week-{week:02d}:seven daily lessons")
+    if missing:
+        return invalid_result(course_root, progress_root, missing, week_count)
 
     weeks = [
         classify_week(
             progress_root / f"deliverables/week-{week:02d}/README.md",
             topics.get(week, f"Week {week:02d}"),
         )
-        for week in range(1, WEEK_COUNT + 1)
+        for week in range(1, week_count + 1)
     ]
     passed = [week for week in weeks if week.recognized_status == "PASSED"]
     current = next(
@@ -335,22 +370,31 @@ def scan(course_root: Path, progress_root: Path) -> dict[str, Any]:
         None,
     )
 
-    rules_paths = [*COURSE_FILES, *[stage.path for stage in stages]]
+    rules_paths = [*course_required, *[stage.path for stage in stages]]
     progress_paths = [
         "deliverables/README.md",
         *[
             f"deliverables/week-{week:02d}/README.md"
-            for week in range(1, WEEK_COUNT + 1)
+            for week in range(1, week_count + 1)
         ],
     ]
     current_notes = f"notes/week-{current.number:02d}.md" if current else None
     if current_notes and (progress_root / current_notes).exists():
         progress_paths.append(current_notes)
 
+    metrics = {
+        "passed_weeks": len(passed),
+        "core_passed_weeks": sum(week.number <= WEEK_COUNT for week in passed),
+        "reinforcement_passed_weeks": sum(week.number > WEEK_COUNT for week in passed),
+        "schedule_progress_percent": round(len(passed) / week_count * 100, 1),
+    }
+
     if current is None:
         return {
             "schema_version": "progress-scan.v2",
             "repository_status": "VALID",
+            "course_scope": course_scope,
+            "total_weeks": week_count,
             "course_root": str(course_root),
             "progress_root": str(progress_root),
             "rules_fingerprint": sha256_files(course_root, rules_paths),
@@ -358,10 +402,7 @@ def scan(course_root: Path, progress_root: Path) -> dict[str, Any]:
             "overall_status": "COMPLETED",
             "current_stage": None,
             "current_week": None,
-            "metrics": {
-                "passed_weeks": WEEK_COUNT,
-                "schedule_progress_percent": 100.0,
-            },
+            "metrics": metrics,
             "out_of_order_progress": [],
             "candidate_action": "MAINTENANCE",
             "requires_full_review": True,
@@ -406,6 +447,8 @@ def scan(course_root: Path, progress_root: Path) -> dict[str, Any]:
     return {
         "schema_version": "progress-scan.v2",
         "repository_status": "VALID",
+        "course_scope": course_scope,
+        "total_weeks": week_count,
         "course_root": str(course_root),
         "progress_root": str(progress_root),
         "rules_fingerprint": sha256_files(course_root, rules_paths),
@@ -446,10 +489,7 @@ def scan(course_root: Path, progress_root: Path) -> dict[str, Any]:
             "missing_links": current.missing_links,
             "unchecked_items": current.unchecked_items,
         },
-        "metrics": {
-            "passed_weeks": len(passed),
-            "schedule_progress_percent": round(len(passed) / WEEK_COUNT * 100, 1),
-        },
+        "metrics": metrics,
         "out_of_order_progress": later_progress,
         "candidate_action": action_by_status[current.recognized_status],
         "requires_full_review": current.recognized_status
@@ -462,9 +502,16 @@ def main() -> int:
     course_root = locate_course_repo(Path(args.repo))
     progress_root = Path(args.progress_repo).resolve()
     if course_root is None:
-        result = invalid_result(None, progress_root, list(COURSE_FILES[:4]))
+        result = invalid_result(
+            None,
+            progress_root,
+            list(COURSE_FILES[:4]),
+            REINFORCED_WEEK_COUNT if args.include_super_agent else WEEK_COUNT,
+        )
     else:
-        result = scan(course_root, progress_root)
+        result = scan(
+            course_root, progress_root, include_super_agent=args.include_super_agent
+        )
     if args.pretty:
         print(json.dumps(result, ensure_ascii=False, indent=2))
     else:

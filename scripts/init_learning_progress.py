@@ -9,6 +9,7 @@ from pathlib import Path
 
 
 WEEK_COUNT = 32
+REINFORCED_WEEK_COUNT = 40
 ARTIFACT_READMES = (
     "business-cases/README.md",
     "data/README.md",
@@ -41,10 +42,15 @@ def parse_args() -> argparse.Namespace:
         required=True,
         help="Target learner repository. It must differ from the course repository.",
     )
+    parser.add_argument(
+        "--include-super-agent",
+        action="store_true",
+        help="Also initialize weeks 33–40; existing learner records remain unchanged.",
+    )
     return parser.parse_args()
 
 
-def read_topics(course_root: Path) -> dict[int, str]:
+def read_topics(course_root: Path, week_count: int = WEEK_COUNT) -> dict[int, str]:
     index = course_root / "deliverables" / "README.md"
     if not index.exists():
         raise ValueError(f"course deliverable index not found: {index}")
@@ -53,7 +59,7 @@ def read_topics(course_root: Path) -> dict[int, str]:
         int(match.group("week")): match.group("topic").strip()
         for match in TOPIC_PATTERN.finditer(text)
     }
-    missing = [week for week in range(1, WEEK_COUNT + 1) if week not in topics]
+    missing = [week for week in range(1, week_count + 1) if week not in topics]
     if missing:
         raise ValueError(f"course deliverable topics missing weeks: {missing}")
     return topics
@@ -73,13 +79,23 @@ def render_template(path: Path, replacements: dict[str, str] | None = None) -> s
     return text
 
 
-def initialize(course_root: Path, progress_root: Path) -> None:
+def initialize(
+    course_root: Path, progress_root: Path, *, include_super_agent: bool = False
+) -> None:
     course_root = course_root.resolve()
     progress_root = progress_root.resolve()
     if course_root == progress_root:
         raise ValueError("progress repository must be separate from the course repository")
 
-    topics = read_topics(course_root)
+    week_count = REINFORCED_WEEK_COUNT if include_super_agent else WEEK_COUNT
+    topics = read_topics(course_root, week_count)
+    missing_requirements = [
+        f"deliverables/week-{week:02d}/README.md"
+        for week in range(WEEK_COUNT + 1, week_count + 1)
+        if not (course_root / f"deliverables/week-{week:02d}/README.md").is_file()
+    ]
+    if missing_requirements:
+        raise ValueError(f"reinforcement requirements missing: {missing_requirements}")
     template_root = course_root / "templates" / "learner-repository"
     required_templates = (
         "README.md",
@@ -128,7 +144,7 @@ def initialize(course_root: Path, progress_root: Path) -> None:
         render_template(template_root / "prompts" / "README.md"),
     )
     week_template = template_root / "deliverables" / "week-template.md"
-    for week in range(1, WEEK_COUNT + 1):
+    for week in range(1, week_count + 1):
         write_new(
             progress_root / "deliverables" / f"week-{week:02d}" / "README.md",
             render_template(
@@ -150,7 +166,11 @@ def initialize(course_root: Path, progress_root: Path) -> None:
 def main() -> int:
     args = parse_args()
     try:
-        initialize(Path(args.course_repo), Path(args.progress_repo))
+        initialize(
+            Path(args.course_repo),
+            Path(args.progress_repo),
+            include_super_agent=args.include_super_agent,
+        )
     except ValueError as error:
         raise SystemExit(str(error)) from error
     return 0

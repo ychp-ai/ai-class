@@ -2,9 +2,11 @@
 
 ## 目录定位
 
-本目录为 32 周学习计划提供逐节教程，共 32 份周教程、224 节每日课程。每节都回答四个问题：为什么学、这个是什么、怎么学、怎么验证学会了，并提供一份卡住后再看的参考答案。
+本目录为 32 周主线与 8 周 Super-agent 强化提供逐节教程，共 40 份周教程、280 节每日课程。原主线为 224 节，强化为 56 节；原课程毕业与专项通过分别验收。每节回答为什么学、这是什么、怎么学、怎么验证学会了。
 
 参考答案严格对应“怎么学”的五个步骤：先给预测示例，再定位资料链接中的章节/条目，然后提供对应 Mermaid 图、样例代码或文档模板，最后给出失败注入、交付物和 Teach-back 示例。
+
+强化课程使用任务专属的原理问题、失败场景和 H1→H4 提示；不预给阶段考试的实现答案。先独立尝试，再按阻塞程度请求局部示例或完整参考。专项项目、固定评测与进入条件见[强化课程设计](../11-super-agent-reinforcement.md)。
 
 本目录只负责教学展开，不保存学习进度、运行日志、源码或周验收结论。阶段计划仍以课程仓库的 `learning-plan/stages/` 为准；当周证据与状态以个人学习仓库的 `deliverables/week-XX/README.md` 为唯一入口，学习过程记录在个人仓库的 `notes/week-XX.md`。
 
@@ -22,7 +24,7 @@
 - “学会”：还能脱离步骤解释原理、诊断失败并完成变体。
 - “通过”：讲师依据证据给出通过结论；只阅读、只复制、只跑通 happy path 都不算通过。
 
-## 32 周教程索引
+## 原 32 周主线教程
 
 | 周次 | 教程 | 默认语言 | 对应阶段计划 |
 | ---: | --- | --- | --- |
@@ -59,9 +61,22 @@
 | 31 | [生产硬化](week-31.md) | Java + Python，按需 TypeScript | [阶段计划](../stages/09-pilot-production-capstone.md) |
 | 32 | [最终发布与复盘](week-32.md) | Java + Python，按需 TypeScript | [阶段计划](../stages/09-pilot-production-capstone.md) |
 
+## 第 33–40 周 Super-agent 强化教程
+
+| 周次 | 教程 | 默认语言 | 对应阶段计划 |
+| ---: | --- | --- | --- |
+| 33 | [独立设计与单会话基线](week-33.md) | Java 控制面 + Python Worker | [阶段计划](../stages/10-super-agent-coordination.md) |
+| 34 | [并发调度与任务隔离](week-34.md) | Java 控制面 + Python Worker | [阶段计划](../stages/10-super-agent-coordination.md) |
+| 35 | [事件驱动与主动触发](week-35.md) | Java 控制面 + Python Worker | [阶段计划](../stages/10-super-agent-coordination.md) |
+| 36 | [跨渠道身份与任务上下文](week-36.md) | Java 控制面 + Python Worker | [阶段计划](../stages/10-super-agent-coordination.md) |
+| 37 | [中途纠正、取消与撤权](week-37.md) | Java 控制面 + Python Worker | [阶段计划](../stages/11-super-agent-reliability.md) |
+| 38 | [多任务持久恢复与副作用核对](week-38.md) | Java 控制面 + Python Worker | [阶段计划](../stages/11-super-agent-reliability.md) |
+| 39 | [持续运行、停滞与运行交接](week-39.md) | Java 控制面 + Python Worker | [阶段计划](../stages/11-super-agent-reliability.md) |
+| 40 | [对照评测与独立交付考试](week-40.md) | Java 控制面 + Python Worker | [阶段计划](../stages/11-super-agent-reliability.md) |
+
 ## 输入、输出与边界
 
-- 输入：九份阶段计划中的四列表格、课程资料链接和验收要求。
+- 输入：十一份阶段计划中的四列表格、课程资料链接和验收要求。
 - 输出：按周组织的逐节学习教程。
 - 禁止内容：真实密钥、生产数据、唯一成果副本、自动推进的学习状态和未经验证的业务收益。
 - 维护方式：修改阶段日程后运行生成脚本；不要直接改生成的 `week-XX.md`，需要改变教程规则时修改生成器。

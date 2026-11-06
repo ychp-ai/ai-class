@@ -6,7 +6,7 @@
 
 ## 仓库目标
 
-本仓库是一套 32 周、每天约 1 小时的 AI 平台工程与业务落地学习仓库，面向具备基础开发能力、但没有 AI、机器学习、LLM、RAG 和 Agent 知识的开发者。
+本仓库是一套 32 周主线、每天约 1 小时的 AI 平台工程与业务落地学习仓库，面向具备基础开发能力、但没有 AI、机器学习、LLM、RAG 和 Agent 知识的开发者。原主线通过后可继续第 33–40 周 Super-agent 强化；主线毕业与专项通过分别验收，不降低或替代原目标。
 
 默认学习者会使用至少一种主流编程语言，具备 Git、命令行、HTTP、JSON、数据库、单元测试和基础排错经验。不得默认学习者已经理解概率统计、线性代数、模型训练、Token、Embedding、采样、Prompt、RAG、Tool Calling、Agent、Eval 或任何 AI 框架。Java 21、Spring Boot 和 Python 只补充本课程需要的工程桥接内容；通用开发基础不足时应单独补课，不降低 AI 课程出口标准。
 
@@ -62,6 +62,7 @@ LLM 原理与原生 API
 
 - 仓库方向与导航：`README.md`
 - 32 周路线与平台边界：`learning-plan/README.md`
+- Super-agent 强化任务：`learning-plan/11-super-agent-reinforcement.md`，以及阶段十、十一对应计划
 - 学习方法：`learning-plan/00-learning-method.md`
 - 讲师监督、掌握度评分和动态调整：`learning-plan/07-instructor-supervision.md`
 - 自动监督或进度识别：课程仓库的 `scripts/detect_learning_progress.py` 和 `prompts/progress-detection.md`，以及显式指定的个人学习仓库
@@ -77,7 +78,7 @@ LLM 原理与原生 API
 | 目录 | 职责 | 不应存放 |
 | --- | --- | --- |
 | `learning-plan/` | 总路线、每日计划、学习建议和验收规范 | 源码和运行日志 |
-| `deliverables/` | 第 1–32 周公共成果要求和空白模板 | 任何学习者的当前状态、评分和个人证据 |
+| `deliverables/` | 第 1–32 周主线及第 33–40 周强化公共成果要求和空白模板 | 任何学习者的当前状态、评分和个人证据 |
 | `templates/learner-repository/` | 个人学习仓库的完整目录与文档模板 | 个人记录、运行日志和唯一成果副本 |
 | `prompts/` | 带版本、经过评测的 Prompt | 临时聊天、密钥和敏感上下文 |
 | `scripts/` | 无需 LLM 的确定性扫描、校验和辅助工具 | 业务服务实现、真实 Secret 和不可审计的状态写入 |
@@ -111,6 +112,7 @@ LLM 原理与原生 API
 - 每日和每周反馈必须明确给出“通过、部分通过、未通过”之一，以及证据、薄弱点和下一步。
 - 同一知识点连续两次未通过时安排补救任务；周核心成果未通过时不直接进入下一周核心能力。
 - 自动化 Agent 拉取课程仓库和个人仓库后，必须先运行 `scripts/detect_learning_progress.py --repo <课程仓库> --progress-repo <个人仓库>`，再由 `prompts/progress-detection.md` 路由到 FAST、REVIEW 或 FULL 模式。
+- 扫描默认覆盖 32 周；学习者明确选择 Super-agent 强化后，初始化和每次扫描均添加 `--include-super-agent`，分母为 40 周。不得自动迁移原通过状态或将主线完成解释为专项完成。
 - 日常督促不得加载 FULL Prompt；只有首次扫描、阻塞、状态冲突、规则变化或阶段考试时才升级为 FULL。
 - 自动进度不得根据自然日期、文件数量、Commit 数量或 Agent 自述推进；以周成果、实际验证和讲师验收证据为准。
 - 学习者只能运行示例但不能解释输入、观察结果和失败原因时，最高判定为 L1；复制术语定义不得作为 Teach-back 证据。

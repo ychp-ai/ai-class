@@ -28,6 +28,10 @@ PostgreSQL、Docker Compose、Shell 和 YAML 是必要的工程配套，不作�
 | 25–28 | 语言中立，复用现有栈 | 完成业务调研、AS-IS/TO-BE 和接入设计，必要时用现有栈做 Spike | 不为画原型引入新语言；接口、数据、权限和兜底可映射到现有平台 |
 | 29–32 | Java + Python，按需 TypeScript | 完成 Connector、E2E、UAT、试点、生产硬化和最终发布 | 从业务入口到 Agent 执行、审批、回写、Trace 和回滚全部可验证 |
 
+## 追加强化的语言分工
+
+第 33–40 周沿用 Java 控制面与 Python Worker：Java 管 Task/Run、命令、调度、身份、授权与凭证；Python 运行原有 Agent，保留 LangChain、LangGraph 和 Claude Agent SDK 的边界。两种本地渠道适配器与持久 Stub 足以开始，不要求新语言、消息中间件或重写上游原型。每日内容见[阶段十](stages/10-super-agent-coordination.md)和[阶段十一](stages/11-super-agent-reliability.md)。
+
 ## 语言切换桥接
 
 每次切换只安排一个 15–30 分钟桥接任务，不把课程变成通用语言培训：
